@@ -1,0 +1,53 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateEmployeesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('employees', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->integer('role')->default('0');
+            $table->integer('salary');
+            $table->string('desigination');
+            $table->date('dob');
+            $table->string('address');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+        });
+
+        DB::table('employees')->insert(
+            array(
+                'name' => 'satyam',
+                'user_id' => 1,
+                'role' => 1,
+                'salary' => 5000,
+                'desigination' => 'developer',
+                'dob' => '2004-05-05',
+                'address' => 'varaashi'
+         
+            )
+        );
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('employees');
+    }
+}
