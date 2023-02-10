@@ -32,7 +32,7 @@
 
         <div id="login">
             <div id="login_h">
-                Create User
+                Update User
             </div>
 
             <div id="form_container">
@@ -49,9 +49,17 @@
 
                         <div class="form-group">
 
-                            <select name="role" id="role" value="{{$employee->role}}">
-                                <option value="0">Staff</option>
-                                <option value="1">Admin</option>
+                            <select name="role" id="role" value="{{$role}}">
+                                <option value="2" 
+                                @if ($role=="Staff")
+                                         {{"selected"}}
+                                     @endif
+                                >Staff</option>
+                                <option value="1" 
+                                @if ($role=="Admin")
+                                         {{"selected"}}
+                                     @endif
+                                >Admin</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -84,6 +92,7 @@
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
+                        <div id="error"></div>
                     </form>
                 </div>
             </div>
@@ -104,7 +113,9 @@
                     if (result =="") {
                          window.location = '/employee/{{$employee->id}}';
                     }else{
-                        console.log(result);
+                        // console.log(result);
+                        $("#error").text(result);
+
                     }
                    
                 }

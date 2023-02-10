@@ -39,12 +39,17 @@
     <div id="mySidenav" class="sidenav">
         <a href="http://127.0.0.1:8000/home">Home</a>
         <a href="http://127.0.0.1:8000/update">Update</a>
-@if (Session::get('role')==1)
-        <a href="http://127.0.0.1:8000/employee/create">create staff</a>
-        <a href="http://127.0.0.1:8000/family/create">add family</a>
-        <a href="http://127.0.0.1:8000/education/create">add education</a>     
-        <a href="http://127.0.0.1:8000/employee">view staff</a>
-@endif
+        @can('role-edit')
+           <a href="http://127.0.0.1:8000/Role_update"> Role Update</a>
+        @endcan 
+        @can('user-create')
+           <a href="http://127.0.0.1:8000/employee/create">create staff</a>
+        @endcan 
+        @can('user-list')
+          <a href="http://127.0.0.1:8000/employee">view staff</a>
+        @endcan 
+      
+
         <a href="/logout" onclick="return confirm('are you sure want to logout ?')">Logout</a>
 
     </div>

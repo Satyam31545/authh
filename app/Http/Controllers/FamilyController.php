@@ -7,6 +7,11 @@ use App\Models\Family;
 
 class FamilyController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:family-create', ['only' => ['create','store']]);
+    }
+
     public function create($id)
     {
         $data = compact('id');  

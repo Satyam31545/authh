@@ -9,9 +9,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
+use DB;
 class EmployeeController extends Controller
 {
+
+
+    function __construct()
+    {
+         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
+         $this->middleware('permission:user-create', ['only' => ['create','store']]);
+         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -69,10 +80,9 @@ try {
         $employee->salary=$val['salary'];
         $employee->desigination=$val['desigination'];
         $employee->address=$val['address'];
-        $employee->role=$req['role'];
         $employee->dob=$val['dob'];
         $employee->save();
-
+        $user->assignRole($req['role']);
 
 } catch (\Exception $e) {
 return $e->getMessage();
@@ -91,7 +101,8 @@ return $e->getMessage();
     {
                
         $my_employee = Employee::with("families")->with("education")->where('id',$employee->id)->first();
-        $data = compact('my_employee');  
+        $role=  User::find($my_employee->user_id)->getRoleNames()[0];
+        $data = compact('my_employee','role');  
    
         return  view('view')->with($data);
     }
@@ -104,7 +115,9 @@ return $e->getMessage();
      */
     public function edit(Employee $employee)
     {
-        $data = compact('employee');  
+       $role=  User::find($employee->user_id)->getRoleNames()[0];
+   
+        $data = compact('employee','role');  
         return  view('update')->with($data);  
     }
 
@@ -123,9 +136,12 @@ return $e->getMessage();
         if ($req['salary']!='') { $emp->salary=$req['salary']; }
         if ($req['desigination']!='') { $emp->desigination=$req['desigination']; }
         if ($req['address']!='') { $emp->address=$req['address']; }
-        if ($req['role']!='') { $emp->role=$req['role']; }
         if ($req['dob']!='') { $emp->dob=$req['dob']; }
         $emp->save(); 
+
+        DB::table('model_has_roles')->where('model_id',$employee->user_id)->delete();
+        $user=  User::find($employee->user_id);
+        $user->assignRole([$req->role]);
     } catch (\Exception $e) {
         return $e->getMessage();
         }
@@ -140,6 +156,8 @@ return $e->getMessage();
      */
     public function destroy(Employee $employee)
     {
+        DB::table('model_has_roles')->where('model_id',$employee->user_id)->delete();
+
         $employee->delete();
         return "i am deleted";
     }

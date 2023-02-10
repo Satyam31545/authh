@@ -28,6 +28,7 @@ color: red;
         <div id="allhead">Persional</div>
         <p>id - {{$my_employee->id}}</p>
         <p>name - {{$my_employee->name}}</p>
+        <p>role - {{$role}}</p>
         <p>salary -  {{$my_employee->salary}}</p>
         <p>desigination -  {{$my_employee->desigination}}</p>
         <p>dob -  {{$my_employee->dob}}</p>

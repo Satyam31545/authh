@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 use Illuminate\Http\Request;
 use Session;
@@ -27,10 +29,10 @@ class HomeController extends Controller
     {
         $id= Auth::user()->id;
         $my_employee = Employee::with("families")->with("education")->where('id',$id)->first();
-        $data = compact('my_employee'); 
+         $role=  User::find($my_employee->user_id)->getRoleNames()[0];
+        $data = compact('my_employee','role'); 
        
-        Session::put('role', $my_employee->role); 
-
+       
         return  view('view')->with($data);
     }
     public function logout(){
@@ -51,7 +53,7 @@ class HomeController extends Controller
                     $id= Auth::user()->id;
         $emp = employee::find($id);
         $emp->dob = $req['dob'];
-        $emp->address = $req['address'];
+        $emp->address = $req['addyress'];
         $emp->save(); 
     } catch (\Exception $e) {
         return $e->getMessage();

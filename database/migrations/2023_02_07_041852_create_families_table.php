@@ -18,7 +18,7 @@ class CreateFamiliesTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->string('name');
             $table->integer('age');
-            $table->integer('relation');
+            $table->string('relation');
             $table->boolean('employeed');
             $table->timestamps();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

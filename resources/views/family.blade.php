@@ -80,6 +80,7 @@
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
+                        <div id="error"></div>
                     </form>
                 </div>
             </div>
@@ -115,7 +116,9 @@
                     if (result =="") {
                          window.location = '/employee/{{$id}}';
                     }else{
-                        console.log(result);
+                        // console.log(result);
+                        $("#error").text(result);
+
                     }
                 }
             });

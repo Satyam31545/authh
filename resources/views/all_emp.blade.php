@@ -38,15 +38,26 @@
                             <p>name - {{ $item->name }}</p>
             <p>desigination - {{ $item->desigination }}</p>
             <div id="btn">
-                <a href="employee/{{$item->id}}"><button>show</button></a>
-                <a href="employee/{{$item->id}}/edit"><button>edit</button></a>
-                <form action="{{ url('employee/'.$item->id)}}" method="POST">
+                @can('user-list')
+         <a href="employee/{{$item->id}}"><button>show</button></a>
+                @endcan 
+                @can('user-edit')
+          <a href="employee/{{$item->id}}/edit"><button>edit</button></a>
+                @endcan 
+                @can('user-delete')
+         <form action="{{ url('employee/'.$item->id)}}" method="POST">
                 @csrf 
                 @method('DELETE')
                 <button>delete</button>
                 </form>
-                <a href="family/{{$item->id}}"><button>add family</button></a>
-                <a href="education/{{$item->id}}"><button>add education</button></a>
+                @endcan 
+                @can('family-create')
+                        <a href="family/{{$item->id}}"><button>add family</button></a>
+                @endcan 
+                @can('education-create')
+        <a href="education/{{$item->id}}"><button>add education</button></a>
+                @endcan 
+                
                 
             </div>
             <hr>

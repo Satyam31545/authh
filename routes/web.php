@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\Roles;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +36,8 @@ Route::get('/update', [App\Http\Controllers\HomeController::class, 'update'])->m
 Route::post('/update', [App\Http\Controllers\HomeController::class, 'p_update'])->middleware('auth');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+
+Route::get('/Role_update', [Roles::class, 'create'])->middleware('auth');
+Route::post('/Role_update', [Roles::class, 'store'])->middleware('auth');
 
 

@@ -62,7 +62,7 @@
                         <div class="form-group">
 
                             <select name="role" id="role">
-                                <option value="0">Staff</option>
+                                <option value="2">Staff</option>
                                 <option value="1">Admin</option>
                             </select>
                         </div>
@@ -96,6 +96,7 @@
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
+                        <div id="error"></div>
                     </form>
                 </div>
             </div>
@@ -134,7 +135,9 @@
                     if (result =="") {
                          window.location = '/employee';
                     }else{
-                        console.log(result);
+                        // console.log(result);
+                        $("#error").text(result);
+                        
                     }
                    
                 }

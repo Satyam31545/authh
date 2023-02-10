@@ -17,4 +17,8 @@ class Employee extends Model
     public function education(){
         return $this->hasMany(Education::class);
     }
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

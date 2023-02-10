@@ -11,7 +11,7 @@
 
 
         #login {
-            height: 550px;
+            height: 700px;
             width: 400px;
             box-shadow: 0.5px 0.5px 3px 3px #888888;
             background-color: #ffffff;
@@ -25,14 +25,24 @@
             width: 220px;
 
         }
+        .lock{
+            display: block;
+        }
+        .lock>input{
+            box-shadow: 0px 0px 0px #ffffff;
+            height: 15px;
+            width:  20px;
+        }
     </style>
 @endpush
 @section('main-section')
     <div id="login_box">
 
         <div id="login">
+ 
+
             <div id="login_h">
-                Update User
+               update role
             </div>
 
             <div id="form_container">
@@ -40,18 +50,14 @@
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
-<label>DOB</label>
-                            <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
-                                aria-describedby="helpId" placeholder="    DOB" value="{{$emp[0]->dob}}">
-                            <span id="edob"></span>
 
-                        </div>
-                        <div class="form-group">
-                            <label>Address</label>
-
-                            <input type="text" name="address" id="address" aria-describedby="helpId"
-                                placeholder="    Address" value="{{$emp[0]->address}}">
-                            <span id="eaddress"></span>
+                            @foreach($permission as $value)
+                           <div class="lock">{{ $value->name }}
+                           {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                            
+                        <br/></div>
+                        @endforeach
+                        
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="Update">
@@ -62,8 +68,7 @@
             </div>
         </div>
     </div>
-    <script src="jquary.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
+    <script src="http://127.0.0.1:8000/jquary.js"></script>
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
@@ -71,18 +76,21 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{ url('/update') }}",
+                url: "{{url('Role_update')}}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
                     if (result =="") {
-                         window.location = '/home';
+                         window.location = '/employee';
                     }else{
-                        $("#error").text(result);
                         // console.log(result);
+                        $("#error").text(result);
+
                     }
-                                  }
+                   
+                }
             });
         });
+
     </script>
 @endsection

@@ -7,6 +7,11 @@ use App\Models\Education;
 
 class EducationController extends Controller
 {
+
+    function __construct()
+    {
+         $this->middleware('permission:education-create', ['only' => ['create','store']]);
+    }
     public function create($id)
     {
         $data = compact('id');  

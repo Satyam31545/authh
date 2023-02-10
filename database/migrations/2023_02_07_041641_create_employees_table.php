@@ -17,7 +17,6 @@ class CreateEmployeesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('name');
-            $table->integer('role')->default('0');
             $table->integer('salary');
             $table->string('desigination');
             $table->date('dob');
@@ -27,18 +26,7 @@ class CreateEmployeesTable extends Migration
 
         });
 
-        DB::table('employees')->insert(
-            array(
-                'name' => 'satyam',
-                'user_id' => 1,
-                'role' => 1,
-                'salary' => 5000,
-                'desigination' => 'developer',
-                'dob' => '2004-05-05',
-                'address' => 'varaashi'
-         
-            )
-        );
+
     }
 
     /**
