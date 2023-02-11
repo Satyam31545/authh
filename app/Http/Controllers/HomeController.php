@@ -53,7 +53,7 @@ class HomeController extends Controller
                     $id= Auth::user()->id;
         $emp = employee::find($id);
         $emp->dob = $req['dob'];
-        $emp->address = $req['addyress'];
+        $emp->address = $req['address'];
         $emp->save(); 
     } catch (\Exception $e) {
         return $e->getMessage();
