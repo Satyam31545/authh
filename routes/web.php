@@ -50,6 +50,6 @@ Route::resource('product', ProductController::class)->middleware('auth');
 
 
 
-Route::get('/pdf', [App\Http\Controllers\HomeController::class, 'pdf'])->middleware('auth');
+Route::get('/pdf/{id}', [App\Http\Controllers\HomeController::class, 'pdf'])->middleware('auth');
 Route::get('/myproduct', [App\Http\Controllers\HomeController::class, 'myproduct'])->middleware('auth');
 

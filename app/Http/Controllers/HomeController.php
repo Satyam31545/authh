@@ -83,24 +83,41 @@ return view("assign_product")->with($data);
        } 
 
      public function deassign_product($id){
-        User_assin_product::where("id",$id)->delete();
+        DB::transaction(function () use ($id) {
+       $u_p = User_assin_product::where("id",$id);
+       $qu=$u_p->first();
+   
+    $pro = Product::find($qu->product_id);
+    $pro->quantity = $pro->quantity+$qu->quantity;
+    $pro->save(); 
+    $u_p->delete();
+
+        });
         return redirect()->back();
        } 
        public function assign_product_p($id,request $req){
 
        
         try {
-        DB::table('user_assin_products')->insert(['user_id' => $id,'product_id' => $req['product_id']]);
+        DB::table('user_assin_products')->insert(['user_id' => $id,'product_id' => $req['product_id'],'quantity' => $req['quantity']]);
+
+        $pro = Product::find($req['product_id']);
+        $pro->quantity = $pro->quantity-$req['quantity'];
+
+        $pro->save(); 
+
     } catch (\Exception $e) {
         return $e->getMessage();
         }
 
      }
 
-     public function pdf(){
+     public function pdf($id){
 
-        $employe=employee::where('id',1)->get();
-        $data = compact('employe'); 
+        $id= Auth::user()->id;
+        $products= User_assin_product::where("user_id",$id)->with("products")->get();
+        
+        $data = compact('products');
         $pdfd = PDF::loadView('pdf',$data);
         return $pdfd->stream();
        } 

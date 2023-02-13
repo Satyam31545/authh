@@ -49,17 +49,20 @@
                     </div>
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                      
+
                         <div class="form-group">
 
                             <select name="product_id" id="product_id">
                                 @foreach ($toassign as $item)
-                                   <option value="{{$item->id}}">{{$item->name}}</option>  
+                                   <option value="{{$item->id}}" class="{{$item->quantity}}" >{{$item->name}}</option>  
                                 @endforeach
                                
 
                             </select>
                         </div>
+                        <div class="form-group" id="quantitym">
+
+                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
@@ -93,5 +96,15 @@
                 }
             });
         });
+        element = document.getElementById('product_id');
+
+element.addEventListener('change', function() {
+
+       
+    var ma= eval($(":selected")[0].className)
+    document.getElementById('quantitym').innerHTML='<input type="number" placeholder="max value '+ma +'"  max="'+ma +'" id="quantity" name="quantity">';
+
+
+});
     </script>
 @endsection

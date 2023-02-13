@@ -3,19 +3,24 @@
 @push('title')
     <title>EMS | Create</title>
     <style>
-
+#tale{
+  text-align: center;
+  display: flex;
+  justify-content:center;
+}
 
 </style>
 @endpush
 @section('main-section')
-@can('product-create')
-<a href="product/create"><button>create</button></a>
-@endcan
 @php
     $tquantity=0;
     $tprize=0;
 @endphp
-<table id="customers">
+<div id="tale"><a href="pdf/{{$products[0]->user_id}}"><button>pdf</button></a></div>
+<div id="tale">
+
+  
+  <table id="customers">
     <tr>
       <th>product</th>
       <th>price</th>
@@ -24,13 +29,13 @@
     </tr>
     @foreach ($products as $product)
 @php
-       $tquantity+=$product->products->quantity;
+       $tquantity+=$product->quantity;
     $tprize+=$product->products->prize; 
 @endphp
  <tr>
               <td>{{$product->products->name}}</td>
       <td>{{$product->products->prize}}</td>
-      <td>{{$product->products->quantity}}</td>
+      <td>{{$product->quantity}}</td>
  </tr>
     @endforeach
     <tr>
@@ -42,5 +47,7 @@
    
    
   </table>
+</div>
+
   
 @endsection
