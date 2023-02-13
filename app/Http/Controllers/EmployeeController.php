@@ -67,22 +67,51 @@ class EmployeeController extends Controller
     // validator
     
 try {
-
-        $user = new User;
-        $user->email=$val['email'];
-        $user->password=Hash::make($val['password']);
+       DB::transaction(function () use ($req) {
+                  $user = new User;
+        $user->email=$req['email'];
+        $user->password=Hash::make($req['password']);
         $user->save();
-        $users = User::where('email',$val['email'])->first();
+        $users = User::where('email',$req['email'])->first();
 
             $employee = new Employee;
-        $employee->name=$val['name'];
+        $employee->name=$req['name'];
         $employee->user_id=$users->id;
-        $employee->salary=$val['salary'];
-        $employee->desigination=$val['desigination'];
-        $employee->address=$val['address'];
-        $employee->dob=$val['dob'];
+        $employee->salary=$req['salary'];
+        $employee->desigination=$req['desigination'];
+        $employee->address=$req['address'];
+        $employee->dob=$req['dob'];
         $employee->save();
         $user->assignRole($req['role']);
+
+        $emp_id_g = Employee::where('user_id',$users->id)->first();
+
+
+        $emp_id_g =$emp_id_g->id;
+        for( $i=1;$i<$req['add'];$i++){   
+        $Emp_fam = new Family;
+        $Emp_fam->employee_id=$emp_id_g;
+        $Emp_fam->name=$req['name'.$i];
+        $Emp_fam->age=$req['age'.$i];
+        $Emp_fam->relation=$req['relation'.$i];
+        $Emp_fam->employeed=$req['employed'.$i];
+        $Emp_fam->save();
+        }
+        for( $i=1;$i<$req['add1'];$i++){
+           
+            $Emp_fam = new Education;
+            $Emp_fam->employee_id=$emp_id_g;
+            $Emp_fam->edu_level=$req['edu_level'.$i];
+            $Emp_fam->course_n=$req['course_n'.$i];
+            $Emp_fam->place=$req['place'.$i];
+            $Emp_fam->percent=$req['percent'.$i];
+            $Emp_fam->save();
+            } 
+       });
+
+ 
+
+
 
 } catch (\Exception $e) {
 return $e->getMessage();
@@ -157,6 +186,10 @@ return $e->getMessage();
     public function destroy(Employee $employee)
     {
         DB::table('model_has_roles')->where('model_id',$employee->user_id)->delete();
+        DB::table('users')->where('id',$employee->user_id)->delete();
+        DB::table('families')->where('employee_id',$employee->user_id)->delete();
+        DB::table('education')->where('employee_id',$employee->user_id)->delete();
+
 
         $employee->delete();
         return "i am deleted";

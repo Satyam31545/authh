@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\User_assin_product;
+use App\Models\Product;
 use Spatie\Permission\Models\Role;
-
+// use Barryvdh\DomPDF\Facade\Pdf;
+use PDF;
+use DB;
 use Illuminate\Http\Request;
 use Session;
 class HomeController extends Controller
@@ -18,6 +22,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:product-assign', ['only' => ['assign_product_p','assign_product']]);
+        $this->middleware('permission:product-remove', ['only' => ['deassign_product']]);
     }
 
     /**
@@ -61,4 +67,50 @@ class HomeController extends Controller
 
      }
 
+     public function assign_product($id){
+
+        $array= User_assin_product::where("user_id",$id)->pluck('product_id')->all();
+
+    $toassign = Product::all()->except($array);
+//     echo "<pre>";
+// print_r($toassign);
+
+    $assigned= User_assin_product::where("user_id",$id)->with("products")->get();
+
+
+$data = compact('toassign','assigned','id');  
+return view("assign_product")->with($data);
+       } 
+
+     public function deassign_product($id){
+        User_assin_product::where("id",$id)->delete();
+        return redirect()->back();
+       } 
+       public function assign_product_p($id,request $req){
+
+       
+        try {
+        DB::table('user_assin_products')->insert(['user_id' => $id,'product_id' => $req['product_id']]);
+    } catch (\Exception $e) {
+        return $e->getMessage();
+        }
+
+     }
+
+     public function pdf(){
+
+        $employe=employee::where('id',1)->get();
+        $data = compact('employe'); 
+        $pdfd = PDF::loadView('pdf',$data);
+        return $pdfd->stream();
+       } 
+
+       public function myproduct(){
+        $id= Auth::user()->id;
+        $products= User_assin_product::where("user_id",$id)->with("products")->get();
+
+
+        $data = compact('products');  
+        return view("myproduct")->with($data);
+       }
 }

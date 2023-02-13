@@ -26,6 +26,9 @@
         #btn {
             display: block;
         }
+        a{
+            text-decoration: none;
+        }
     </style>
 @endpush
 @section('main-section')
@@ -35,7 +38,9 @@
             <div id="allhead">Persional</div>
 
             @foreach ($my_employee as $item)
+            @can('product-assign')   <a href="{{url('assign_product')}}/{{$item->id}}">  @endcan 
                             <p>name - {{ $item->name }}</p>
+                            @can('product-assign')     </a>     @endcan
             <p>desigination - {{ $item->desigination }}</p>
             <div id="btn">
                 @can('user-list')

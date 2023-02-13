@@ -44,4 +44,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Employee::class);
     }
+    public function user_assign_products()
+    {
+        return $this->hasMany(User_assin_product::class,'id','user_id');
+    }
 }

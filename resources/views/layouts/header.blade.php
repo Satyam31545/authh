@@ -48,7 +48,10 @@
         @can('user-list')
           <a href="http://127.0.0.1:8000/employee">view staff</a>
         @endcan 
-      
+        @can('product-list')
+        <a href="http://127.0.0.1:8000/product">view product</a>
+      @endcan 
+      <a href="http://127.0.0.1:8000/myproduct">my product </a>
 
         <a href="/logout" onclick="return confirm('are you sure want to logout ?')">Logout</a>
 
