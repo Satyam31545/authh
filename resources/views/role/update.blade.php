@@ -25,13 +25,15 @@
             width: 220px;
 
         }
-        .lock{
+
+        .lock {
             display: block;
         }
-        .lock>input{
+
+        .lock>input {
             box-shadow: 0px 0px 0px #ffffff;
             height: 15px;
-            width:  20px;
+            width: 20px;
         }
     </style>
 @endpush
@@ -39,10 +41,10 @@
     <div id="login_box">
 
         <div id="login">
- 
+
 
             <div id="login_h">
-               update role
+                update role
             </div>
 
             <div id="form_container">
@@ -51,13 +53,14 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
 
-                            @foreach($permission as $value)
-                           <div class="lock">{{ $value->name }}
-                           {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
-                            
-                        <br/></div>
-                        @endforeach
-                        
+                            @foreach ($permission as $value)
+                                <div class="lock">{{ $value->name }}
+                                    {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, ['class' => 'name']) }}
+
+                                    <br />
+                                </div>
+                            @endforeach
+
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="Update">
@@ -76,21 +79,20 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{url('Role_update')}}",
+                url: "{{ url('Role_update') }}/{{ $id }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/employee';
-                    }else{
+                    if (result == "") {
+                        window.location = '/AllRole';
+                    } else {
                         // console.log(result);
                         $("#error").text(result);
 
                     }
-                   
+
                 }
             });
         });
-
     </script>
 @endsection

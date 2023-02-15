@@ -40,7 +40,7 @@
         <a href="http://127.0.0.1:8000/home">Home</a>
         <a href="http://127.0.0.1:8000/update">Update</a>
         @can('role-edit')
-           <a href="http://127.0.0.1:8000/Role_update"> Role Update</a>
+           <a href="http://127.0.0.1:8000/AllRole">All Role</a>
         @endcan 
         @can('user-create')
            <a href="http://127.0.0.1:8000/employee/create">create staff</a>

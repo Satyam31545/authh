@@ -31,10 +31,10 @@
     <div id="login_box">
 
         <div id="login">
- 
+
 
             <div id="login_h">
-               update product
+                update product
             </div>
 
             <div id="form_container">
@@ -44,21 +44,21 @@
                         <div class="form-group">
 
                             <input type="text" name="name" id="name" aria-describedby="helpId"
-                                placeholder="     Name" value="{{$product->name}}">
+                                placeholder="     Name" value="{{ $product->name }}">
                             <span id="ename"></span>
                         </div>
 
                         <div class="form-group">
 
                             <input type="number" name="prize" id="prize" aria-describedby="helpId"
-                                placeholder="    prize" value="{{$product->prize}}">
+                                placeholder="    prize" value="{{ $product->prize }}">
                             <span id="eprize"></span>
 
                         </div>
                         <div class="form-group">
 
                             <input type="number" name="quantity" id="quantity" aria-describedby="helpId"
-                                placeholder="    quantity" value="{{$product->quantity}}">
+                                placeholder="    quantity" value="{{ $product->quantity }}">
                             <span id="eprize"></span>
 
                         </div>
@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <a href="product"><button>back</button></a>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -82,19 +82,18 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{url('product')}}/{{$product->id}}",
+                url: "{{ url('product') }}/{{ $product->id }}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/product';
-                    }else{
+                    if (result == "") {
+                        window.location = '/product';
+                    } else {
                         console.log(result);
                     }
-                   
+
                 }
             });
         });
-
     </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User_assin_product extends Model
 {
@@ -11,11 +12,11 @@ class User_assin_product extends Model
     protected $fillable = [
         'user_id', 'product_id',
    ];
-    public function products()
+    public function products(): BelongsTo
     {
         return $this->belongsTo(Product::class,'product_id','id');
     }
-    public function users()
+    public function users(): BelongsTo
     {
         return $this->belongsTo(User::class,'user_id','id');
     }

@@ -41,8 +41,9 @@ Route::post('/assign_product/{id}', [App\Http\Controllers\HomeController::class,
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
-Route::get('/Role_update', [Roles::class, 'create'])->middleware('auth');
-Route::post('/Role_update', [Roles::class, 'store'])->middleware('auth');
+Route::get('/Role_update/{id}', [Roles::class, 'create'])->middleware('auth');
+Route::post('/Role_update/{id}', [Roles::class, 'store'])->middleware('auth');
+Route::get('/AllRole', [Roles::class, 'index'])->middleware('auth');
 
 
 Route::resource('product', ProductController::class)->middleware('auth');

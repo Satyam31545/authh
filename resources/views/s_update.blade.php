@@ -40,9 +40,9 @@
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
-<label>DOB</label>
+                            <label>DOB</label>
                             <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
-                                aria-describedby="helpId" placeholder="    DOB" value="{{$emp[0]->dob}}">
+                                aria-describedby="helpId" placeholder="    DOB" value="{{ $emp[0]->dob }}">
                             <span id="edob"></span>
 
                         </div>
@@ -50,7 +50,7 @@
                             <label>Address</label>
 
                             <input type="text" name="address" id="address" aria-describedby="helpId"
-                                placeholder="    Address" value="{{$emp[0]->address}}">
+                                placeholder="    Address" value="{{ $emp[0]->address }}">
                             <span id="eaddress"></span>
                         </div>
                         <div class="form-group">
@@ -75,13 +75,13 @@
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/home';
-                    }else{
+                    if (result == "") {
+                        window.location = '/home';
+                    } else {
                         $("#error").text(result);
                         // console.log(result);
                     }
-                                  }
+                }
             });
         });
     </script>

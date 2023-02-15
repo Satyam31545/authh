@@ -43,50 +43,44 @@
                         <div class="form-group">
 
                             <input type="text" name="name" id="name" aria-describedby="helpId"
-                                placeholder="     Name" value="{{$employee->name}}">
+                                placeholder="     Name" value="{{ $employee->name }}">
                             <span id="ename"></span>
                         </div>
 
                         <div class="form-group">
 
-                            <select name="role" id="role" value="{{$role}}">
-                                <option value="2" 
-                                @if ($role=="Staff")
-                                         {{"selected"}}
-                                     @endif
-                                >Staff</option>
-                                <option value="1" 
-                                @if ($role=="Admin")
-                                         {{"selected"}}
-                                     @endif
-                                >Admin</option>
+                            <select name="role" id="role" value="{{ $role }}">
+                                <option value="2" @if ($role == 'Staff') {{ 'selected' }} @endif>Staff
+                                </option>
+                                <option value="1" @if ($role == 'Admin') {{ 'selected' }} @endif>Admin
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
 
                             <input type="number" name="salary" id="salary" aria-describedby="helpId"
-                                placeholder="    Salary" value="{{$employee->salary}}">
+                                placeholder="    Salary" value="{{ $employee->salary }}">
                             <span id="esalary"></span>
 
                         </div>
                         <div class="form-group">
 
                             <input type="text" name="desigination" id="desigination" aria-describedby="helpId"
-                                placeholder="    Desigination" value="{{$employee->desigination}}">
+                                placeholder="    Desigination" value="{{ $employee->desigination }}">
                             <span id="edesigination"></span>
 
                         </div>
                         <div class="form-group">
 
                             <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
-                                aria-describedby="helpId" placeholder="    DOB" value="{{$employee->dob}}">
+                                aria-describedby="helpId" placeholder="    DOB" value="{{ $employee->dob }}">
                             <span id="edob"></span>
 
                         </div>
                         <div class="form-group">
 
                             <input type="text" name="address" id="address" aria-describedby="helpId"
-                                placeholder="    Address" value="{{$employee->address}}">
+                                placeholder="    Address" value="{{ $employee->address }}">
                             <span id="eaddress"></span>
                         </div>
                         <div class="form-group">
@@ -106,21 +100,19 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{url('employee')}}/{{$employee->id}}",
+                url: "{{ url('employee') }}/{{ $employee->id }}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/employee/{{$employee->id}}';
-                    }else{
-                        // console.log(result);
+                    if (result == "") {
+                        window.location = '/employee/{{ $employee->id }}';
+                    } else {
                         $("#error").text(result);
 
                     }
-                   
+
                 }
             });
         });
-
     </script>
 @endsection

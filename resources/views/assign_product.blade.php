@@ -39,12 +39,13 @@
                 <div id="forms">
                     <div id="assigned">
                         @foreach ($assigned as $item)
-                            <p>  {{$item->products->name}} 
-                                @can('product-remove')  
-                                 <a href="{{url('deassign_product')}}/{{$item->id}}"><button>remove</button> </p></a>
-                                 @endcan 
+                            <p> {{ $item->products->name }}
+                                @can('product-remove')
+                                    <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove</button>
+                                </p></a>
+                            @endcan
                         @endforeach
-                        
+
 
                     </div>
                     <form id="form">
@@ -54,15 +55,16 @@
 
                             <select name="product_id" id="product_id">
                                 @foreach ($toassign as $item)
-                                   <option value="{{$item->id}}" class="{{$item->quantity}}" >{{$item->name}}</option>  
+                                    <option value="{{ $item->id }}" class="{{ $item->quantity }}">{{ $item->name }}
+                                    </option>
                                 @endforeach
-                               
+
 
                             </select>
                         </div>
                         <div class="form-group" id="quantitym">
 
-                         </div>
+                        </div>
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
@@ -81,30 +83,31 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{ url('/assign_product')}}/{{$id}}",
+                url: "{{ url('/assign_product') }}/{{ $id }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = "{{ url('/assign_product')}}/{{$id}}";
-                    }else{
+                    if (result == "") {
+                        window.location = "{{ url('/assign_product') }}/{{ $id }}";
+                    } else {
                         // console.log(result);
                         $("#error").text(result);
-                        
+
                     }
-                   
+
                 }
             });
         });
         element = document.getElementById('product_id');
 
-element.addEventListener('change', function() {
-
-       
-    var ma= eval($(":selected")[0].className)
-    document.getElementById('quantitym').innerHTML='<input type="number" placeholder="max value '+ma +'"  max="'+ma +'" id="quantity" name="quantity">';
+        element.addEventListener('change', function() {
 
 
-});
+            var ma = eval($(":selected")[0].className)
+            document.getElementById('quantitym').innerHTML = '<input type="number" placeholder="max value ' + ma +
+                '"  max="' + ma + '" id="quantity" name="quantity">';
+
+
+        });
     </script>
 @endsection

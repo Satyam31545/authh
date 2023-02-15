@@ -49,20 +49,15 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $val =  Validator::make($req->all(),[
+        $val =  Validator::make($req['product'][0],[
             'name'=> 'required',
             'prize'=> 'required',
             'quantity'=> 'required'
     ])->validate();
     // validator
-    
 try {
 
-        $product = new Product;
-        $product->name=$val['name'];
-        $product->prize=$val['prize'];
-        $product->quantity=$val['quantity'];
-        $product->save();
+    Product::create($val);
 
 
 } catch (\Exception $e) {

@@ -14,15 +14,23 @@ class Roles extends Controller
          $this->middleware('permission:role-edit', ['only' => ['create','store']]);
     }
 
-    public function create()
+
+    public function index()
+    {
+        $roles = Role::all();
+
+        $data = compact('roles');  
+        return  view("role.index")->with($data);  
+    }
+    public function create($id)
     {
      
         $permission = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",2)
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
-
-        return view('role.update',compact('permission','rolePermissions'));
+            // $role = Role::get();
+        return view('role.update',compact('permission','rolePermissions','id'));
     }
 
     /**
@@ -31,7 +39,7 @@ class Roles extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $req)
+    public function store(Request $req,$id)
     {
           // validator
           $this->validate($req, [
@@ -39,7 +47,7 @@ class Roles extends Controller
         ]);
     
         try {
-                 $role = Role::find(2);
+                 $role = Role::find($id);
     
         $role->syncPermissions($req->input('permission'));
      

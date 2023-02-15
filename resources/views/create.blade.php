@@ -1,4 +1,3 @@
-
 @extends('layouts.main')
 
 @push('title')
@@ -42,150 +41,152 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
 
-                            <input type="text" name="name" id="name" aria-describedby="helpId"
+                            <input type="text" name="employee[0][name]" id="name" aria-describedby="helpId"
                                 placeholder="     Name">
                             <span id="ename"></span>
                         </div>
                         <div class="form-group">
 
-                            <input type="email" name="email" id="email" aria-describedby="helpId"
+                            <input type="email" name="employee[0][email]" id="email" aria-describedby="helpId"
                                 placeholder="     Email">
                             <span id="eemail"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="password" name="password" id="password" aria-describedby="helpId"
+                            <input type="password" name="employee[0][password]" id="password" aria-describedby="helpId"
                                 placeholder="    Password">
                             <span id="epassword"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <select name="role" id="role">
+                            <select name="employee[0][role]" id="role">
                                 <option value="2">Staff</option>
                                 <option value="1">Admin</option>
                             </select>
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="salary" id="salary" aria-describedby="helpId"
+                            <input type="number" name="employee[0][salary]" id="salary" aria-describedby="helpId"
                                 placeholder="    Salary">
                             <span id="esalary"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="text" name="desigination" id="desigination" aria-describedby="helpId"
-                                placeholder="    Desigination">
+                            <input type="text" name="employee[0][desigination]" id="desigination"
+                                aria-describedby="helpId" placeholder="    Desigination">
                             <span id="edesigination"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
+                            <input type="text" name="employee[0][dob]" id="dob" onfocus="(this.type='date')"
                                 aria-describedby="helpId" placeholder="    DOB">
                             <span id="edob"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="text" name="address" id="address" aria-describedby="helpId"
+                            <input type="text" name="employee[0][address]" id="address" aria-describedby="helpId"
                                 placeholder="    Address">
                             <span id="eaddress"></span>
                         </div>
 
 
-{{-- education start --}}
+                        {{-- education start --}}
 
-<div id="login_h">
-    education 
-</div>
+                        <div id="login_h">
+                            education
+                        </div>
 
-<div id="rep">
-    <div class="form-group">
+                        <div id="rep">
+                            <div class="form-group">
 
-        <select name="edu_level1" id="edu_level1">
-            <option value="0">education level</option>
-            <option value="0">HS</option>
-            <option value="1">SHS</option>
-            <option value="2">UG</option>
-            <option value="3">PG</option>
-        </select>
-    </div>
-    <div class="form-group">
+                                <select name="edu_level1" id="edu_level1">
+                                    <option value="0">education level</option>
+                                    <option value="0">HS</option>
+                                    <option value="1">SHS</option>
+                                    <option value="2">UG</option>
+                                    <option value="3">PG</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
 
-        <input type="text" name="course_n1" id="course_n1" aria-describedby="helpId"
-            placeholder="    Course(for ug & pg)">
+                                <input type="text" name="course_n1" id="course_n1" aria-describedby="helpId"
+                                    placeholder="    Course(for ug & pg)">
 
-    </div>
-    <div class="form-group">
+                            </div>
+                            <div class="form-group">
 
-        <input type="text" name="place1" id="place1" aria-describedby="helpId"
-            placeholder="    Board or University">
+                                <input type="text" name="place1" id="place1" aria-describedby="helpId"
+                                    placeholder="    Board or University">
 
-    </div>
-    <div class="form-group">
+                            </div>
+                            <div class="form-group">
 
-        <input type="number" name="percent1" id="percent1" aria-describedby="helpId"
-            placeholder="    Percentage">
+                                <input type="number" name="percent1" id="percent1" aria-describedby="helpId"
+                                    placeholder="    Percentage">
 
-    </div>
-    <hr>
-</div>
-<div onclick="addq1(this);" id="add1">
-    <p>ADD</p>
-</div>
-<input type="hidden" class="add1" name="add1" value=2>
-{{--  education ed --}}
+                            </div>
+                            <hr>
+                        </div>
+                        <div onclick="addq1(this);" id="add1">
+                            <p>ADD</p>
+                        </div>
+                        <input type="hidden" class="add1" name="add1" value=2>
+                        {{--  education ed --}}
 
 
-{{-- family add --}}
+                        {{-- family add --}}
 
-<div id="login_h">
-    family 
-</div>
-<div id="rep">
-    <div class="form-group">
+                        <div id="login_h">
+                            family
+                        </div>
+                        <div id="rep">
+                            <div class="form-group">
 
-        <input type="text" name="name1" id="name1" aria-describedby="helpId"
-            placeholder="    Member name">
+                                <input type="text" name="name1" id="name1" aria-describedby="helpId"
+                                    placeholder="    Member name">
 
-    </div>
-    <div class="form-group">
+                            </div>
+                            <div class="form-group">
 
-        <input type="number" name="age1" id="age1" aria-describedby="helpId"
-            placeholder="    Member age">
+                                <input type="number" name="age1" id="age1" aria-describedby="helpId"
+                                    placeholder="    Member age">
 
-    </div>
-    <div class="form-group">
+                            </div>
+                            <div class="form-group">
 
-        <select name="relation1" id="relation1">
-            <option value="mother">relation</option>
-            <option value="mother">mother</option>
-            <option value="father">father</option>
-            <option value="whif">whif</option>
-            <option value="brother">brother</option>
-            <option value="husbend">husbend</option>
-            <option value="son">son</option>
-            <option value="daughter">daughter</option>
-        </select>
-    </div>
-    <div class="form-group">
+                                <select name="relation1" id="relation1">
+                                    <option value="mother">relation</option>
+                                    <option value="mother">mother</option>
+                                    <option value="father">father</option>
+                                    <option value="whif">whif</option>
+                                    <option value="brother">brother</option>
+                                    <option value="husbend">husbend</option>
+                                    <option value="son">son</option>
+                                    <option value="daughter">daughter</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
 
-        <select name="employed1" id="employed1">
-            <option value="0">employed</option>
-            <option value="0">yes</option>
-            <option value="1">no</option>
-        </select>
-    </div>
-    <hr>
-</div>
-<div onclick="addq(this);" id="add"><p>ADD</p></div>
-<input type="hidden" class="add" name="add" value=2>
+                                <select name="employed1" id="employed1">
+                                    <option value="0">employed</option>
+                                    <option value="0">yes</option>
+                                    <option value="1">no</option>
+                                </select>
+                            </div>
+                            <hr>
+                        </div>
+                        <div onclick="addq(this);" id="add">
+                            <p>ADD</p>
+                        </div>
+                        <input type="hidden" class="add" name="add" value=2>
 
-{{--family add  --}}
-                        
+                        {{-- family add  --}}
+
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
@@ -198,32 +199,55 @@
     <script src="http://127.0.0.1:8000/jquary.js"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
     <script>
-                function addq(value) {
+        function addq(value) {
 
-opnum = $(value).attr('id');
+            opnum = $(value).attr('id');
 
-append2 = '<div id="rep"><div class="form-group"><input type="text" name="name'+$('.' + opnum).attr('value')+'" id="name'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="age'+$('.' + opnum).attr('value')+'" id="age'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="relation'+$('.' + opnum).attr('value')+'" id="relation'+$('.' + opnum).attr('value')+'"><option value="mother">relation</option><option value="0">mother</option><option value="1">father</option><option value="2">sister</option><option value="3">brother</option><option value="4">whif/husbend</option><option value="5">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="employed'+$('.' + opnum).attr('value')+'" id="employed'+$('.' + opnum).attr('value')+'"><option value="0">employed</option><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
+            append2 = '<div id="rep"><div class="form-group"><input type="text" name="name' + $('.' + opnum).attr('value') +
+                '" id="name' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="age' +
+                $('.' + opnum).attr('value') + '" id="age' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="relation' +
+                $('.' + opnum).attr('value') + '" id="relation' + $('.' + opnum).attr('value') +
+                '"><option value="mother">relation</option><option value="0">mother</option><option value="1">father</option><option value="2">sister</option><option value="3">brother</option><option value="4">whif/husbend</option><option value="5">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="employed' +
+                $('.' + opnum).attr('value') + '" id="employed' + $('.' + opnum).attr('value') +
+                '"><option value="0">employed</option><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
 
-$("#" + opnum).before(append2);
-rqpnum = $("." + opnum).attr('value');
-rqpnum = eval(rqpnum);
-$("." + opnum).attr('value', rqpnum + 1);
-}
+            $("#" + opnum).before(append2);
+            rqpnum = $("." + opnum).attr('value');
+            rqpnum = eval(rqpnum);
+            $("." + opnum).attr('value', rqpnum + 1);
+        }
 
-function addq1(value) {
+        function addq1(value) {
 
-opnum = $(value).attr('id');
+            opnum = $(value).attr('id');
 
-append2 = '<div id="rep"><div class="form-group"><select name="edu_level'+$('.' + opnum).attr('value')+'" id="edu_level'+$('.' + opnum).attr('value')+'"><option value="0">education level</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="course_n'+$('.' + opnum).attr('value')+'" id="course_n'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="place'+$('.' + opnum).attr('value')+'" id="place'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="percent'+$('.' + opnum).attr('value')+'" id="percent'+$('.' + opnum).attr('value')+'"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
+            append2 = '<div id="rep"><div class="form-group"><select name="edu_level' + $('.' + opnum).attr('value') +
+                '" id="edu_level' + $('.' + opnum).attr('value') +
+                '"><option value="0">education level</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="course_n' +
+                $('.' + opnum).attr('value') + '" id="course_n' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="place' +
+                $('.' + opnum).attr('value') + '" id="place' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="percent' +
+                $('.' + opnum).attr('value') + '" id="percent' + $('.' + opnum).attr('value') +
+                '"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
 
-$("#" + opnum).before(append2);
-rqpnum = $("." + opnum).attr('value');
-rqpnum = eval(rqpnum);
-$("." + opnum).attr('value', rqpnum + 1);
-}
+            $("#" + opnum).before(append2);
+            rqpnum = $("." + opnum).attr('value');
+            rqpnum = eval(rqpnum);
+            $("." + opnum).attr('value', rqpnum + 1);
+        }
 
         jQuery('#form').submit(function(e) {
             e.preventDefault();
+            $("#eemail").text('');
+            $("#ename").text('');
+            $("#epassword").text('');
+            $("#edesigination").text('');
+            $("#esalary").text('');
+            $("#edob").text('');
+            $("#eaddress").text('');
             jQuery.ajax({
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
@@ -235,34 +259,40 @@ $("." + opnum).attr('value', rqpnum + 1);
                     var go = request.responseText;
                     var goo = JSON.parse(go);
                     goo = goo.errors;
-                    if (goo) {
-                        document.getElementById("login").style.height = "700px";
+                    if (goo.name[0]) {
+                        document.getElementById("ename").innerHTML = goo.name[0];
+                    }
+                    if (goo.email[0]) {
+                        document.getElementById("eemail").innerHTML = goo.email[0];
+                    }
+                    if (goo.password[0]) {
+                        document.getElementById("epassword").innerHTML = goo.password[0];
                     }
 
-                    document.getElementById("eemail").innerHTML = goo.email[0];
-                    document.getElementById("epassword").innerHTML = goo.password[0];
-                    document.getElementById("ename").innerHTML = goo.name[0];
-                    document.getElementById("esalary").innerHTML = goo.salary[0];
-                    document.getElementById("edesigination").innerHTML = goo.desigination[0];
-                    document.getElementById("edob").innerHTML = goo.dob[0];
-                    document.getElementById("eaddress").innerHTML = goo.address[0];
+                    if (goo.salary[0]) {
+                        document.getElementById("esalary").innerHTML = goo.salary[0];
+                    }
+                    if (goo.desigination[0]) {
+                        document.getElementById("edesigination").innerHTML = goo.desigination[0];
+                    }
+                    if (goo.dob[0]) {
+                        document.getElementById("edob").innerHTML = goo.dob[0];
+                    }
+                    if (goo.address[0]) {
+                        document.getElementById("eaddress").innerHTML = goo.address[0];
+                    }
 
                 },
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/employee';
-                    }else{
-                        // console.log(result);
+                    if (result == "") {
+                        window.location = '/employee';
+                    } else {
                         $("#error").text(result);
-                        
+
                     }
-                   
+
                 }
             });
         });
     </script>
 @endsection
-
-
-
-

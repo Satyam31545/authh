@@ -41,20 +41,20 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
 
-                            <input type="text" name="name" id="name" aria-describedby="helpId"
+                            <input type="text" name="product[0][name]" id="name" aria-describedby="helpId"
                                 placeholder="     Name">
                             <span id="ename"></span>
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="prize" id="prize" aria-describedby="helpId"
+                            <input type="number" name="product[0][prize]" id="prize" aria-describedby="helpId"
                                 placeholder="     prize">
                             <span id="eprize"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="quantity" id="quantity" aria-describedby="helpId"
+                            <input type="number" name="product[0][quantity]" id="quantity" aria-describedby="helpId"
                                 placeholder="     quantity">
                             <span id="equantity"></span>
 
@@ -72,6 +72,10 @@
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
+            $("#eprize").text('');
+            $("#ename").text('');
+            $("#equantity").text('');
+
             jQuery.ajax({
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
@@ -87,19 +91,24 @@
                         document.getElementById("login").style.height = "700px";
                     }
 
-                    document.getElementById("eprize").innerHTML = goo.prize[0];
-                    document.getElementById("ename").innerHTML = goo.name[0];
-                    document.getElementById("equantity").innerHTML = goo.quantity[0];
 
-
+                    if (goo.name[0]) {
+                        document.getElementById("ename").innerHTML = goo.name[0];
+                    }
+                    if (goo.name[0]) {
+                        document.getElementById("equantity").innerHTML = goo.quantity[0];
+                    }
+                    if (goo.name[0]) {
+                        document.getElementById("eprize").innerHTML = goo.prize[0];
+                    }
                 },
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/product';
-                    }else{
+                    if (result == "") {
+                        //  window.location = '/product';
+                    } else {
                         console.log(result);
                     }
-                   
+
                 }
             });
         });

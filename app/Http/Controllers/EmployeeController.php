@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Education;
 use App\Models\Employee;
 use App\Models\Family;
-use App\Models\Education;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
-use Validator;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Validator;
 
-use DB;
 class EmployeeController extends Controller
 {
 
-
-    function __construct()
+    public function __construct()
     {
-         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
-         $this->middleware('permission:user-create', ['only' => ['create','store']]);
-         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -32,8 +31,8 @@ class EmployeeController extends Controller
     {
         $my_employee = Employee::all();
 
-        $data = compact('my_employee');  
-        return  view('all_emp')->with($data);   
+        $data = compact('my_employee');
+        return view('all_emp')->with($data);
     }
 
     /**
@@ -43,7 +42,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return  view('create');   
+        return view('create');
     }
 
     /**
@@ -54,69 +53,66 @@ class EmployeeController extends Controller
      */
     public function store(Request $req)
     {
-          // validator
-          $val =  Validator::make($req->all(),[
-            'name'=> 'required',
-            'email'=> 'required|email',
-            'password'=> 'required',
-            'salary'=> 'required',
-            'desigination'=> 'required',             
-            'dob'=> 'required',
-            'address'=> 'required'
-    ])->validate();
-    // validator
-    
-try {
-       DB::transaction(function () use ($req) {
-                  $user = new User;
-        $user->email=$req['email'];
-        $user->password=Hash::make($req['password']);
-        $user->save();
-        $users = User::where('email',$req['email'])->first();
+        // validator
+        $val = Validator::make($req['employee'][0], [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'salary' => 'required',
+            'desigination' => 'required',
+            'dob' => 'required',
+            'address' => 'required',
+        ])->validate();
+        // validator
 
-            $employee = new Employee;
-        $employee->name=$req['name'];
-        $employee->user_id=$users->id;
-        $employee->salary=$req['salary'];
-        $employee->desigination=$req['desigination'];
-        $employee->address=$req['address'];
-        $employee->dob=$req['dob'];
-        $employee->save();
-        $user->assignRole($req['role']);
+        try {
+            DB::transaction(function () use ($req) {
 
-        $emp_id_g = Employee::where('user_id',$users->id)->first();
+                $user = User::create([
+                    'email' => $req['employee'][0]['email'],
+                    'password' => Hash::make($req['employee'][0]['password']),
+                ]);
 
+                $myemployee = Employee::create([
+                    'name' => $req['employee'][0]['name'],
+                    'user_id' => $user->id,
+                    'salary' => $req['employee'][0]['salary'],
+                    'desigination' => $req['employee'][0]['desigination'],
+                    'address' => $req['employee'][0]['address'],
+                    'dob' => $req['employee'][0]['dob'],
 
-        $emp_id_g =$emp_id_g->id;
-        for( $i=1;$i<$req['add'];$i++){   
-        $Emp_fam = new Family;
-        $Emp_fam->employee_id=$emp_id_g;
-        $Emp_fam->name=$req['name'.$i];
-        $Emp_fam->age=$req['age'.$i];
-        $Emp_fam->relation=$req['relation'.$i];
-        $Emp_fam->employeed=$req['employed'.$i];
-        $Emp_fam->save();
+                ]);
+
+                if ($req['name1']) {
+                    for ($i = 1; $i < $req['add']; $i++) {
+                        $Emp_fam = new Family;
+                        $Emp_fam->employee_id = $myemployee->id;
+                        $Emp_fam->name = $req['name' . $i];
+                        $Emp_fam->age = $req['age' . $i];
+                        $Emp_fam->relation = $req['relation' . $i];
+                        $Emp_fam->employeed = $req['employed' . $i];
+                        $Emp_fam->save();
+                    }
+                }
+
+                if ($req['edu_level1']) {
+                    for ($i = 1; $i < $req['add1']; $i++) {
+
+                        $Emp_fam = new Education;
+                        $Emp_fam->employee_id = $myemployee->id;
+                        $Emp_fam->edu_level = $req['edu_level' . $i];
+                        $Emp_fam->course_n = $req['course_n' . $i];
+                        $Emp_fam->place = $req['place' . $i];
+                        $Emp_fam->percent = $req['percent' . $i];
+                        $Emp_fam->save();
+                    }
+                }
+
+            });
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        for( $i=1;$i<$req['add1'];$i++){
-           
-            $Emp_fam = new Education;
-            $Emp_fam->employee_id=$emp_id_g;
-            $Emp_fam->edu_level=$req['edu_level'.$i];
-            $Emp_fam->course_n=$req['course_n'.$i];
-            $Emp_fam->place=$req['place'.$i];
-            $Emp_fam->percent=$req['percent'.$i];
-            $Emp_fam->save();
-            } 
-       });
-
- 
-
-
-
-} catch (\Exception $e) {
-return $e->getMessage();
-}
-
 
     }
 
@@ -128,12 +124,12 @@ return $e->getMessage();
      */
     public function show(Employee $employee)
     {
-               
-        $my_employee = Employee::with("families")->with("education")->where('id',$employee->id)->first();
-        $role=  User::find($my_employee->user_id)->getRoleNames()[0];
-        $data = compact('my_employee','role');  
-   
-        return  view('view')->with($data);
+
+        $my_employee = Employee::with("families")->with("education")->where('id', $employee->id)->first();
+        $role = User::find($my_employee->user_id)->getRoleNames()[0];
+        $data = compact('my_employee', 'role');
+
+        return view('view')->with($data);
     }
 
     /**
@@ -144,10 +140,10 @@ return $e->getMessage();
      */
     public function edit(Employee $employee)
     {
-       $role=  User::find($employee->user_id)->getRoleNames()[0];
-   
-        $data = compact('employee','role');  
-        return  view('update')->with($data);  
+        $role = User::find($employee->user_id)->getRoleNames()[0];
+
+        $data = compact('employee', 'role');
+        return view('update')->with($data);
     }
 
     /**
@@ -160,19 +156,19 @@ return $e->getMessage();
     public function update(Request $req, Employee $employee)
     {
         try {
-                   $emp = $employee;
-        if ($req['name']!='') { $emp->name=$req['name']; }
-        if ($req['salary']!='') { $emp->salary=$req['salary']; }
-        if ($req['desigination']!='') { $emp->desigination=$req['desigination']; }
-        if ($req['address']!='') { $emp->address=$req['address']; }
-        if ($req['dob']!='') { $emp->dob=$req['dob']; }
-        $emp->save(); 
+            $emp = $employee;
+            if ($req['name'] != '') {$emp->name = $req['name'];}
+            if ($req['salary'] != '') {$emp->salary = $req['salary'];}
+            if ($req['desigination'] != '') {$emp->desigination = $req['desigination'];}
+            if ($req['address'] != '') {$emp->address = $req['address'];}
+            if ($req['dob'] != '') {$emp->dob = $req['dob'];}
+            $emp->save();
 
-        DB::table('model_has_roles')->where('model_id',$employee->user_id)->delete();
-        $user=  User::find($employee->user_id);
-        $user->assignRole([$req->role]);
-    } catch (\Exception $e) {
-        return $e->getMessage();
+            DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
+            $user = User::find($employee->user_id);
+            $user->assignRole([$req->role]);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
     }
@@ -185,13 +181,11 @@ return $e->getMessage();
      */
     public function destroy(Employee $employee)
     {
-        DB::table('model_has_roles')->where('model_id',$employee->user_id)->delete();
-        DB::table('users')->where('id',$employee->user_id)->delete();
-        DB::table('families')->where('employee_id',$employee->user_id)->delete();
-        DB::table('education')->where('employee_id',$employee->user_id)->delete();
-
-
+        $employee->families()->delete();
+        $employee->education()->delete();
+        DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
         $employee->delete();
-        return "i am deleted";
+
+        return redirect()->back();
     }
 }

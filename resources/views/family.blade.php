@@ -18,7 +18,8 @@
             width: 220px;
 
         }
-        #add{
+
+        #add {
             text-align: center;
         }
     </style>
@@ -28,7 +29,7 @@
 
         <div id="login">
             <div id="login_h">
-              Add family
+                Add family
             </div>
 
             <div id="form_container">
@@ -36,9 +37,9 @@
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                       
-                            <input type="hidden" name="emp_id" id="emp_id" value="{{$id}}">
-     
+
+                        <input type="hidden" name="emp_id" id="emp_id" value="{{ $id }}">
+
                         <div id="rep">
                             <div class="form-group">
 
@@ -75,7 +76,9 @@
                             </div>
                             <hr>
                         </div>
-                        <div onclick="addq(this);" id="add"><p>ADD</p></div>
+                        <div onclick="addq(this);" id="add">
+                            <p>ADD</p>
+                        </div>
                         <input type="hidden" class="add" name="add" value=2>
                         <div class="form-group">
                             <input type="submit" name="submit" id="send" value="REGISTER">
@@ -89,11 +92,19 @@
     <script src="http://127.0.0.1:8000/jquary.js"></script>
 
     <script>
-                function addq(value) {
+        function addq(value) {
 
             opnum = $(value).attr('id');
 
-            append2 = '<div id="rep"><div class="form-group"><input type="text" name="name'+$('.' + opnum).attr('value')+'" id="name'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="age'+$('.' + opnum).attr('value')+'" id="age'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="relation'+$('.' + opnum).attr('value')+'" id="relation'+$('.' + opnum).attr('value')+'"><option value="0">mother</option><option value="1">father</option><option value="2">sister</option><option value="3">brother</option><option value="4">whif/husbend</option><option value="5">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="employed'+$('.' + opnum).attr('value')+'" id="employed'+$('.' + opnum).attr('value')+'"><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
+            append2 = '<div id="rep"><div class="form-group"><input type="text" name="name' + $('.' + opnum).attr('value') +
+                '" id="name' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="age' +
+                $('.' + opnum).attr('value') + '" id="age' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="relation' +
+                $('.' + opnum).attr('value') + '" id="relation' + $('.' + opnum).attr('value') +
+                '"><option value="0">mother</option><option value="1">father</option><option value="2">sister</option><option value="3">brother</option><option value="4">whif/husbend</option><option value="5">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="employed' +
+                $('.' + opnum).attr('value') + '" id="employed' + $('.' + opnum).attr('value') +
+                '"><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
 
             $("#" + opnum).before(append2);
             rqpnum = $("." + opnum).attr('value');
@@ -109,13 +120,13 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{ url('/family')}}/{{$id}}",
+                url: "{{ url('/family') }}/{{ $id }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/employee/{{$id}}';
-                    }else{
+                    if (result == "") {
+                        window.location = '/employee/{{ $id }}';
+                    } else {
                         // console.log(result);
                         $("#error").text(result);
 

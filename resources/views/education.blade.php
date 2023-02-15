@@ -37,7 +37,7 @@
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <input type="hidden" name="emp_id" id="emp_id" value="{{$id}}">
+                        <input type="hidden" name="emp_id" id="emp_id" value="{{ $id }}">
 
                         <div id="rep">
                             <div class="form-group">
@@ -90,7 +90,15 @@
 
             opnum = $(value).attr('id');
 
-            append2 = '<div id="rep"><div class="form-group"><select name="edu_level'+$('.' + opnum).attr('value')+'" id="edu_level'+$('.' + opnum).attr('value')+'"><option value="0">relation</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="course_n'+$('.' + opnum).attr('value')+'" id="course_n'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="place'+$('.' + opnum).attr('value')+'" id="place'+$('.' + opnum).attr('value')+'" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="percent'+$('.' + opnum).attr('value')+'" id="percent'+$('.' + opnum).attr('value')+'"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
+            append2 = '<div id="rep"><div class="form-group"><select name="edu_level' + $('.' + opnum).attr('value') +
+                '" id="edu_level' + $('.' + opnum).attr('value') +
+                '"><option value="0">relation</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="course_n' +
+                $('.' + opnum).attr('value') + '" id="course_n' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="place' +
+                $('.' + opnum).attr('value') + '" id="place' + $('.' + opnum).attr('value') +
+                '" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="percent' +
+                $('.' + opnum).attr('value') + '" id="percent' + $('.' + opnum).attr('value') +
+                '"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
 
             $("#" + opnum).before(append2);
             rqpnum = $("." + opnum).attr('value');
@@ -106,13 +114,13 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{ url('/education')}}/{{$id}}",
+                url: "{{ url('/education') }}/{{ $id }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result =="") {
-                         window.location = '/employee/{{$id}}';
-                    }else{
+                    if (result == "") {
+                        window.location = '/employee/{{ $id }}';
+                    } else {
                         // console.log(result);
                         $("#error").text(result);
 

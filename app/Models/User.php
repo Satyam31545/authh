@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable,HasRoles;
@@ -46,6 +48,6 @@ class User extends Authenticatable
     }
     public function user_assign_products()
     {
-        return $this->hasMany(User_assin_product::class,'id','user_id');
+        return $this->hasMany(User_assin_product::class);
     }
 }

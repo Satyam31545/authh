@@ -33,33 +33,23 @@
     </style>
 @endpush
 @section('main-section')
-    @can('product-create')
-        <a href="product/create"><button>create</button></a>
+    @can('role-create')
+        <a href="role/create"><button>create</button></a>
     @endcan
-
     <table id="customers">
         <tr>
-            <th>product</th>
-            <th>price</th>
-            <th>quantity</th>
+            <th>role</th>
+
             <th>Authority</th>
         </tr>
-        @foreach ($products as $product)
+        @foreach ($roles as $role)
             <tr>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->prize }}</td>
-                <td>{{ $product->quantity }}</td>
-                <td>
-                    @can('product-delete')
-                        <form action="{{ url('product/' . $product->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button>delete</button>
-                        </form>
-                    @endcan
+                <td>{{ $role->name }}</td>
 
-                    @can('product-edit')
-                        <a href="product/{{ $product->id }}/edit"><button>edit</button></a>
+                <td>
+
+                    @can('role-edit')
+                        <a href="Role_update/{{ $role->id }}"><button>edit</button></a>
                     @endcan
 
                 </td>
