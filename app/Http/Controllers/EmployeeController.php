@@ -53,8 +53,9 @@ class EmployeeController extends Controller
      */
     public function store(Request $req)
     {
+
         // validator
-        $val = Validator::make($req['employee'][0], [
+        $val = Validator::make($req->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
@@ -62,48 +63,59 @@ class EmployeeController extends Controller
             'desigination' => 'required',
             'dob' => 'required',
             'address' => 'required',
+            'family' => 'required|array',
+            'education' => 'required|array',
+            'family.*.name' => 'nullable',
+            'family.*.age' => 'nullable',
+            'family.*.relation' => 'nullable',
+            'family.*.employed' => 'nullable',
+            'education.*.edu_level' => 'nullable',
+            'education.*.course_n' => 'nullable',
+            'education.*.place' => 'nullable',
+            'education.*.percent' => 'nullable',
         ])->validate();
-        // validator
+        // // validator
 
         try {
             DB::transaction(function () use ($req) {
 
                 $user = User::create([
-                    'email' => $req['employee'][0]['email'],
-                    'password' => Hash::make($req['employee'][0]['password']),
+                    'email' => $req['email'],
+                    'password' => Hash::make($req['password']),
                 ]);
 
                 $myemployee = Employee::create([
-                    'name' => $req['employee'][0]['name'],
+                    'name' => $req['name'],
                     'user_id' => $user->id,
-                    'salary' => $req['employee'][0]['salary'],
-                    'desigination' => $req['employee'][0]['desigination'],
-                    'address' => $req['employee'][0]['address'],
-                    'dob' => $req['employee'][0]['dob'],
+                    'salary' => $req['salary'],
+                    'desigination' => $req['desigination'],
+                    'address' => $req['address'],
+                    'dob' => $req['dob'],
 
                 ]);
 
-                if ($req['name1']) {
-                    for ($i = 1; $i < $req['add']; $i++) {
+                $user->assignRole([$req->role]);
+                if ($req['family'][0]['name'] != null) {
+                    foreach ($req['family'] as $family) {
                         $Emp_fam = new Family;
                         $Emp_fam->employee_id = $myemployee->id;
-                        $Emp_fam->name = $req['name' . $i];
-                        $Emp_fam->age = $req['age' . $i];
-                        $Emp_fam->relation = $req['relation' . $i];
-                        $Emp_fam->employeed = $req['employed' . $i];
+                        $Emp_fam->name = $family['name'];
+                        $Emp_fam->age = $family['age'];
+                        $Emp_fam->relation = $family['relation'];
+                        $Emp_fam->employeed = $family['employed'];
                         $Emp_fam->save();
                     }
                 }
 
-                if ($req['edu_level1']) {
-                    for ($i = 1; $i < $req['add1']; $i++) {
+                if ($req['education'][0]['course_n'] != null) {
+                    foreach ($req['education'] as $education) {
 
                         $Emp_fam = new Education;
                         $Emp_fam->employee_id = $myemployee->id;
-                        $Emp_fam->edu_level = $req['edu_level' . $i];
-                        $Emp_fam->course_n = $req['course_n' . $i];
-                        $Emp_fam->place = $req['place' . $i];
-                        $Emp_fam->percent = $req['percent' . $i];
+                        $Emp_fam->edu_level = $education['edu_level'];
+                        $Emp_fam->course_n = $education['course_n'];
+                        $Emp_fam->place = $education['place'];
+                        $Emp_fam->percent = $education['percent'];
                         $Emp_fam->save();
                     }
                 }
@@ -126,7 +138,9 @@ class EmployeeController extends Controller
     {
 
         $my_employee = Employee::with("families")->with("education")->where('id', $employee->id)->first();
-        $role = User::find($my_employee->user_id)->getRoleNames()[0];
+        $role = User::find($employee->user_id)->getRoleNames()[0];
+
+        // $role =1;
         $data = compact('my_employee', 'role');
 
         return view('view')->with($data);

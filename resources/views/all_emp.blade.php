@@ -60,13 +60,6 @@
                             <button>delete</button>
                         </form>
                     @endcan
-                    @can('family-create')
-                        <a href="family/{{ $item->id }}"><button>add family</button></a>
-                    @endcan
-                    @can('education-create')
-                        <a href="education/{{ $item->id }}"><button>add education</button></a>
-                    @endcan
-
 
                 </div>
                 <hr>

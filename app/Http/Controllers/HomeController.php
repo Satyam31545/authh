@@ -114,10 +114,13 @@ return view("assign_product")->with($data);
 
      public function pdf($id){
 
-        $id= Auth::user()->id;
-        $products= User_assin_product::where("user_id",$id)->with("products")->get();
+        $id= Auth::user();
+        $employee= $id->employees()->first();
+    
+       
+        $products= User_assin_product::where("user_id",$id->id)->with("products")->get();
         
-        $data = compact('products');
+        $data = compact('products','employee');
         $pdfd = PDF::loadView('pdf',$data);
         return $pdfd->stream();
        } 

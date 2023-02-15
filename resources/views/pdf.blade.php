@@ -38,6 +38,11 @@
             background-color: #04AA6D;
             color: white;
         }
+        #head{
+            text-align: center;
+            color: red;
+            font-size: 35px;
+        }
     </style>
 </head>
 
@@ -46,6 +51,14 @@
         $tquantity = 0;
         $tprize = 0;
     @endphp
+<div id="head">XYZ Company</div>
+
+<div>
+    <p>Name -{{$employee->name}}</p>
+    <p>Desigination -{{$employee->desigination}}</p>
+</div>
+
+
     <table id="customers">
         <tr>
             <th>product</th>

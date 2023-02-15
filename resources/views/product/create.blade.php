@@ -87,18 +87,16 @@
                     var go = request.responseText;
                     var goo = JSON.parse(go);
                     goo = goo.errors;
-                    if (goo) {
-                        document.getElementById("login").style.height = "700px";
-                    }
 
 
-                    if (goo.name[0]) {
+// console.log(goo.quantity[0]);
+                    if (goo.name) {
                         document.getElementById("ename").innerHTML = goo.name[0];
                     }
-                    if (goo.name[0]) {
+                    if (goo.quantity) {
                         document.getElementById("equantity").innerHTML = goo.quantity[0];
                     }
-                    if (goo.name[0]) {
+                    if (goo.prize) {
                         document.getElementById("eprize").innerHTML = goo.prize[0];
                     }
                 },

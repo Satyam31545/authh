@@ -54,6 +54,8 @@
                         <div class="form-group">
 
                             <select name="product_id" id="product_id">
+                                <option value="" class="0">product</option>
+
                                 @foreach ($toassign as $item)
                                     <option value="{{ $item->id }}" class="{{ $item->quantity }}">{{ $item->name }}
                                     </option>

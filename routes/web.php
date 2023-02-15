@@ -25,12 +25,6 @@ Route::get('/', 'App\Http\Controllers\Auth\LoginController@showLoginForm');
 Route::post('/', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
 
-Route::get('family/{id}', [FamilyController::class, 'create'])->middleware('auth');
-Route::post('family/{id}', [FamilyController::class, 'store'])->middleware('auth');
-
-Route::get('education/{id}', [EducationController::class, 'create'])->middleware('auth');
-Route::post('education/{id}', [EducationController::class, 'store'])->middleware('auth');
-
 Route::resource('employee', EmployeeController::class)->middleware('auth');
 
 Route::get('/update', [App\Http\Controllers\HomeController::class, 'update'])->middleware('auth');
