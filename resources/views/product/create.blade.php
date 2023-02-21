@@ -47,9 +47,22 @@
                         </div>
                         <div class="form-group">
 
+                            <input type="text" name="product[0][description]" id="name" aria-describedby="helpId"
+                                placeholder="     Description">
+                            <span id="edescription"></span>
+                        </div>
+                        <div class="form-group">
+
                             <input type="number" name="product[0][prize]" id="prize" aria-describedby="helpId"
                                 placeholder="     prize">
                             <span id="eprize"></span>
+
+                        </div>
+                        <div class="form-group">
+
+                            <input type="number" name="product[0][tax]" id="prize" aria-describedby="helpId"
+                                placeholder="     Tax">
+                            <span id="etax"></span>
 
                         </div>
                         <div class="form-group">
@@ -75,7 +88,8 @@
             $("#eprize").text('');
             $("#ename").text('');
             $("#equantity").text('');
-
+            $("#edescription").text('');
+            $("#etax").text('');
             jQuery.ajax({
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
@@ -99,10 +113,16 @@
                     if (goo.prize) {
                         document.getElementById("eprize").innerHTML = goo.prize[0];
                     }
+                    if (goo.description) {
+                        document.getElementById("edescription").innerHTML = goo.description[0];
+                    }          
+                      if (goo.tax) {
+                        document.getElementById("etax").innerHTML = goo.tax[0];
+                    }
                 },
                 success: function(result) {
                     if (result == "") {
-                        //  window.location = '/product';
+                         window.location = '/product';
                     } else {
                         console.log(result);
                     }

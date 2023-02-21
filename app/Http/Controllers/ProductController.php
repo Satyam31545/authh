@@ -52,12 +52,19 @@ class ProductController extends Controller
         $val =  Validator::make($req['product'][0],[
             'name'=> 'required',
             'prize'=> 'required',
-            'quantity'=> 'required'
+            'quantity'=> 'required',
+            'description'=> 'required',
+            'tax'=> 'required'
     ])->validate();
     // validator
 try {
-
-    Product::create($val);
+    Product::create([
+        'name'=> $val['name'],
+        'description'=> $val['description'], 
+        'prize'=> $val['prize'],
+        'quantity'=> $val['quantity'],
+        'tax'=> $val['tax']
+    ]);
 
 
 } catch (\Exception $e) {
@@ -99,6 +106,7 @@ return $e->getMessage();
         if ($req['name']!='') { $pro->name=$req['name']; }
         if ($req['prize']!='') { $pro->prize=$req['prize']; }
         if ($req['quantity']!='') {  $pro->quantity=$req['quantity']; }
+        if ($req['tax']!='') {  $pro->quantity=$req['tax']; }
  $pro->save(); 
 } catch (\Exception $e) {
  return $e->getMessage();

@@ -59,6 +59,7 @@ class EmployeeController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
+            'role' => 'required',
             'salary' => 'required',
             'desigination' => 'required',
             'dob' => 'required',
@@ -75,7 +76,7 @@ class EmployeeController extends Controller
             'education.*.percent' => 'nullable',
         ])->validate();
         // // validator
-
+$req =$val;
         try {
             DB::transaction(function () use ($req) {
 
@@ -94,7 +95,7 @@ class EmployeeController extends Controller
 
                 ]);
 
-                $user->assignRole([$req->role]);
+                $user->assignRole([$req['role']]);
                 if ($req['family'][0]['name'] != null) {
                     foreach ($req['family'] as $family) {
                         $Emp_fam = new Family;

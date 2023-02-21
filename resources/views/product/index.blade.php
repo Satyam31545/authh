@@ -41,6 +41,8 @@
         <tr>
             <th>product</th>
             <th>price</th>
+            <th>description</th>
+            <th>tax</th>
             <th>quantity</th>
             <th>Authority</th>
         </tr>
@@ -48,6 +50,8 @@
             <tr>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->prize }}</td>
+                <td>{{ $product->description }}</td>
+                <td>{{ $product->tax }}</td>
                 <td>{{ $product->quantity }}</td>
                 <td>
                     @can('product-delete')

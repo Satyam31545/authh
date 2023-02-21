@@ -63,6 +63,13 @@
 
                         </div>
                         <div class="form-group">
+
+                            <input type="number" name="tax" id="tax" aria-describedby="helpId"
+                                placeholder="    tax" value="{{ $product->tax }}">
+                            <span id="etax"></span>
+
+                        </div>
+                        <div class="form-group">
                             <input type="submit" name="submit" id="send" value="Update">
                         </div>
                         <div class="form-group">

@@ -15,7 +15,7 @@
         $tquantity = 0;
         $tprize = 0;
     @endphp
-    <div id="tale"><a href="pdf/{{ $products[0]->user_id }}"><button>pdf</button></a></div>
+    <div id="tale"><a href="fpdf"><button>pdf</button></a></div>
     <div id="tale">
 
 
