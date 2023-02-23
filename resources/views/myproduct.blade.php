@@ -8,6 +8,15 @@
             display: flex;
             justify-content: center;
         }
+        #add {
+            width: 75px;
+            background-color: red;
+            color: white;
+            border-radius: 0px 20px 20px 0px;
+        }
+        #quantity {
+            width: 100px;
+        }
     </style>
 @endpush
 @section('main-section')
@@ -36,7 +45,18 @@
                     <td>{{ $product->products->name }}</td>
                     <td>{{ $product->products->prize }}</td>
                     <td>{{ $product->quantity }}</td>
-                    <td><a href="{{ url('reject') }}/{{ $product->id }}"><button>reject</button></a></td>
+                    <td>
+                        <form id="form1" action="{{ url('return_assined') }}" method="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                            <input type="hidden" name="add_id" value="{{ $product->id }}">
+                            <input type="number" placeholder="max({{ $product->quantity }})" id="quantity"
+                                name="quantity" max="{{ $product->quantity }}">
+
+
+                            <input type="submit" name="submit" id="add" value="RETURN">
+                        </form>
+                    </td>
                 </tr>
             @endforeach
             <tr>

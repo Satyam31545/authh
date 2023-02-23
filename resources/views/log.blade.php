@@ -18,10 +18,61 @@
             display: flex;
             justify-content: center;
         }
+
+        #search {
+            display: flex;
+            justify-content: center;
+        }
+        #date{
+            width: 120px;
+        }
+        #submit{
+            width: 80px;
+            border-radius: 20px 20px 20px 20px;
+            background-color:  red;
+            color: white;
+            font-size: 18px;
+
+        }
     </style>
 @endpush
 @section('main-section')
+    <div id="search">
+        <form action="/mylogs" method="get">
+            <select name="product">
+                <option value="">product</option>
+
+                @foreach ($products as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+
+
+            </select>
+            <select name="changer">
+                <option value="" >changer</option>
+
+                @foreach ($users as $item)
+                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                @endforeach
+
+
+            </select>
+            <select name="change_holder">
+                <option value="" >change_holder</option>
+
+                @foreach ($users as $item)
+                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                @endforeach
+            </select>
+            <input type="date" name="date" id="date">
+        <input type="submit" value="Filter" id="submit">
+        </form>
+
+    </div>
+
     <div id="logs">
+
+
         <table id="customers">
             <tr>
                 <th>changer</th>

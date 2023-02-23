@@ -57,7 +57,7 @@
                     <div id="assigned">
                         @foreach ($assigned as $item)
                             <p> {{ $item->products->name }} @can('product-remove')
-                                    <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove</button>
+                                    <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove ({{$item->quantity}})</button>
                                     </a>
                                 @endcan
                             </p>

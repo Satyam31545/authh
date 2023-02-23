@@ -272,35 +272,57 @@ public function increase_assined(request $req){
         
  }
 
-//  reject 
+//  return 
+public function return_assined(request $req){
 
-public function reject($id){
-    DB::transaction(function () use ($id) {
-   $u_p = User_assin_product::find($id);
+   
+    DB::transaction(function () use ($req) {
+        $u_p = User_assin_product::find($req['add_id']);
+      $quantity=  $req["quantity"];
+     
  
+//  //    log start
+ Log::create([
+     'changer'=> Auth::user()->id,
+     'change_holder'=> $u_p->user_id, 
+     'operation'=> 'return',
+     'quantity'=>$quantity ,
+     'product_id'=> $u_p->product_id
+ ]);
+//  // log end 
+ $pro = Product::find($u_p->product_id);
+    
+     $pro->quantity = $pro->quantity+$quantity;
+     $pro->save();
 
-//    log start
-Log::create([
-'changer'=> Auth::user()->id,
-'change_holder'=> $u_p->user_id, 
-'operation'=> 'reject',
-'quantity'=> $u_p->quantity,
-'product_id'=> $u_p->product_id
-]);
-// log end 
+ $u_p->quantity = $u_p->quantity-$quantity;
+     $u_p->save();
+ 
+         });
 
-$pro = Product::find($u_p->product_id);
-$pro->quantity = $pro->quantity+$u_p->quantity;
-$pro->save(); 
-$u_p->delete();
-
-    });
-    return redirect()->back();
-   } 
-
-   public function mylogs(){
-    $logs = log::get();
-$data=compact('logs');
+        return redirect()->back();
+        
+ }
+//  log
+   public function mylogs(request $req){
+    $products = Product::get();
+    $users = User::get();
+    $logs = Log::get();
+    if ($req['changer']!="") {
+        $logs = $logs->where('changer',$req['changer']);
+    }
+    if ($req['change_holder']!="") {
+        $logs = $logs->where('change_holder',$req['change_holder']);
+    }
+    if ($req['product']!="") {
+        $logs = $logs->where('product_id',$req['product']);
+    }
+    if ($req['date']!="") {
+        $dates= date_create($req['date']);
+        date_add($dates,date_interval_create_from_date_string("1 days"));
+        $logs = $logs->where('created_at','<',$dates)->where('created_at','>',$req['date']);
+    }
+$data=compact('logs','products','users');
 return view('log')->with($data);
    }
 

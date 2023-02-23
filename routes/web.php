@@ -50,10 +50,10 @@ Route::get('/myproduct', [App\Http\Controllers\HomeController::class, 'myproduct
 // increase assined product
 Route::post('/increase_assined', [App\Http\Controllers\HomeController::class, 'increase_assined'])->middleware('auth');
 // reject
-Route::get('/reject/{id}', [App\Http\Controllers\HomeController::class, 'reject'])->middleware('auth');
 
 Route::get('/mylogs', [App\Http\Controllers\HomeController::class, 'mylogs'])->middleware('auth');
 
-
+// return assined product
+Route::post('/return_assined', [App\Http\Controllers\HomeController::class, 'return_assined'])->middleware('auth');
 
 

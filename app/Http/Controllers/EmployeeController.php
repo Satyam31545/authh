@@ -199,6 +199,7 @@ $req =$val;
         $employee->families()->delete();
         $employee->education()->delete();
         DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
+        $employee->users->delete();
         $employee->delete();
 
         return redirect()->back();
