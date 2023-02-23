@@ -50,4 +50,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(User_assin_product::class);
     }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'logs','changer');
+    }
 }

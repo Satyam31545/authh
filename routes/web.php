@@ -47,3 +47,13 @@ Route::resource('product', ProductController::class)->middleware('auth');
 Route::get('/fpdf', [App\Http\Controllers\HomeController::class, 'fpdf'])->middleware('auth');
 Route::get('/myproduct', [App\Http\Controllers\HomeController::class, 'myproduct'])->middleware('auth');
 
+// increase assined product
+Route::post('/increase_assined', [App\Http\Controllers\HomeController::class, 'increase_assined'])->middleware('auth');
+// reject
+Route::get('/reject/{id}', [App\Http\Controllers\HomeController::class, 'reject'])->middleware('auth');
+
+Route::get('/mylogs', [App\Http\Controllers\HomeController::class, 'mylogs'])->middleware('auth');
+
+
+
+

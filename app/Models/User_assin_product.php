@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class User_assin_product extends Model
 {
     use HasFactory;
+    protected $table = "user_assin_products";
+    protected $primaryKey = "id";
+    public $timestamps =false;
     protected $fillable = [
         'user_id', 'product_id',
    ];

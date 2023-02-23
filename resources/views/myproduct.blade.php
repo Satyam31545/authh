@@ -24,6 +24,7 @@
                 <th>product</th>
                 <th>price</th>
                 <th>quantity</th>
+                <th>reject</th>
 
             </tr>
             @foreach ($products as $product)
@@ -35,6 +36,7 @@
                     <td>{{ $product->products->name }}</td>
                     <td>{{ $product->products->prize }}</td>
                     <td>{{ $product->quantity }}</td>
+                    <td><a href="{{ url('reject') }}/{{ $product->id }}"><button>reject</button></a></td>
                 </tr>
             @endforeach
             <tr>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\User_assin_product;
+use App\Models\Log;
 use App\Models\Product;
 use Spatie\Permission\Models\Role;
 // use Barryvdh\DomPDF\Facade\Pdf;
@@ -35,7 +36,8 @@ class HomeController extends Controller
     public function index()
     {
         $id= Auth::user()->id;
-        $my_employee = Employee::with("families")->with("education")->where('id',$id)->first();
+       
+        $my_employee = Employee::with("families")->with("education")->where('user_id',$id)->first();
          $role=  User::find($my_employee->user_id)->getRoleNames()[0];
         $data = compact('my_employee','role'); 
        
@@ -87,7 +89,17 @@ return view("assign_product")->with($data);
         DB::transaction(function () use ($id) {
        $u_p = User_assin_product::where("id",$id);
        $qu=$u_p->first();
-   
+
+//    log start
+Log::create([
+    'changer'=> Auth::user()->id,
+    'change_holder'=> $qu->user_id, 
+    'operation'=> 'removed',
+    'quantity'=> $qu->quantity,
+    'product_id'=> $qu->product_id
+]);
+// log end 
+
     $pro = Product::find($qu->product_id);
     $pro->quantity = $pro->quantity+$qu->quantity;
     $pro->save(); 
@@ -106,6 +118,16 @@ return view("assign_product")->with($data);
         $pro->quantity = $pro->quantity-$req['quantity'];
 
         $pro->save(); 
+
+//    log start
+Log::create([
+    'changer'=> Auth::user()->id,
+    'change_holder'=> $id, 
+    'operation'=> 'added',
+    'quantity'=> $req['quantity'],
+    'product_id'=> $req['product_id']
+]);
+// log end 
 
     } catch (\Exception $e) {
         return $e->getMessage();
@@ -215,4 +237,71 @@ return view("assign_product")->with($data);
         $pdf->Output();
         exit;
                }  
+
+// increase assined product
+
+public function increase_assined(request $req){
+
+   
+    DB::transaction(function () use ($req) {
+        $u_p = User_assin_product::find($req['add_id']);
+        // $qu=$u_p->first();
+      $quantity=  $req["quantity"];
+     
+ 
+//  //    log start
+ Log::create([
+     'changer'=> Auth::user()->id,
+     'change_holder'=> $u_p->user_id, 
+     'operation'=> 'increase',
+     'quantity'=>$quantity ,
+     'product_id'=> $u_p->product_id
+ ]);
+//  // log end 
+ $pro = Product::find($u_p->product_id);
+    
+     $pro->quantity = $pro->quantity-$quantity;
+     $pro->save();
+
+ $u_p->quantity = $u_p->quantity+$quantity;
+     $u_p->save();
+ 
+         });
+
+        return redirect()->back();
+        
+ }
+
+//  reject 
+
+public function reject($id){
+    DB::transaction(function () use ($id) {
+   $u_p = User_assin_product::find($id);
+ 
+
+//    log start
+Log::create([
+'changer'=> Auth::user()->id,
+'change_holder'=> $u_p->user_id, 
+'operation'=> 'reject',
+'quantity'=> $u_p->quantity,
+'product_id'=> $u_p->product_id
+]);
+// log end 
+
+$pro = Product::find($u_p->product_id);
+$pro->quantity = $pro->quantity+$u_p->quantity;
+$pro->save(); 
+$u_p->delete();
+
+    });
+    return redirect()->back();
+   } 
+
+   public function mylogs(){
+    $logs = log::get();
+$data=compact('logs');
+return view('log')->with($data);
+   }
+
 }

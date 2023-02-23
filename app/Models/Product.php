@@ -15,4 +15,8 @@ class Product extends Model
     {
         return $this->hasMany(User_assin_product::class,'id','product_id');
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'logs','changer','change_holder');
+    }
 }
