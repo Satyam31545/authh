@@ -39,7 +39,7 @@
 
             @foreach ($my_employee as $item)
                 @can('product-assign')
-                    <a href="{{ url('assign_product') }}/{{ $item->user_id }}">
+                    <a href="employee/{{ $item->id }}">
                     @endcan
                     <p>name - {{ $item->name }}</p>
                     @can('product-assign')
@@ -48,7 +48,7 @@
                 <p>desigination - {{ $item->desigination }}</p>
                 <div id="btn">
                     @can('user-list')
-                        <a href="employee/{{ $item->id }}"><button>show</button></a>
+                        <a href="{{ url('assign_product') }}/{{ $item->user_id }}"><button>Assign Product</button></a>
                     @endcan
                     @can('user-edit')
                         <a href="employee/{{ $item->id }}/edit"><button>edit</button></a>

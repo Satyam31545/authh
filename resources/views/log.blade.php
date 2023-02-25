@@ -23,13 +23,15 @@
             display: flex;
             justify-content: center;
         }
-        #date{
+
+        #date {
             width: 120px;
         }
-        #submit{
+
+        #submit {
             width: 80px;
             border-radius: 20px 20px 20px 20px;
-            background-color:  red;
+            background-color: red;
             color: white;
             font-size: 18px;
 
@@ -49,7 +51,7 @@
 
             </select>
             <select name="changer">
-                <option value="" >changer</option>
+                <option value="">changer</option>
 
                 @foreach ($users as $item)
                     <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
@@ -58,16 +60,31 @@
 
             </select>
             <select name="change_holder">
-                <option value="" >change_holder</option>
+                <option value="">change_holder</option>
 
                 @foreach ($users as $item)
                     <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
                 @endforeach
             </select>
             <input type="date" name="date" id="date">
-        <input type="submit" value="Filter" id="submit">
+            <input type="submit" value="Filter" id="submit">
         </form>
-
+        @php
+            $i = 0;
+        @endphp
+        <form action="/excel" method="get">
+            @foreach ($logs as $log)
+                <input type="hidden" name="data[{{ $i }}][changer]"
+                    value="{{ $log->users[0]->employees->name }}">
+                <input type="hidden" name="data[{{ $i }}][change_holder]"
+                    value="{{ $log->myusers[0]->employees->name }}">
+                <input type="hidden" name="data[{{ $i }}][product]" value="{{ $log->products[0]->name }}">
+                <input type="hidden" name="data[{{ $i }}][quantity]" value="{{ $log->quantity }}">
+                <input type="hidden" name="data[{{ $i }}][operation]" value="{{ $log->operation }}">
+                <input type="hidden" name="data[{{ $i++ }}][time]" value="{{ $log->created_at }}">
+            @endforeach
+            <input type="submit" value="Export" id="submit">
+        </form>
     </div>
 
     <div id="logs">
@@ -85,8 +102,10 @@
             </tr>
             @foreach ($logs as $log)
                 <tr>
-                    <td><a href="employee/{{ $log->users[0]->employees->id }}">{{ $log->users[0]->employees->name }}</a></td>
-                    <td><a href="employee/{{ $log->myusers[0]->employees->id }}">{{ $log->myusers[0]->employees->name }}</a>
+                    <td><a href="employee/{{ $log->users[0]->employees->id }}">{{ $log->users[0]->employees->name }}</a>
+                    </td>
+                    <td><a
+                            href="employee/{{ $log->myusers[0]->employees->id }}">{{ $log->myusers[0]->employees->name }}</a>
                     </td>
                     <td>{{ $log->products[0]->name }}</td>
                     <td>{{ $log->quantity }}</td>

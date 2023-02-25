@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\Roles;
 
 /*
@@ -44,7 +45,7 @@ Route::resource('product', ProductController::class)->middleware('auth');
 
 
 
-Route::get('/fpdf', [App\Http\Controllers\HomeController::class, 'fpdf'])->middleware('auth');
+Route::get('/fpdf', [App\Http\Controllers\ExportController::class, 'fpdf'])->middleware('auth');
 Route::get('/myproduct', [App\Http\Controllers\HomeController::class, 'myproduct'])->middleware('auth');
 
 // increase assined product
@@ -55,5 +56,8 @@ Route::get('/mylogs', [App\Http\Controllers\HomeController::class, 'mylogs'])->m
 
 // return assined product
 Route::post('/return_assined', [App\Http\Controllers\HomeController::class, 'return_assined'])->middleware('auth');
+
+Route::get('/excel', [App\Http\Controllers\ExportController::class, 'excel_export'])->middleware('auth')->name('excel');
+
 
 
