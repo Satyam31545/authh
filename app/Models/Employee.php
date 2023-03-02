@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Employee extends Model
 {
     use HasFactory;
-    protected $table = "employees";
-    protected $primaryKey = "id";
     protected $fillable = [
         'user_id','name', 'salary','desigination', 'dob','address'
    ];

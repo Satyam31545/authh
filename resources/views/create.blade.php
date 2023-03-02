@@ -172,7 +172,7 @@
                             </div>
                             <div class="form-group">
 
-                                <select name="family[0][employed]" id="employed1">
+                                <select name="family[0][employeed]" id="employed1">
                                     <option value="0">employed</option>
                                     <option value="0">yes</option>
                                     <option value="1">no</option>

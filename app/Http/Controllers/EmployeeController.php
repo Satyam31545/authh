@@ -69,7 +69,7 @@ class EmployeeController extends Controller
             'family.*.name' => 'nullable',
             'family.*.age' => 'nullable',
             'family.*.relation' => 'nullable',
-            'family.*.employed' => 'nullable',
+            'family.*.employeed' => 'nullable',
             'education.*.edu_level' => 'nullable',
             'education.*.course_n' => 'nullable',
             'education.*.place' => 'nullable',
@@ -79,45 +79,27 @@ class EmployeeController extends Controller
 $req =$val;
         try {
             DB::transaction(function () use ($req) {
-
-                $user = User::create([
-                    'email' => $req['email'],
-                    'password' => Hash::make($req['password']),
-                ]);
-
-                $myemployee = Employee::create([
-                    'name' => $req['name'],
-                    'user_id' => $user->id,
-                    'salary' => $req['salary'],
-                    'desigination' => $req['desigination'],
-                    'address' => $req['address'],
-                    'dob' => $req['dob'],
-
-                ]);
+// user
+$req['password']=Hash::make($req['password']);
+                $user = User::create($req);
+                // Employee  
+$req['user_id']=$user->id;
+                $myemployee = Employee::create($req);
 
                 $user->assignRole([$req['role']]);
-                if ($req['family'][0]['name'] != null) {
+            //    family
                     foreach ($req['family'] as $family) {
-                        $Emp_fam = new Family;
-                        $Emp_fam->employee_id = $myemployee->id;
-                        $Emp_fam->name = $family['name'];
-                        $Emp_fam->age = $family['age'];
-                        $Emp_fam->relation = $family['relation'];
-                        $Emp_fam->employeed = $family['employed'];
-                        $Emp_fam->save();
+                         if ($family['name'] && $family['age']){
+                        $family['employee_id']=$myemployee->id;
+                        $myfamily = Family::create($family);
                     }
                 }
 
-                if ($req['education'][0]['course_n'] != null) {
+                // education
                     foreach ($req['education'] as $education) {
-
-                        $Emp_fam = new Education;
-                        $Emp_fam->employee_id = $myemployee->id;
-                        $Emp_fam->edu_level = $education['edu_level'];
-                        $Emp_fam->course_n = $education['course_n'];
-                        $Emp_fam->place = $education['place'];
-                        $Emp_fam->percent = $education['percent'];
-                        $Emp_fam->save();
+                if ($education['course_n']) {
+                    $education['employee_id']=$myemployee->id;
+                    $myeducation = Education::create($education);
                     }
                 }
 
@@ -140,7 +122,7 @@ $req =$val;
 
         $my_employee = Employee::with("families")->with("education")->where('id', $employee->id)->first();
         $role = User::find($employee->user_id)->getRoleNames()[0];
-
+// user first
         // $role =1;
         $data = compact('my_employee', 'role');
 

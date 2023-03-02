@@ -58,13 +58,7 @@ class ProductController extends Controller
     ])->validate();
     // validator
 try {
-    Product::create([
-        'name'=> $val['name'],
-        'description'=> $val['description'], 
-        'prize'=> $val['prize'],
-        'quantity'=> $val['quantity'],
-        'tax'=> $val['tax']
-    ]);
+    Product::create($val);
 
 
 } catch (\Exception $e) {

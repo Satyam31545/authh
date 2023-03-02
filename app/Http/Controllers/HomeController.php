@@ -47,7 +47,7 @@ class HomeController extends Controller
         return redirect('/');
     }
 
-    public function update()
+    public function edit()
     {
         $id = Auth::user()->id;
         $emp = Employee::where('id', $id)->get();
@@ -55,7 +55,7 @@ class HomeController extends Controller
         return view('s_update')->with($data);
     }
 
-    public function p_update(request $req)
+    public function update(request $req)
     {
         try {
             $id = Auth::user()->id;

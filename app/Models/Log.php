@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     use HasFactory;
-    protected $table = "logs";
-    protected $primaryKey = "id";
-
     protected $fillable = [
         'changer', 'change_holder','product_id','quantity','operation'
    ];
