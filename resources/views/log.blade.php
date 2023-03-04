@@ -72,7 +72,7 @@
         @php
             $i = 0;
         @endphp
-        <form action="/excel" method="get">
+        <form action="{{route('excel')}}" method="get">
             @foreach ($logs as $log)
                 <input type="hidden" name="data[{{ $i }}][changer]"
                     value="{{ $log->users[0]->employees->name }}">
@@ -92,6 +92,7 @@
 
         <table id="customers">
             <tr>
+                <th>S.No</th>
                 <th>changer</th>
                 <th>change_holder</th>
                 <th>product</th>
@@ -101,11 +102,14 @@
 
             </tr>
             @foreach ($logs as $log)
+            
+
                 <tr>
-                    <td><a href="employee/{{ $log->users[0]->employees->id }}">{{ $log->users[0]->employees->name }}</a>
+                    <td>{{ $loop->iteration }}</td>
+                    <td><a href="{{route('employee.show',['employee'=>$log->users[0]->employees->id]) }}">{{ $log->users[0]->employees->name }}</a>
                     </td>
                     <td><a
-                            href="employee/{{ $log->myusers[0]->employees->id }}">{{ $log->myusers[0]->employees->name }}</a>
+                            href="{{route('employee.show',['employee'=>$log->myusers[0]->employees->id]) }}">{{ $log->myusers[0]->employees->name }}</a>
                     </td>
                     <td>{{ $log->products[0]->name }}</td>
                     <td>{{ $log->quantity }}</td>

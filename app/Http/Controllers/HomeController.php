@@ -21,7 +21,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware('permission:product-assign', ['only' => ['assign_product_p', 'assign_product']]);
         $this->middleware('permission:product-remove', ['only' => ['deassign_product']]);
     }
@@ -33,13 +32,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
-
-        $my_employee = Employee::with("families")->with("education")->where('user_id', $id)->first();
-        $role = User::find($my_employee->user_id)->getRoleNames()[0];
-        $data = compact('my_employee', 'role');
-
-        return view('view')->with($data);
+        return view('view')->with(['user'=>Auth::user()]);
     }
     public function logout()
     {
@@ -62,7 +55,7 @@ class HomeController extends Controller
             $emp = employee::find($id);
             $emp->dob = $req['dob'];
             $emp->address = $req['address'];
-            $emp->save();
+            $emp->update();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -75,8 +68,6 @@ class HomeController extends Controller
         $array = User_assin_product::where("user_id", $id)->pluck('product_id')->all();
 
         $toassign = Product::all()->except($array);
-//     echo "<pre>";
-        // print_r($toassign);
 
         $assigned = User_assin_product::where("user_id", $id)->with("products")->get();
 

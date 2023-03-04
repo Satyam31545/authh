@@ -119,14 +119,7 @@ $req['user_id']=$user->id;
      */
     public function show(Employee $employee)
     {
-
-        $my_employee = Employee::with("families")->with("education")->where('id', $employee->id)->first();
-        $role = User::find($employee->user_id)->getRoleNames()[0];
-// user first
-        // $role =1;
-        $data = compact('my_employee', 'role');
-
-        return view('view')->with($data);
+        return view('view')->with(['user'=>User::find($employee->user_id)]);
     }
 
     /**
@@ -159,7 +152,7 @@ $req['user_id']=$user->id;
             if ($req['desigination'] != '') {$emp->desigination = $req['desigination'];}
             if ($req['address'] != '') {$emp->address = $req['address'];}
             if ($req['dob'] != '') {$emp->dob = $req['dob'];}
-            $emp->save();
+            $emp->update();
 
             DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
             $user = User::find($employee->user_id);

@@ -39,6 +39,7 @@
 
     <table id="customers">
         <tr>
+            <th>S.No</th>
             <th>product</th>
             <th>price</th>
             <th>description</th>
@@ -48,6 +49,7 @@
         </tr>
         @foreach ($products as $product)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->prize }}</td>
                 <td>{{ $product->description }}</td>
@@ -55,15 +57,15 @@
                 <td>{{ $product->quantity }}</td>
                 <td>
                     @can('product-delete')
-                        <form action="{{ url('product/' . $product->id) }}" method="POST">
+                        <form action="{{route('product.destroy',['product'=>$product->id])}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button>delete</button>
+                            <button onclick="return confirm('are you sure want to delete product ?')">delete</button>
                         </form>
                     @endcan
 
                     @can('product-edit')
-                        <a href="product/{{ $product->id }}/edit"><button>edit</button></a>
+                        <a href="{{route('product.edit',['product'=>$product->id])}}"><button>edit</button></a>
                     @endcan
 
                 </td>

@@ -25,10 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-
-        $data = compact('products');  
-        return  view("product.index")->with($data);  
+        return  view("Product.index")->with(['products'=>Product::all()]);  
     }
 
     /**
@@ -82,8 +79,7 @@ return $e->getMessage();
      */
     public function edit(Product $product)
     {
-        $data = compact('product');  
-        return  view('product.update')->with($data);  
+        return  view('Product.update')->with(['product'=>$product]);  
     }
 
     /**
@@ -100,7 +96,7 @@ return $e->getMessage();
         if ($req['name']!='') { $pro->name=$req['name']; }
         if ($req['prize']!='') { $pro->prize=$req['prize']; }
         if ($req['quantity']!='') {  $pro->quantity=$req['quantity']; }
-        if ($req['tax']!='') {  $pro->quantity=$req['tax']; }
+        if ($req['tax']!='') {  $pro->tax=$req['tax']; }
  $pro->save(); 
 } catch (\Exception $e) {
  return $e->getMessage();

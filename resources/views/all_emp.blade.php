@@ -39,7 +39,7 @@
 
             @foreach ($my_employee as $item)
                 @can('product-assign')
-                    <a href="employee/{{ $item->id }}">
+                    <a href="{{route('employee.show',['employee'=>$item->id]) }}">
                     @endcan
                     <p>name - {{ $item->name }}</p>
                     @can('product-assign')
@@ -48,16 +48,16 @@
                 <p>desigination - {{ $item->desigination }}</p>
                 <div id="btn">
                     @can('user-list')
-                        <a href="{{ url('assign_product') }}/{{ $item->user_id }}"><button>Assign Product</button></a>
+                        <a href="{{route('assign',['id'=>$item->user_id])}}"><button>Assign Product</button></a>
                     @endcan
                     @can('user-edit')
-                        <a href="employee/{{ $item->id }}/edit"><button>edit</button></a>
+                        <a href="{{route('employee.edit',['employee'=>$item->id])}}"><button>edit</button></a>
                     @endcan
                     @can('user-delete')
-                        <form action="{{ url('employee/' . $item->id) }}" method="POST">
+                        <form action="{{route('employee.destroy',['employee'=>$item->id])}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button>delete</button>
+                            <button onclick="return confirm('are you sure want to delete employee ?')" >delete</button>
                         </form>
                     @endcan
 

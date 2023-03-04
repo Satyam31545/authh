@@ -28,24 +28,25 @@
     @php
         $arr = ['HS', 'SHS', 'UG', 'PG'];
         $arr2 = ['NO', 'YES'];
+       
     @endphp
     <div id="detail">
         <div id="persional">
             <div id="allhead">Persional</div>
-            <p>id - {{ $my_employee->id }}</p>
-            <p>name - {{ $my_employee->name }}</p>
-            <p>role - {{ $role }}</p>
-            <p>salary - {{ $my_employee->salary }}</p>
-            <p>desigination - {{ $my_employee->desigination }}</p>
-            <p>dob - {{ $my_employee->dob }}</p>
-            <p>address - {{ $my_employee->address }}</p>
+            <p>id - {{ $user->employees->id }}</p>
+            <p>name - {{ $user->employees->name }}</p>
+            <p>role - {{ $user->getRoleNames()[0] }}</p>
+            <p>salary - {{ $user->employees->salary }}</p>
+            <p>desigination - {{ $user->employees->desigination }}</p>
+            <p>dob - {{ $user->employees->dob }}</p>
+            <p>address - {{ $user->employees->address }}</p>
         </div>
 
         <div id="educational">
             <div id="allhead">educational</div>
             @php
                 $i = 1;
-                foreach ($my_employee->education as $edu) {
+                foreach ($user->employees->education as $edu) {
                     $i += 1;
                     $edudi =
                         '<div id="edudiv">
@@ -75,7 +76,7 @@
             <div id="allhead">family</div>
             @php
                 $i = 1;
-                foreach ($my_employee->families as $fam) {
+                foreach ($user->employees->families as $fam) {
                     $i += 1;
                     $famui =
                         '<div id="expdiv">

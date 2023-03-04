@@ -103,7 +103,6 @@
                     goo = goo.errors;
 
 
-// console.log(goo.quantity[0]);
                     if (goo.name) {
                         document.getElementById("ename").innerHTML = goo.name[0];
                     }

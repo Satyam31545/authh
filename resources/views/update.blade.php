@@ -100,7 +100,7 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{ url('employee') }}/{{ $employee->id }}",
+                url: "{{route('employee.update',['employee'=>$employee->id])}}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
                 success: function(result) {

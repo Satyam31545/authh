@@ -20,7 +20,7 @@ class Roles extends Controller
         $roles = Role::all();
 
         $data = compact('roles');  
-        return  view("role.index")->with($data);  
+        return  view("Role.index")->with($data);  
     }
     public function create($id)
     {
@@ -30,7 +30,7 @@ class Roles extends Controller
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
             // $role = Role::get();
-        return view('role.update',compact('permission','rolePermissions','id'));
+        return view('Role.update',compact('permission','rolePermissions','id'));
     }
 
     /**

@@ -37,24 +37,24 @@
         </div>
     </div>
     <div id="mySidenav" class="sidenav">
-        <a href="http://127.0.0.1:8000/home">Home</a>
-        <a href="http://127.0.0.1:8000/update">Update</a>
+        <a href="{{route('home')}}">Home</a>
+        <a href="{{route('user.edit')}}">Update</a>
         @can('role-edit')
-           <a href="http://127.0.0.1:8000/AllRole">All Role</a>
-           <a href="http://127.0.0.1:8000/mylogs">Log </a>
+           <a href="{{route('role.show')}}">All Role</a>
+           <a href="{{route('logs')}}">Log </a>
         @endcan 
         @can('user-create')
-           <a href="http://127.0.0.1:8000/employee/create">create staff</a>
+           <a href="{{route('employee.create')}}">create staff</a>
         @endcan 
         @can('user-list')
-          <a href="http://127.0.0.1:8000/employee">view staff</a>
+          <a href="{{route('employee.index')}}">view staff</a>
         @endcan 
         @can('product-list')
-        <a href="http://127.0.0.1:8000/product">view product</a>
+        <a href="{{route('product.index')}}">view product</a>
       @endcan 
-      <a href="http://127.0.0.1:8000/myproduct">my product </a>
+      <a href="{{route('user.product')}}">my product </a>
 
-        <a href="/logout" onclick="return confirm('are you sure want to logout ?')">Logout</a>
+        <a href="{{route('logout')}}" onclick="return confirm('are you sure want to logout ?')">Logout</a>
 
     </div>
     <script>

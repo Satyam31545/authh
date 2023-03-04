@@ -72,14 +72,13 @@
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
                 url: "{{ url('/update') }}",
-                type: "POST",
+                type: "PUT",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
                     if (result == "") {
                         window.location = '/home';
                     } else {
                         $("#error").text(result);
-                        // console.log(result);
                     }
                 }
             });

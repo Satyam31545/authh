@@ -49,7 +49,7 @@
                 <td>
 
                     @can('role-edit')
-                        <a href="Role_update/{{ $role->id }}"><button>edit</button></a>
+                        <a href="{{route('role.edit',['id'=>$role->id])}}"><button>edit</button></a>
                     @endcan
 
                 </td>
