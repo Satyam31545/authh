@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class EmployeeController extends Controller
 {
@@ -119,7 +121,7 @@ $req['user_id']=$user->id;
      */
     public function show(Employee $employee)
     {
-        return view('view')->with(['user'=>User::find($employee->user_id)]);
+        return view('view')->with(['user'=>$employee->users]);
     }
 
     /**
@@ -130,10 +132,7 @@ $req['user_id']=$user->id;
      */
     public function edit(Employee $employee)
     {
-        $role = User::find($employee->user_id)->getRoleNames()[0];
-
-        $data = compact('employee', 'role');
-        return view('update')->with($data);
+        return view('update')->with(['employee'=>$employee]);
     }
 
     /**
@@ -145,18 +144,22 @@ $req['user_id']=$user->id;
      */
     public function update(Request $req, Employee $employee)
     {
+        $val = Validator::make($req->all(), [
+            'name' => 'required',
+            'role' => 'required',
+            'salary' => 'required',
+            'desigination' => 'required',
+            'dob' => 'required',
+            'address' => 'required',
+        ])->validate();
         try {
-            $emp = $employee;
-            if ($req['name'] != '') {$emp->name = $req['name'];}
-            if ($req['salary'] != '') {$emp->salary = $req['salary'];}
-            if ($req['desigination'] != '') {$emp->desigination = $req['desigination'];}
-            if ($req['address'] != '') {$emp->address = $req['address'];}
-            if ($req['dob'] != '') {$emp->dob = $req['dob'];}
-            $emp->update();
+        DB::transaction(function () use ($val,$employee) {
 
+            $employee->update($val);
             DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
             $user = User::find($employee->user_id);
-            $user->assignRole([$req->role]);
+            $user->assignRole([$val['role']]);
+        });
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -171,12 +174,38 @@ $req['user_id']=$user->id;
      */
     public function destroy(Employee $employee)
     {
+        DB::transaction(function () use ($employee) {
         $employee->families()->delete();
         $employee->education()->delete();
         DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
         $employee->users->delete();
         $employee->delete();
+        });
+        
 
         return redirect()->back();
+    }
+
+    public function edit_s()
+    {
+        return view('update')->with(['employee'=>Auth::user()->employees]);
+    }
+
+    public function update_s(request $req)
+    {
+        $val = Validator::make($req->all(), [
+            'dob' => 'required',
+            'address' => 'required',
+        ])->validate();
+        try {
+            $id = Auth::user()->id;
+            $emp = employee::find($id);
+            $emp->dob = $req['dob'];
+            $emp->address = $req['address'];
+            $emp->update();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
     }
 }

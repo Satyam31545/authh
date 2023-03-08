@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Validator;
+use DB;
 class ProductController extends Controller
 {
 
@@ -16,7 +17,7 @@ class ProductController extends Controller
     {
          $this->middleware('permission:product-create', ['only' => ['create','store']]);
          $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:product-delete', ['only' => ['destroy','product_restore',"product_deleted_permanent"]]);
     }
     /**
      * Display a listing of the resource.
@@ -111,7 +112,33 @@ return $e->getMessage();
      */
     public function destroy(Product $product)
     {
+        DB::transaction(function () use ($product) {
         $product->delete();
+        $product->user_assign_products()->delete();
+      
+       
+        });
+          return redirect()->back();
+    }
+    public function products_delete()
+    {
+        return  view("Product.deleted")->with(['products'=>Product::onlyTrashed()->get()]);  
+    }
+    public function product_deleted_permanent($id)
+    {
+        $product= Product::withTrashed()->find($id);
+        if (!is_null($product)) {
+            $product->forceDelete();
+        }
+        return redirect()->back();
+
+    }
+    public function product_restore($id)
+    {
+      $product= Product::onlyTrashed()->find($id);
+      if (!is_null($product)) {
+        $product->restore();
+      }
         return redirect()->back();
     }
 }

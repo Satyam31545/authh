@@ -40,22 +40,30 @@
                     <form id="form">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="myid" id="myid" value="">
+                        @php
+                            $url =route('user.update');
+                        @endphp
+                        @can('user-edit')
+                        @php
+                        $url =route('employee.update',['employee'=>$employee->id]);
+                    @endphp
                         <div class="form-group">
 
                             <input type="text" name="name" id="name" aria-describedby="helpId"
                                 placeholder="     Name" value="{{ $employee->name }}">
                             <span id="ename"></span>
                         </div>
-
+                       
                         <div class="form-group">
 
-                            <select name="role" id="role" value="{{ $role }}">
-                                <option value="2" @if ($role == 'Staff') {{ 'selected' }} @endif>Staff
+                            <select name="role" id="role" value="{{ $employee->users->getRoleNames()[0] }}">
+                                <option value="2" @if ($employee->users->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
                                 </option>
-                                <option value="1" @if ($role == 'Admin') {{ 'selected' }} @endif>Admin
+                                <option value="1" @if ($employee->users->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
                                 </option>
                             </select>
                         </div>
+                    
                         <div class="form-group">
 
                             <input type="number" name="salary" id="salary" aria-describedby="helpId"
@@ -70,6 +78,7 @@
                             <span id="edesigination"></span>
 
                         </div>
+                        @endcan 
                         <div class="form-group">
 
                             <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
@@ -96,13 +105,47 @@
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
+            $("#eemail").text('');
+            $("#ename").text('');
+            $("#edesigination").text('');
+            $("#esalary").text('');
+            $("#edob").text('');
+            $("#eaddress").text('');
             jQuery.ajax({
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{route('employee.update',['employee'=>$employee->id])}}",
+                url: "{{$url}}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
+                error: function(request, status, error) {
+                    var go = request.responseText;
+                    var goo = JSON.parse(go);
+                    goo = goo.errors;
+                    if (goo.name) {
+                        document.getElementById("ename").innerHTML = goo.name[0];
+                    }
+                    if (goo.email) {
+                        document.getElementById("eemail").innerHTML = goo.email[0];
+                    }
+                    if (goo.password) {
+                        document.getElementById("epassword").innerHTML = goo.password[0];
+                    }
+
+                    if (goo.salary) {
+                        document.getElementById("esalary").innerHTML = goo.salary[0];
+                    }
+                    if (goo.desigination) {
+                        document.getElementById("edesigination").innerHTML = goo.desigination[0];
+                    }
+                    if (goo.dob) {
+                        document.getElementById("edob").innerHTML = goo.dob[0];
+                    }
+                    if (goo.address) {
+                        document.getElementById("eaddress").innerHTML = goo.address[0];
+                    }
+
+                },
                 success: function(result) {
                     if (result == "") {
                         window.location = '/employee/{{ $employee->id }}';

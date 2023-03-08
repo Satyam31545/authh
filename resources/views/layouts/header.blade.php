@@ -51,10 +51,20 @@
         @endcan 
         @can('product-list')
         <a href="{{route('product.index')}}">view product</a>
+        <a href="{{route('products_delete')}}">deleted product</a>
       @endcan 
       <a href="{{route('user.product')}}">my product </a>
 
-        <a href="{{route('logout')}}" onclick="return confirm('are you sure want to logout ?')">Logout</a>
+        {{-- <a href="{{route('logout')}}" onclick="return confirm('are you sure want to logout ?')">Logout</a> --}}
+        <a class="dropdown-item" href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+         {{ __('Logout') }}
+     </a>
+
+     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+         @csrf
+     </form>
 
     </div>
     <script>
