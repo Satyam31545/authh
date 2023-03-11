@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
+
 use Validator;
 use DB;
 class ProductController extends Controller
@@ -45,18 +47,11 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $req)
+    public function store(ProductRequest $req)
     {
-        $val =  Validator::make($req['product'][0],[
-            'name'=> 'required',
-            'prize'=> 'required',
-            'quantity'=> 'required',
-            'description'=> 'required',
-            'tax'=> 'required'
-    ])->validate();
-    // validator
+
 try {
-    Product::create($val);
+    Product::create($req->validated());
 
 
 } catch (\Exception $e) {
@@ -90,15 +85,11 @@ return $e->getMessage();
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, Product $product)
+    public function update(ProductRequest $req, Product $product)
     {
         try {
             $pro = $product;
-        if ($req['name']!='') { $pro->name=$req['name']; }
-        if ($req['prize']!='') { $pro->prize=$req['prize']; }
-        if ($req['quantity']!='') {  $pro->quantity=$req['quantity']; }
-        if ($req['tax']!='') {  $pro->tax=$req['tax']; }
- $pro->save(); 
+ $pro->update($req->validated()); 
 } catch (\Exception $e) {
  return $e->getMessage();
  }

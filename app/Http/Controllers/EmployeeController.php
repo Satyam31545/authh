@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EmployeeRequest;
 
 
 class EmployeeController extends Controller
@@ -31,10 +32,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $my_employee = Employee::all();
 
-        $data = compact('my_employee');
-        return view('all_emp')->with($data);
+        return view('all_emp')->with(['my_employee'=>Employee::all() ]);
     }
 
     /**
@@ -53,32 +52,9 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $req)
+    public function store(EmployeeRequest $req)
     {
-
-        // validator
-        $val = Validator::make($req->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'role' => 'required',
-            'salary' => 'required',
-            'desigination' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
-            'family' => 'required|array',
-            'education' => 'required|array',
-            'family.*.name' => 'nullable',
-            'family.*.age' => 'nullable',
-            'family.*.relation' => 'nullable',
-            'family.*.employeed' => 'nullable',
-            'education.*.edu_level' => 'nullable',
-            'education.*.course_n' => 'nullable',
-            'education.*.place' => 'nullable',
-            'education.*.percent' => 'nullable',
-        ])->validate();
-        // // validator
-$req =$val;
+$req =$req->validated();
         try {
             DB::transaction(function () use ($req) {
 // user
@@ -142,16 +118,9 @@ $req['user_id']=$user->id;
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, Employee $employee)
+    public function update(EmployeeRequest $req, Employee $employee)
     {
-        $val = Validator::make($req->all(), [
-            'name' => 'required',
-            'role' => 'required',
-            'salary' => 'required',
-            'desigination' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
-        ])->validate();
+        $val=$req->validated();
         try {
         DB::transaction(function () use ($val,$employee) {
 

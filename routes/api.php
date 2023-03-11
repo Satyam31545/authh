@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\EmployeeApiController;
+use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\FamilyApiController;
+use App\Http\Controllers\Api\EducationApiController;
+use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +16,14 @@ use App\Http\Controllers\ProductApiController;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
+Route::post("login", [UserApiController::class, 'login']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::apiResource('products', ProductApiController::class);
+    Route::apiResource('employees', EmployeeApiController::class);
+    Route::get("user", [UserApiController::class, 'user']);
+    Route::post("family", [FamilyApiController::class, 'store']);
+    Route::post("education", [EducationApiController::class, 'store']);
+
 });
-
-Route::get('products',[ProductApiController::class ,'index']);
-Route::get('products/{id}',[ProductApiController::class ,'show']);
-Route::post('products',[ProductApiController::class ,'store']);
-Route::put('products/{id}/update',[ProductApiController::class ,'update']);
-Route::delete('products/{id}',[ProductApiController::class ,'destroy']);
-

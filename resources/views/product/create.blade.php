@@ -41,33 +41,33 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
 
-                            <input type="text" name="product[0][name]" id="name" aria-describedby="helpId"
+                            <input type="text" name="name" id="name" aria-describedby="helpId"
                                 placeholder="     Name">
                             <span id="ename"></span>
                         </div>
                         <div class="form-group">
 
-                            <input type="text" name="product[0][description]" id="name" aria-describedby="helpId"
+                            <input type="text" name="description" id="name" aria-describedby="helpId"
                                 placeholder="     Description">
                             <span id="edescription"></span>
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="product[0][prize]" id="prize" aria-describedby="helpId"
+                            <input type="number" name="prize" id="prize" aria-describedby="helpId"
                                 placeholder="     prize">
                             <span id="eprize"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="product[0][tax]" id="prize" aria-describedby="helpId"
+                            <input type="number" name="tax" id="prize" aria-describedby="helpId"
                                 placeholder="     Tax">
                             <span id="etax"></span>
 
                         </div>
                         <div class="form-group">
 
-                            <input type="number" name="product[0][quantity]" id="quantity" aria-describedby="helpId"
+                            <input type="number" name="quantity" id="quantity" aria-describedby="helpId"
                                 placeholder="     quantity">
                             <span id="equantity"></span>
 

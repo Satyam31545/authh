@@ -47,7 +47,12 @@
                                 placeholder="     Name" value="{{ $product->name }}">
                             <span id="ename"></span>
                         </div>
+                        <div class="form-group">
 
+                            <input type="text" name="description" id="name" aria-describedby="helpId"
+                                placeholder="     Description" value="{{ $product->description }}">
+                            <span id="edescription"></span>
+                        </div>
                         <div class="form-group">
 
                             <input type="number" name="prize" id="prize" aria-describedby="helpId"
@@ -85,6 +90,12 @@
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
+            $("#eprize").text('');
+            $("#ename").text('');
+            $("#equantity").text('');
+            $("#edescription").text('');
+            $("#etax").text('');
+            
             jQuery.ajax({
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
@@ -92,6 +103,28 @@
                 url: "{{ url('product') }}/{{ $product->id }}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
+                error: function(request, status, error) {
+                    var go = request.responseText;
+                    var goo = JSON.parse(go);
+                    goo = goo.errors;
+
+
+                    if (goo.name) {
+                        document.getElementById("ename").innerHTML = goo.name[0];
+                    }
+                    if (goo.quantity) {
+                        document.getElementById("equantity").innerHTML = goo.quantity[0];
+                    }
+                    if (goo.prize) {
+                        document.getElementById("eprize").innerHTML = goo.prize[0];
+                    }
+                    if (goo.description) {
+                        document.getElementById("edescription").innerHTML = goo.description[0];
+                    }          
+                      if (goo.tax) {
+                        document.getElementById("etax").innerHTML = goo.tax[0];
+                    }
+                },
                 success: function(result) {
                     if (result == "") {
                         window.location = '/product';
