@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Log;
 use App\Models\Product;
 use App\Models\User;
@@ -13,7 +14,7 @@ class LogController extends Controller
     {
         $products = Product::get();
         $users = User::get();
-        $logs = Log::get();
+        $logs = Log::with("change_holder")->with("product")->with("changer")->get();
         if ($req['changer'] != "") {
             $logs = $logs->where('changer', $req['changer']);
         }

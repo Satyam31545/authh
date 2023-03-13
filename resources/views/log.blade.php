@@ -72,13 +72,12 @@
         @php
             $i = 0;
         @endphp
-        <form action="{{route('excel')}}" method="get">
+        <form action="{{ route('excel') }}" method="get">
             @foreach ($logs as $log)
-                <input type="hidden" name="data[{{ $i }}][changer]"
-                    value="{{ $log->users[0]->employees->name }}">
+                <input type="hidden" name="data[{{ $i }}][changer]" value="{{ $log->changer->id }}">
                 <input type="hidden" name="data[{{ $i }}][change_holder]"
-                    value="{{ $log->myusers[0]->employees->name }}">
-                <input type="hidden" name="data[{{ $i }}][product]" value="{{ $log->products[0]->name }}">
+                    value="{{ $log->change_holder->employees->name }}">
+                {{-- <input type="hidden" name="data[{{ $i }}][product]" value="{{ $log->product->name }}"> --}}
                 <input type="hidden" name="data[{{ $i }}][quantity]" value="{{ $log->quantity }}">
                 <input type="hidden" name="data[{{ $i }}][operation]" value="{{ $log->operation }}">
                 <input type="hidden" name="data[{{ $i++ }}][time]" value="{{ $log->created_at }}">
@@ -102,16 +101,15 @@
 
             </tr>
             @foreach ($logs as $log)
-            
-
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td><a href="{{route('employee.show',['employee'=>$log->users[0]->employees->id]) }}">{{ $log->users[0]->employees->name }}</a>
+                    <td><a
+                            href="{{ route('employee.show', ['employee' => $log->changer->employees->id]) }}">{{ $log->changer->employees->name }}</a>
                     </td>
                     <td><a
-                            href="{{route('employee.show',['employee'=>$log->myusers[0]->employees->id]) }}">{{ $log->myusers[0]->employees->name }}</a>
+                            href="{{ route('employee.show', ['employee' => $log->change_holder->employees->id]) }}">{{ $log->change_holder->employees->name }}</a>
                     </td>
-                    <td>{{ $log->products[0]->name }}</td>
+                    <td>{{ $log->product->name }}</td>
                     <td>{{ $log->quantity }}</td>
                     <td>{{ $log->operation }}</td>
                     <td>{{ $log->created_at }}</td>
