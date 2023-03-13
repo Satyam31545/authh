@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-         'email', 'password',
+        'email', 'password',
     ];
 
     /**
@@ -40,19 +39,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     protected $table = "users";
+
     protected $primaryKey = "id";
 
-    public function employees()
+    public function employee()
     {
         return $this->hasOne(Employee::class);
     }
+
     public function user_assign_products()
     {
-        return $this->hasMany(User_assin_product::class);
+        return $this->hasMany(UserAssignProduct::class);
     }
+
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'logs','changer');
+        return $this->belongsToMany(Product::class, 'logs', 'changer');
     }
 }

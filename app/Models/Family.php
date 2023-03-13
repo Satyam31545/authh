@@ -9,6 +9,6 @@ class Family extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'employee_id','name', 'age','relation', 'employeed'
-   ];
+        'employee_id', 'name', 'age', 'relation', 'employeed'
+    ];
 }

@@ -101,38 +101,7 @@
                             education
                         </div>
 
-                        <div id="rep">
-                            <div class="form-group">
-
-                                <select name="education[0][edu_level]" id="edu_level1">
-                                    <option value="0">education level</option>
-                                    <option value="0">HS</option>
-                                    <option value="1">SHS</option>
-                                    <option value="2">UG</option>
-                                    <option value="3">PG</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-
-                                <input type="text" name="education[0][course_n]" id="course_n1" aria-describedby="helpId"
-                                    placeholder="    Course(for ug & pg)">
-
-                            </div>
-                            <div class="form-group">
-
-                                <input type="text" name="education[0][place]" id="place1" aria-describedby="helpId"
-                                    placeholder="    Board or University">
-
-                            </div>
-                            <div class="form-group">
-
-                                <input type="number" name="education[0][percent]" id="percent1" aria-describedby="helpId"
-                                    placeholder="    Percentage">
-
-                            </div>
-                            <hr>
-                        </div>
-                        <div onclick="addq1(this);" id="add1">
+                        <div onclick="addEducation(this);" id="add1">
                             <p>ADD</p>
                         </div>
                         <input type="hidden" class="add1" name="add1" value=2>
@@ -144,42 +113,7 @@
                         <div id="login_h">
                             family
                         </div>
-                        <div id="rep">
-                            <div class="form-group">
 
-                                <input type="text" name="family[0][name]" id="name1" aria-describedby="helpId"
-                                    placeholder="    Member name">
-
-                            </div>
-                            <div class="form-group">
-
-                                <input type="number" name="family[0][age]" id="age1" aria-describedby="helpId"
-                                    placeholder="    Member age">
-
-                            </div>
-                            <div class="form-group">
-
-                                <select name="family[0][relation]" id="relation1">
-                                    <option value="mother">relation</option>
-                                    <option value="mother">mother</option>
-                                    <option value="father">father</option>
-                                    <option value="whif">whif</option>
-                                    <option value="brother">brother</option>
-                                    <option value="husbend">husbend</option>
-                                    <option value="son">son</option>
-                                    <option value="daughter">daughter</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-
-                                <select name="family[0][employeed]" id="employed1">
-                                    <option value="0">employed</option>
-                                    <option value="0">yes</option>
-                                    <option value="1">no</option>
-                                </select>
-                            </div>
-                            <hr>
-                        </div>
                         <div onclick="addq(this);" id="add">
                             <p>ADD</p>
                         </div>
@@ -199,8 +133,8 @@
     <script src="http://127.0.0.1:8000/jquary.js"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
     <script>
-        var family =1;
-        var education =1;
+        var family =0;
+        var education =0;
         function addq(value) {
 
             opnum = $(value).attr('id');
@@ -214,7 +148,7 @@
             family++;
         }
 
-        function addq1(value) {
+        function addEducation(value) {
 
             opnum = $(value).attr('id');
 

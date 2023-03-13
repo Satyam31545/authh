@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ExportController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Roles;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AssignController;
-use App\Http\Controllers\LogController;
-use App\Http\Controllers\Roles;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/increase_assined', [AssignController::class, 'increase_assined']);
     Route::get('/deassign_product/{id}', [AssignController::class, 'deassign_product'])->name('deassign');
     Route::get('/assign_product/{id}', [AssignController::class, 'assign_product'])->name('assign');
-    Route::post('/assign_product/{id}', [AssignController::class, 'assign_product_p']); 
-    
+    Route::post('/assign_product/{id}', [AssignController::class, 'assign_product_p']);
+
 });
+

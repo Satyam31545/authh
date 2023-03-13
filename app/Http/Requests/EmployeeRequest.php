@@ -26,28 +26,104 @@ class EmployeeRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [];
-        $rules['name'] = 'required';
-        if ($this->request->has('email')) {
-            $rules['email'] = 'required|email';
-        }
-        if ($this->request->has('password')) {
-            $rules['password'] = 'required';
-        }
+        // $rules = [];
+        // $rules['name'] = 'required';
+        // if ($this->request->has('email')) {
+        //     $rules['email'] = 'required|email';
+        // }
+        // if ($this->request->has('password')) {
+        //     $rules['password'] = 'required';
+        // }
 
-        $rules['role'] = 'required';
-        $rules['salary'] = 'required';
-        $rules['desigination'] = 'required';
-        $rules['dob'] = 'required';
-        $rules['address'] = 'required';
-        $rules['family.*.name'] = 'nullable';
-        $rules['family.*.age'] = 'nullable';
-        $rules['family.*.relation'] = 'nullable';
-        $rules['family.*.employeed'] = 'nullable';
-        $rules['education.*.edu_level'] = 'nullable';
-        $rules['education.*.course_n'] = 'nullable';
-        $rules['education.*.place'] = 'nullable';
-        $rules['education.*.percent'] = 'nullable';
+        // $rules['role'] = 'required';
+        // $rules['salary'] = 'required';
+        // $rules['desigination'] = 'required';
+        // $rules['dob'] = 'required';
+        // $rules['address'] = 'required';
+        // $rules['family.*.name'] = 'nullable';
+        // $rules['family.*.age'] = 'nullable';
+        // $rules['family.*.relation'] = 'nullable';
+        // $rules['family.*.employeed'] = 'nullable';
+        // $rules['education.*.edu_level'] = 'nullable';
+        // $rules['education.*.course_n'] = 'nullable';
+        // $rules['education.*.place'] = 'nullable';
+        // $rules['education.*.percent'] = 'nullable';
+
+        $rules = [
+			'name' => [
+				'required',
+				'string'
+			],
+			'email' => [
+				Rule::requiredIf($this->isMethod('post')),
+				'string'
+			],
+			'password' => [
+				Rule::requiredIf($this->isMethod('post')),
+				'string'
+			],
+			'role' => [
+				'required',
+				'string'
+			],
+			'salary' => [
+				'required',
+				'string'
+			],
+			'desigination' => [
+				'required',
+				'string'
+			],
+			'dob' => [
+				'required',
+				'date_format:Y-m-d'
+			],
+			'address' => [
+				'required',
+				'string'
+			],
+			'family' => [
+				'nullable',
+				'array'
+			],
+			'family.*.name' => [
+				'required',
+				'string'
+			],
+			'family.*.age' => [
+				'required',
+				'string'
+			],
+			'family.*.relation' => [
+				'required',
+				'string'
+			],
+			'family.*.employeed' => [
+				'required',
+				'string'
+			],
+			'education' => [
+				'nullable',
+				'array'
+			],
+			'education.*.edu_level' => [
+				'nullable',
+				'string'
+			],
+			'education.*.course_n' => [
+				'nullable',
+				'string'
+			],
+			'education.*.place' => [
+				'nullable',
+				'string'
+			],
+			'education.*.percent' => [
+				'nullable',
+				'string'
+			],
+		];
+
         return $rules;
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User_assin_product;
+use App\Models\UserAssignProduct;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,11 +20,11 @@ class AssignController extends Controller
     public function assign_product($id)
     {
 
-        $array = User_assin_product::where("user_id", $id)->pluck('product_id')->all();
+        $array = UserAssignProduct::where("user_id", $id)->pluck('product_id')->all();
 
         $toassign = Product::all()->except($array);
 
-        $assigned = User_assin_product::where("user_id", $id)->with("products")->get();
+        $assigned = UserAssignProduct::where("user_id", $id)->with("products")->get();
 
         $data = compact('toassign', 'assigned', 'id');
         return view("assign_product")->with($data);
@@ -33,7 +33,7 @@ class AssignController extends Controller
     public function deassign_product($id)
     {
         DB::transaction(function () use ($id) {
-            $u_p = User_assin_product::where("id", $id);
+            $u_p = UserAssignProduct::where("id", $id);
             $qu = $u_p->first();
 
 //    log start
@@ -58,7 +58,7 @@ class AssignController extends Controller
     {
 
         try {
-            DB::table('user_assin_products')->insert(['user_id' => $id, 'product_id' => $req['product_id'], 'quantity' => $req['quantity']]);
+            DB::table('UserAssignProducts')->insert(['user_id' => $id, 'product_id' => $req['product_id'], 'quantity' => $req['quantity']]);
 
             $pro = Product::find($req['product_id']);
             $pro->quantity = $pro->quantity - $req['quantity'];
@@ -88,7 +88,7 @@ class AssignController extends Controller
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = User_assin_product::find($req['add_id']);
+            $u_p = UserAssignProduct::find($req['add_id']);
             // $qu=$u_p->first();
             $quantity = $req["quantity"];
 
@@ -120,7 +120,7 @@ class AssignController extends Controller
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = User_assin_product::find($req['add_id']);
+            $u_p = UserAssignProduct::find($req['add_id']);
             $quantity = $req["quantity"];
 
 //  //    log start

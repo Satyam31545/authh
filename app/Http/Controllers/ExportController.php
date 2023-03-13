@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LogsExport;
-use App\Models\User_assin_product;
+use App\Models\UserAssignProduct;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +16,13 @@ class ExportController extends Controller
         return (new LogsExport($request['data']))->download('app.xlsx');
 
     }
-// for pdf 
+// for pdf
     public function fpdf()
     {
 
         $id = Auth::user();
         $employee = $id->employees()->first();
-        $products = User_assin_product::where("user_id", $id->id)->with("products")->get();
+        $products = UserAssignProduct::where("user_id", $id->id)->with("products")->get();
 
         $pdf = new Fpdf;
         $pdf->AddPage();

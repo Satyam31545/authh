@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Log;
 use App\Models\Product;
 use App\Models\User;

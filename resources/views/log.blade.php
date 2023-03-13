@@ -54,7 +54,7 @@
                 <option value="">changer</option>
 
                 @foreach ($users as $item)
-                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                    <option value="{{ $item->id }}">{{ $item->employee['name'] }}</option>
                 @endforeach
 
 
@@ -63,7 +63,7 @@
                 <option value="">change_holder</option>
 
                 @foreach ($users as $item)
-                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                    <option value="{{ $item->id }}">{{ $item->employee['name'] }}</option>
                 @endforeach
             </select>
             <input type="date" name="date" id="date">
@@ -75,9 +75,9 @@
         <form action="{{route('excel')}}" method="get">
             @foreach ($logs as $log)
                 <input type="hidden" name="data[{{ $i }}][changer]"
-                    value="{{ $log->users[0]->employees->name }}">
+                    value="{{ $log->users[0]->employee->name }}">
                 <input type="hidden" name="data[{{ $i }}][change_holder]"
-                    value="{{ $log->myusers[0]->employees->name }}">
+                    value="{{ $log->myusers[0]->employee->name }}">
                 <input type="hidden" name="data[{{ $i }}][product]" value="{{ $log->products[0]->name }}">
                 <input type="hidden" name="data[{{ $i }}][quantity]" value="{{ $log->quantity }}">
                 <input type="hidden" name="data[{{ $i }}][operation]" value="{{ $log->operation }}">
@@ -102,7 +102,7 @@
 
             </tr>
             @foreach ($logs as $log)
-            
+
 
                 <tr>
                     <td>{{ $loop->iteration }}</td>

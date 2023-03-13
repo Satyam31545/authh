@@ -14,7 +14,7 @@ class Product extends Model
    ];
     public function user_assign_products()
     {
-        return $this->hasMany(User_assin_product::class);
+        return $this->hasMany(UserAssignProduct::class);
     }
     public function users()
     {

@@ -53,17 +53,17 @@
                                 placeholder="     Name" value="{{ $employee->name }}">
                             <span id="ename"></span>
                         </div>
-                       
+
                         <div class="form-group">
 
-                            <select name="role" id="role" value="{{ $employee->users->getRoleNames()[0] }}">
-                                <option value="2" @if ($employee->users->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
+                            <select name="role" id="role" value="{{ $employee->user->getRoleNames()[0] }}">
+                                <option value="2" @if ($employee->user->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
                                 </option>
-                                <option value="1" @if ($employee->users->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
+                                <option value="1" @if ($employee->user->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
                                 </option>
                             </select>
                         </div>
-                    
+
                         <div class="form-group">
 
                             <input type="number" name="salary" id="salary" aria-describedby="helpId"
@@ -78,11 +78,11 @@
                             <span id="edesigination"></span>
 
                         </div>
-                        @endcan 
+                        @endcan
                         <div class="form-group">
 
                             <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
-                                aria-describedby="helpId" placeholder="    DOB" value="{{ $employee->dob }}">
+                                aria-describedby="helpId" placeholder="    DOB" value="{{ $employee->dob->format('Y-m-d') }}">
                             <span id="edob"></span>
 
                         </div>

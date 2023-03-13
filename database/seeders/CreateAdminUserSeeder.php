@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\User;
-use DB;
 
 class CreateAdminUserSeeder extends Seeder
 {
@@ -29,16 +29,16 @@ class CreateAdminUserSeeder extends Seeder
                 'desigination' => 'developer',
                 'dob' => '2004-05-05',
                 'address' => 'varaashi'
-         
+
             )
         );
         $role = Role::create(['name' => 'Admin']);
-        $role2 = Role::create(['name' => 'Staff']);
-     
+        Role::create(['name' => 'Staff']);
+
         $permissions = Permission::pluck('id','id')->all();
-   
+
         $role->syncPermissions($permissions);
-     
+
         $user->assignRole([$role->id]);
     }
 }
