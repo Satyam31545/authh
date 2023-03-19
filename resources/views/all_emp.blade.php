@@ -48,7 +48,7 @@
                 <p>desigination - {{ $item->desigination }}</p>
                 <div id="btn">
                     @can('user-list')
-                        <a href="{{route('assign',['id'=>$item->user_id])}}"><button>Assign Product</button></a>
+                        <a href="{{route('assign',['employee'=>$item->id])}}"><button>Assign Product</button></a>
                     @endcan
                     @can('user-edit')
                         <a href="{{route('employee.edit',['employee'=>$item->id])}}"><button>edit</button></a>

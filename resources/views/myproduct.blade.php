@@ -36,14 +36,14 @@
                 <th>reject</th>
 
             </tr>
-            @foreach ($products as $product)
+            @forelse ($products as $product)
                 @php
                     $tquantity += $product->quantity;
-                    $tprize += $product->products->prize;
+                    $tprize += ($product->product->prize * $product->quantity);
                 @endphp
                 <tr>
-                    <td>{{ $product->products->name }}</td>
-                    <td>{{ $product->products->prize }}</td>
+                    <td>{{ $product->product->name }}</td>
+                    <td>{{ $product->product->prize }}</td>
                     <td>{{ $product->quantity }}</td>
                     <td>
                         <form id="form1" action="{{ url('return_assined') }}" method="POST">
@@ -58,7 +58,9 @@
                         </form>
                     </td>
                 </tr>
-            @endforeach
+                @empty
+                <tr><td colspan="4">no data found</td></tr>
+            @endforelse
             <tr>
                 <td>Total</td>
                 <td>{{ $tprize }}</td>

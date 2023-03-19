@@ -53,8 +53,8 @@
             <select name="changer">
                 <option value="">changer</option>
 
-                @foreach ($users as $item)
-                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                @foreach ($employees as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
 
 
@@ -62,8 +62,8 @@
             <select name="change_holder">
                 <option value="">change_holder</option>
 
-                @foreach ($users as $item)
-                    <option value="{{ $item->id }}">{{ $item->employees['name'] }}</option>
+                @foreach ($employees as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
             <input type="date" name="date" id="date">
@@ -76,8 +76,7 @@
             @foreach ($logs as $log)
                 <input type="hidden" name="data[{{ $i }}][changer]" value="{{ $log->changer->id }}">
                 <input type="hidden" name="data[{{ $i }}][change_holder]"
-                    value="{{ $log->change_holder->employees->name }}">
-                {{-- <input type="hidden" name="data[{{ $i }}][product]" value="{{ $log->product->name }}"> --}}
+                    value="{{ $log->change_holder->name }}">
                 <input type="hidden" name="data[{{ $i }}][quantity]" value="{{ $log->quantity }}">
                 <input type="hidden" name="data[{{ $i }}][operation]" value="{{ $log->operation }}">
                 <input type="hidden" name="data[{{ $i++ }}][time]" value="{{ $log->created_at }}">
@@ -100,14 +99,14 @@
                 <th>time</th>
 
             </tr>
-            @foreach ($logs as $log)
+            @forelse ($logs as $log)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td><a
-                            href="{{ route('employee.show', ['employee' => $log->changer->employees->id]) }}">{{ $log->changer->employees->name }}</a>
+                            href="{{ route('employee.show', ['employee' => $log->changer->id]) }}">{{ $log->changer->name }}</a>
                     </td>
                     <td><a
-                            href="{{ route('employee.show', ['employee' => $log->change_holder->employees->id]) }}">{{ $log->change_holder->employees->name }}</a>
+                            href="{{ route('employee.show', ['employee' => $log->change_holder->id]) }}">{{ $log->change_holder->name }}</a>
                     </td>
                     <td>{{ $log->product->name }}</td>
                     <td>{{ $log->quantity }}</td>
@@ -115,7 +114,9 @@
                     <td>{{ $log->created_at }}</td>
 
                 </tr>
-            @endforeach
+                @empty 
+                <tr><td colspan="7"><p>no data found</p></td></tr>
+            @endforelse
 
 
 

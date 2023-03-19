@@ -56,7 +56,7 @@
 
                     <div id="assigned">
                         @foreach ($assigned as $item)
-                            <p> {{ $item->products->name }} @can('product-remove')
+                            <p> {{ $item->product->name }} @can('product-remove')
                                     <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove ({{$item->quantity}})</button>
                                     </a>
                                 @endcan
@@ -66,8 +66,8 @@
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <input type="hidden" name="add_id" value="{{ $item->id }}">
-                                <input type="number" placeholder="max({{ $item->products->quantity }})" id="quantity"
-                                    name="quantity" max="{{ $item->products->quantity }}">
+                                <input type="number" placeholder="max({{ $item->product->quantity }})" id="quantity"
+                                    name="quantity" max="{{ $item->product->quantity }}">
 
 
                                 <input type="submit" name="submit" id="add" value="ADD">
@@ -85,10 +85,12 @@
                             <select name="product_id" id="product_id">
                                 <option value="" class="0">product</option>
 
-                                @foreach ($toassign as $item)
+                                @forelse ($toassign as $item)
                                     <option value="{{ $item->id }}" class="{{ $item->quantity }}">{{ $item->name }}
                                     </option>
-                                @endforeach
+                                    @empty
+                                    <option value="" class="0">no product found</option>
+                                @endforelse
 
 
                             </select>
@@ -129,29 +131,6 @@
                 }
             });
         });
-
-        // jQuery('#form1').submit(function(e) {
-        //     e.preventDefault();
-        //     jQuery.ajax({
-        //         headers: {
-        //             'X-CSRF-Token': $('input[name="_token"]').val()
-        //         },
-        //         url: "{{ url('/increase_assined') }}",
-        //         type: "POST",
-        //         data: jQuery('#form1').serialize(),
-        //         success: function(result) {
-        //             if (result == "") {
-        //                 // window.location = "{{ url('/assign_product') }}/{{ $id }}";
-        //             } else {
-        //                 // console.log(result);
-        //                 $("#error").text(result);
-
-        //             }
-
-        //         }
-        //     });
-        // });
-
 
         element = document.getElementById('product_id');
 

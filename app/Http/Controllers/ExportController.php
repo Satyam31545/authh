@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LogsExport;
-use App\Models\User_assin_product;
+use App\Models\UserAssinProduct;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +21,8 @@ class ExportController extends Controller
     {
 
         $id = Auth::user();
-        $employee = $id->employees()->first();
-        $products = User_assin_product::where("user_id", $id->id)->with("products")->get();
+        $employee = $id->employee()->first();
+        $products = UserAssinProduct::where("employee_id", $id->id)->get()->load("product");
 
         $pdf = new Fpdf;
         $pdf->AddPage();
@@ -89,13 +89,13 @@ class ExportController extends Controller
         foreach ($products as $product) {
             ++$i;
             $pdf->Cell(10, 6, $i, 0, 0);
-            $pdf->Cell(40, 6, $product->products->name, 0, 0);
-            $pdf->Cell(50, 6, $product->products->description, 0, 0);
-            $pdf->Cell(30, 6, $product->products->quantity, 0, 0);
-            $pdf->Cell(20, 6, $product->products->prize, 0, 0);
-            $pdf->Cell(15, 6, $product->products->tax, 0, 0);
-            $a = ($product->products->quantity * $product->products->prize);
-            $a += ($product->products->quantity * $product->products->prize) * ($product->products->tax / 100);
+            $pdf->Cell(40, 6, $product->product->name, 0, 0);
+            $pdf->Cell(50, 6, $product->product->description, 0, 0);
+            $pdf->Cell(30, 6, $product->product->quantity, 0, 0);
+            $pdf->Cell(20, 6, $product->product->prize, 0, 0);
+            $pdf->Cell(15, 6, $product->product->tax, 0, 0);
+            $a = ($product->product->quantity * $product->product->prize);
+            $a += ($product->product->quantity * $product->product->prize) * ($product->product->tax / 100);
             $total += $a;
             $pdf->Cell(20, 6, $a, 0, 1, "R");
         }

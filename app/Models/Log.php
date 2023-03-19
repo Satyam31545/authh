@@ -10,17 +10,17 @@ class Log extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'changer', 'change_holder', 'product_id', 'quantity', 'operation',
+        'changer_id', 'change_holder_id', 'product_id', 'quantity', 'operation',
     ];
 
     public function changer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Employee::class);
 
     }
     public function change_holder(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Employee::class);
     }
     public function product(): BelongsTo
     {

@@ -33,20 +33,20 @@
     <div id="detail">
         <div id="persional">
             <div id="allhead">Persional</div>
-            <p>id - {{ $user->employees->id }}</p>
-            <p>name - {{ $user->employees->name }}</p>
+            <p>id - {{ $user->employee->id }}</p>
+            <p>name - {{ $user->employee->name }}</p>
             <p>role - {{ $user->getRoleNames()[0] }}</p>
-            <p>salary - {{ $user->employees->salary }}</p>
-            <p>desigination - {{ $user->employees->desigination }}</p>
-            <p>dob - {{ $user->employees->dob }}</p>
-            <p>address - {{ $user->employees->address }}</p>
+            <p>salary - {{ $user->employee->salary }}</p>
+            <p>desigination - {{ $user->employee->desigination }}</p>
+            <p>dob - {{ $user->employee->dob }}</p>
+            <p>address - {{ $user->employee->address }}</p>
         </div>
 
         <div id="educational">
             <div id="allhead">educational</div>
             @php
                 $i = 1;
-                foreach ($user->employees->education as $edu) {
+                foreach ($user->employee->education as $edu) {
                     $i += 1;
                     $edudi =
                         '<div id="edudiv">
@@ -76,7 +76,7 @@
             <div id="allhead">family</div>
             @php
                 $i = 1;
-                foreach ($user->employees->families as $fam) {
+                foreach ($user->employee->families as $fam) {
                     $i += 1;
                     $famui =
                         '<div id="expdiv">

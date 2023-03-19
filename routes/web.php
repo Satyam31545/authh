@@ -50,8 +50,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/return_assined', [AssignController::class, 'return_assined']);
     Route::post('/increase_assined', [AssignController::class, 'increase_assined']);
-    Route::get('/deassign_product/{id}', [AssignController::class, 'deassign_product'])->name('deassign');
-    Route::get('/assign_product/{id}', [AssignController::class, 'assign_product'])->name('assign');
-    Route::post('/assign_product/{id}', [AssignController::class, 'assign_product_p']); 
+    Route::get('/deassign_product/{id}', [AssignController::class, 'destroy'])->name('deassign');
+    Route::get('/assign_product/{employee}', [AssignController::class, 'create'])->name('assign');
+    Route::post('/assign_product/{employee}', [AssignController::class, 'store']); 
     
 });

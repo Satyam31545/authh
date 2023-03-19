@@ -43,16 +43,10 @@ class User extends Authenticatable
     protected $table = "users";
     protected $primaryKey = "id";
 
-    public function employees()
+    public function employee()
     {
         return $this->hasOne(Employee::class);
     }
-    public function user_assign_products()
-    {
-        return $this->hasMany(User_assin_product::class);
-    }
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'logs','changer');
-    }
+
+
 }

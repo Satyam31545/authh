@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Education;
 use App\Models\Employee;
-use App\Models\Family;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
-use Validator;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\EmployeeRequest;
-
+use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class EmployeeController extends Controller
 {
@@ -33,7 +30,7 @@ class EmployeeController extends Controller
     public function index()
     {
 
-        return view('all_emp')->with(['my_employee'=>Employee::all() ]);
+        return view('all_emp')->with(['my_employee' => Employee::all()]);
     }
 
     /**
@@ -54,33 +51,30 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $req)
     {
-$req =$req->validated();
+        $req = $req->validated();
         try {
             DB::transaction(function () use ($req) {
 // user
-$req['password']=Hash::make($req['password']);
+                $req['password'] = Hash::make($req['password']);
                 $user = User::create($req);
-                // Employee  
-$req['user_id']=$user->id;
-                $myemployee = Employee::create($req);
+                // Employee
+                $req['user_id'] = $user->id;
+                $employee = $user->employee()->create($req);
 
                 $user->assignRole([$req['role']]);
-            //    family
+                //    family
+                if (isset($req['family'])) {
                     foreach ($req['family'] as $family) {
-                         if ($family['name'] && $family['age']){
-                        $family['employee_id']=$myemployee->id;
-                        $myfamily = Family::create($family);
+                        $employee->families()->create($family);
                     }
                 }
 
                 // education
+                if (isset($req['education'])) {
                     foreach ($req['education'] as $education) {
-                if ($education['course_n']) {
-                    $education['employee_id']=$myemployee->id;
-                    $myeducation = Education::create($education);
+                        $employee->education()->create($education);
                     }
                 }
-
             });
 
         } catch (\Exception $e) {
@@ -97,7 +91,7 @@ $req['user_id']=$user->id;
      */
     public function show(Employee $employee)
     {
-        return view('view')->with(['user'=>$employee->users]);
+        return view('view')->with(['user' => $employee->user]);
     }
 
     /**
@@ -108,7 +102,7 @@ $req['user_id']=$user->id;
      */
     public function edit(Employee $employee)
     {
-        return view('update')->with(['employee'=>$employee]);
+        return view('update')->with(['employee' => $employee]);
     }
 
     /**
@@ -120,15 +114,15 @@ $req['user_id']=$user->id;
      */
     public function update(EmployeeRequest $req, Employee $employee)
     {
-        $val=$req->validated();
+        $val = $req->validated();
         try {
-        DB::transaction(function () use ($val,$employee) {
+            DB::transaction(function () use ($val, $employee) {
 
-            $employee->update($val);
-            DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-            $user = User::find($employee->user_id);
-            $user->assignRole([$val['role']]);
-        });
+                $employee->update($val);
+                DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
+                $user = User::find($employee->user_id);
+                $user->assignRole([$val['role']]);
+            });
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -144,20 +138,19 @@ $req['user_id']=$user->id;
     public function destroy(Employee $employee)
     {
         DB::transaction(function () use ($employee) {
-        $employee->families()->delete();
-        $employee->education()->delete();
-        DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-        $employee->users->delete();
-        $employee->delete();
+            $employee->families()->delete();
+            $employee->education()->delete();
+            DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
+            $employee->user->delete();
+            $employee->delete();
         });
-        
 
         return redirect()->back();
     }
 
     public function edit_s()
     {
-        return view('update')->with(['employee'=>Auth::user()->employees]);
+        return view('update')->with(['employee' => Auth::user()->employee]);
     }
 
     public function update_s(request $req)
@@ -167,11 +160,7 @@ $req['user_id']=$user->id;
             'address' => 'required',
         ])->validate();
         try {
-            $id = Auth::user()->id;
-            $emp = employee::find($id);
-            $emp->dob = $req['dob'];
-            $emp->address = $req['address'];
-            $emp->update();
+            Auth::user()->employee()->update($val);
         } catch (\Exception $e) {
             return $e->getMessage();
         }

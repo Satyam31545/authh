@@ -43,7 +43,7 @@
             <th>quantity</th>
             <th>Authority</th>
         </tr>
-        @foreach ($products as $product)
+        @forelse ($products as $product)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
@@ -58,16 +58,15 @@
                             @method('DELETE')
                             <button onclick="return confirm('are you sure want to delete product ?')">delete parmanent</button>
                         </form>
-                        {{-- <form action="{{route('product_restore',['product'=>$product->id])}}" method="get">
-                            <button onclick="return confirm('are you sure want to restore product ?')">restore</button>
-                        </form> --}}
                         <a href="{{route('product_restore',['product'=>$product->id])}}"><button>restore</button></a>
                     @endcan
 
 
                 </td>
             </tr>
-        @endforeach
+            @empty
+            <tr><td colspan="7"><p>no data found</p></td></tr>
+        @endforelse
 
 
 

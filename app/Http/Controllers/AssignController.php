@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User_assin_product;
-use App\Models\Product;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\Employee;
+
 use App\Models\Log;
+use App\Models\Product;
+use App\Models\Employee;
+use App\Models\UserAssinProduct;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AssignController extends Controller
@@ -17,70 +17,64 @@ class AssignController extends Controller
         $this->middleware('permission:product-assign', ['only' => ['assign_product_p', 'assign_product']]);
         $this->middleware('permission:product-remove', ['only' => ['deassign_product']]);
     }
-    public function assign_product($id)
+    public function create(Employee $employee)
     {
 
-        $array = User_assin_product::where("user_id", $id)->pluck('product_id')->all();
+        $toassign = Product::all('id','name','quantity')->except($employee->UserAssignProducts->pluck('product_id')->all());
 
-        $toassign = Product::all()->except($array);
-
-        $assigned = User_assin_product::where("user_id", $id)->with("products")->get();
+        $assigned = $employee->UserAssignProducts()->get()->load("product");
+        $id=$employee->id;
 
         $data = compact('toassign', 'assigned', 'id');
         return view("assign_product")->with($data);
     }
 
-    public function deassign_product($id)
+    public function destroy(UserAssinProduct $id)
     {
         DB::transaction(function () use ($id) {
-            $u_p = User_assin_product::where("id", $id);
-            $qu = $u_p->first();
 
+            $id->product()->update(['quantity'=>$id->product->quantity+ $id->quantity]);
+            $id->delete();
 //    log start
             Log::create([
-                'changer' => Auth::user()->id,
-                'change_holder' => $qu->user_id,
+                'changer_id' => Auth::user()->id,
+                'change_holder_id' => $id->employee_id,
                 'operation' => 'removed',
-                'quantity' => $qu->quantity,
-                'product_id' => $qu->product_id,
+                'quantity' => $id->quantity,
+                'product_id' => $id->product_id,
             ]);
 // log end
-
-            $pro = Product::find($qu->product_id);
-            $pro->quantity = $pro->quantity + $qu->quantity;
-            $pro->save();
-            $u_p->delete();
 
         });
         return redirect()->back();
     }
-    public function assign_product_p($id, request $req)
+    public function store(Employee $employee, request $req)
     {
 
         try {
-            DB::table('user_assin_products')->insert(['user_id' => $id, 'product_id' => $req['product_id'], 'quantity' => $req['quantity']]);
+            DB::transaction(function () use ($employee, $req) {
 
-            $pro = Product::find($req['product_id']);
-            $pro->quantity = $pro->quantity - $req['quantity'];
+                $employee->UserAssignProducts()->create(['product_id' => $req['product_id'], 'quantity' => $req['quantity']]);
 
-            $pro->save();
+
+                $pro = Product::find($req['product_id']);
+                $pro->update(['quantity'=>$pro->quantity - $req['quantity']]);
 
 //    log start
-            Log::create([
-                'changer' => Auth::user()->id,
-                'change_holder' => $id,
-                'operation' => 'added',
-                'quantity' => $req['quantity'],
-                'product_id' => $req['product_id'],
-            ]);
+                Log::create([
+                    'changer_id' => Auth::user()->id,
+                    'change_holder_id' => $employee->id,
+                    'operation' => 'added',
+                    'quantity' => $req['quantity'],
+                    'product_id' => $req['product_id'],
+                ]);
 // log end
-
+            });
         } catch (\Exception $e) {
             return $e->getMessage();
         }
 
     }
-
 
     // increase assined product
 
@@ -88,26 +82,20 @@ class AssignController extends Controller
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = User_assin_product::find($req['add_id']);
-            // $qu=$u_p->first();
-            $quantity = $req["quantity"];
+            $u_p = UserAssinProduct::find($req['add_id']);
 
 //  //    log start
             Log::create([
-                'changer' => Auth::user()->id,
-                'change_holder' => $u_p->user_id,
+                'changer_id' => Auth::user()->id,
+                'change_holder_id' => $u_p->employee_id,
                 'operation' => 'increase',
-                'quantity' => $quantity,
+                'quantity' => $req["quantity"],
                 'product_id' => $u_p->product_id,
             ]);
 //  // log end
-            $pro = Product::find($u_p->product_id);
 
-            $pro->quantity = $pro->quantity - $quantity;
-            $pro->save();
-
-            $u_p->quantity = $u_p->quantity + $quantity;
-            $u_p->save();
+$u_p->product()->update(["quantity"=>$u_p->product->quantity-$req["quantity"]]);
+$u_p->update(["quantity"=>$u_p->quantity+$req["quantity"]]);
 
         });
 
@@ -120,25 +108,19 @@ class AssignController extends Controller
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = User_assin_product::find($req['add_id']);
-            $quantity = $req["quantity"];
-
+            $u_p = UserAssinProduct::find($req['add_id']);
+ 
 //  //    log start
             Log::create([
-                'changer' => Auth::user()->id,
-                'change_holder' => $u_p->user_id,
+                'changer_id' => Auth::user()->id,
+                'change_holder_id' => $u_p->employee_id,
                 'operation' => 'return',
-                'quantity' => $quantity,
+                'quantity' => $req["quantity"],
                 'product_id' => $u_p->product_id,
             ]);
 //  // log end
-            $pro = Product::find($u_p->product_id);
-
-            $pro->quantity = $pro->quantity + $quantity;
-            $pro->save();
-
-            $u_p->quantity = $u_p->quantity - $quantity;
-            $u_p->save();
+            $u_p->product()->update(["quantity"=>$u_p->product->quantity+$req["quantity"]]);
+            $u_p->update(["quantity"=>$u_p->quantity-$req["quantity"]]);
 
         });
 

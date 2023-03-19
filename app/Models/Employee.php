@@ -18,8 +18,12 @@ class Employee extends Model
     public function education(){
         return $this->hasMany(Education::class);
     }
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class);
+    }
+    public function UserAssignProducts()
+    {
+        return $this->hasMany(UserAssinProduct::class);
     }
 }

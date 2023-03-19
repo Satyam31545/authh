@@ -12,12 +12,9 @@ class Product extends Model
     protected $fillable = [
         'name', 'prize','quantity','description','tax'
    ];
-    public function user_assign_products()
+    public function UserAssignProducts()
     {
-        return $this->hasMany(User_assin_product::class);
+        return $this->hasMany(UserAssinProduct::class);
     }
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'logs','changer','change_holder');
-    }
+
 }

@@ -105,7 +105,7 @@ return $e->getMessage();
     {
         DB::transaction(function () use ($product) {
         $product->delete();
-        $product->user_assign_products()->delete();
+        $product->UserAssignProducts()->delete();
       
        
         });

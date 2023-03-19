@@ -56,10 +56,10 @@
                        
                         <div class="form-group">
 
-                            <select name="role" id="role" value="{{ $employee->users->getRoleNames()[0] }}">
-                                <option value="2" @if ($employee->users->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
+                            <select name="role" id="role" value="{{ $employee->user->getRoleNames()[0] }}">
+                                <option value="2" @if ($employee->user->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
                                 </option>
-                                <option value="1" @if ($employee->users->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
+                                <option value="1" @if ($employee->user->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
                                 </option>
                             </select>
                         </div>
