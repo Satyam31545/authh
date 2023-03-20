@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Education;
 use App\Models\Employee;
-use App\Models\Family;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -36,34 +35,28 @@ class EmployeeApiController extends Controller
 
         try {
             DB::transaction(function () use ($req) {
-// user
+                // user
                 $req['password'] = Hash::make($req['password']);
                 $user = User::create($req);
                 // Employee
                 $req['user_id'] = $user->id;
-                $myemployee = Employee::create($req);
+                $employee = Employee::create($req);
 
                 $user->assignRole([$req['role']]);
+
                 //    family
-                if (!empty($req['family'])) {
+                if (isset($req['family'])) {
                     foreach ($req['family'] as $family) {
-
-                        $family['employee_id'] = $myemployee->id;
-                        $myfamily = Family::create($family);
-
+                        $employee->families()->create($family);
                     }
                 }
-
                 // education
-                if (!empty($req['education'])) {
-
+                if (isset($req['education'])) {
                     foreach ($req['education'] as $education) {
-
-                        $education['employee_id'] = $myemployee->id;
-                        $myeducation = Education::create($education);
-
+                        $employee->education()->create($education);
                     }
                 }
+
             });
 
         } catch (\Exception $e) {
@@ -82,7 +75,7 @@ class EmployeeApiController extends Controller
      */
     public function show(Employee $employee)
     {
-        return response()->json(['user' => $employee->users,'Employee' => $employee], 200);
+        return response()->json(['user' => $employee->user, 'Employee' => $employee], 200);
     }
 
     /**
@@ -92,7 +85,7 @@ class EmployeeApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EmployeeRequest $request,Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
 
         $val = $request->validated();
@@ -120,44 +113,15 @@ class EmployeeApiController extends Controller
      */
     public function destroy(Employee $employee)
     {
-  
 
         DB::transaction(function () use ($employee) {
             $employee->families()->delete();
             $employee->education()->delete();
             DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-            $employee->users->delete();
+            $employee->user->delete();
             $employee->delete();
         });
-        return response()->json(['message' => "employees deleted successfully"], 200);
+        return response()->json(['message' => "employee deleted successfully"], 200);
 
     }
 }
-
-// {
-//     "name": "satm",
-//     "email":"satyam3@gmail.com",
-//     "password":"123456",
-//     "salary": 64444,
-//     "role": "Staff",
-//     "desigination": "developer",
-//     "dob": "2005-05-05",
-//     "address": "ghg",
-//     "family":[
-// {
-//             "name" : "ajvv",
-//           "age" : 65,
-//           "relation" : "mother",
-//           "employeed" : 1
-// }
-//       ],
-
-//     "education":[
-//       {
-//             "edu_level" : 2,
-//           "course_n" : "ca",
-//           "place" : "goa",
-//           "percent" : 1
-// }
-//       ]
-//   }
