@@ -28,13 +28,8 @@ class EmployeeRequest extends FormRequest
     {
         $rules = [];
         $rules['name'] = 'required';
-        if ($this->request->has('email')) {
-            $rules['email'] = 'required|email';
-        }
-        if ($this->request->has('password')) {
-            $rules['password'] = 'required';
-        }
-
+        $rules['email'] = Rule::requiredIf($this->isMethod('post'));
+        $rules['password'] = Rule::requiredIf($this->isMethod('post'));
         $rules['role'] = 'required';
         $rules['salary'] = 'required';
         $rules['desigination'] = 'required';
