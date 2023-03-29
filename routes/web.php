@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mylogs', [LogController::class, 'mylogs'])->name('logs');
 // return assined product
     Route::get('/excel', [ExportController::class, 'excel_export'])->name('excel');
+    Route::get('/myexcel_export', [ExportController::class, 'employee_product_export'])->name('assign.excel');
 
     Route::post('/return_assined', [AssignController::class, 'return_assined']);
     Route::post('/increase_assined', [AssignController::class, 'increase_assined']);

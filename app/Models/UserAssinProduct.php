@@ -11,7 +11,7 @@ class UserAssinProduct extends Model
     use HasFactory;
     public $timestamps =false;
     protected $fillable = [
-        'user_id', 'product_id','quantity'
+        'employee_id', 'product_id','quantity'
    ];
     public function product(): BelongsTo
     {

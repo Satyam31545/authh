@@ -52,6 +52,9 @@
         @can('product-list')
         <a href="{{route('product.index')}}">view product</a>
         <a href="{{route('products_delete')}}">deleted product</a>
+
+        <a href="{{route('assign.excel')}}">assign product excel</a>
+
       @endcan 
       <a href="{{route('user.product')}}">my product </a>
 

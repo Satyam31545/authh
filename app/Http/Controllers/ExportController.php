@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LogsExport;
+use App\Exports\UserAssinProductExport;
 use App\Models\UserAssinProduct;
+use App\Models\Employee;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Excel;
 
 class ExportController extends Controller
 {
     public function excel_export(Request $request)
     {
-        $data = $request['data'];
         return (new LogsExport($request['data']))->download('app.xlsx');
-
+    }
+    public function employee_product_export()
+    {
+        return Excel::download(new UserAssinProductExport,'app.xlsx');
     }
 // for pdf 
     public function fpdf()

@@ -26,4 +26,8 @@ class Employee extends Model
     {
         return $this->hasMany(UserAssinProduct::class);
     }
+    public function products()
+    {
+       return $this->BelongsToMany(Product::class,'user_assin_products')->withPivot('quantity');
+    }
 }
