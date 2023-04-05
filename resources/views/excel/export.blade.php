@@ -13,7 +13,9 @@
                 </td>
                 <td rowspan="{{ $value->products->count()  }}">
                     {{ $value->products->sum('pivot.quantity') }}</td>
-
+                    <td rowspan="{{ $value->products->count()  }}">
+                        {{ $value->products->count() }}</td>
+    
 
 
                 @foreach ($value->products as $key => $value2)

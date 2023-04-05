@@ -6,10 +6,13 @@ use App\Exports\LogsExport;
 use App\Exports\UserAssinProductExport;
 use App\Models\UserAssinProduct;
 use App\Models\Employee;
+use App\Models\Product;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Excel;
+use Mail;
 
 class ExportController extends Controller
 {
@@ -19,7 +22,28 @@ class ExportController extends Controller
     }
     public function employee_product_export()
     {
-        return Excel::download(new UserAssinProductExport,'app.xlsx');
+
+     $data=  UserAssinProduct::get();
+$employee=$data->unique('employee_id')->count();
+$product=$data->unique('product_id')->count();
+$quantity=$data->sum('quantity');   
+$time= time();
+         Excel::store(new UserAssinProductExport,"employeesProduct".$time.'.xlsx');
+               $data=['time'=>$time,'employee'=>$employee,'product'=>$product,'quantity'=>$quantity];
+        Mail::send('excel.mail', $data, function ($message) use($time){
+            $message->to('satyamssingh9455@gmail.com', 'satyam mail');
+            $message->subject('ogo');
+            $message->attach(storage_path('app/employeesProduct'.$time.'.xlsx'));
+
+        }); 
+        return redirect()->back();
+
+    }
+
+
+    public function employee_product_download()
+    {
+       return  Excel::download(new UserAssinProductExport,"employeesProduct.xlsx");
     }
 // for pdf 
     public function fpdf()

@@ -81,7 +81,6 @@
         </div>
     </div>
     <script src="http://127.0.0.1:8000/jquary.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
