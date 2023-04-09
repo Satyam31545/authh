@@ -90,7 +90,7 @@
 
 <body>
     <div id="header">
-        <img src="{{ $message->embed('logo.png') }}" alt="">
+        <img src="{{ $message->embed(public_path('logo.png')) }}" alt="">
         Three38inc
     </div>
     <div id="body">
