@@ -37,11 +37,7 @@ class HomeController extends Controller
 
     public function myproduct()
     {
-        $id = Auth::user()->id;
-        $products = UserAssinProduct::where("employee_id", $id)->get()->load("product");
-
-        $data = compact('products');
-        return view("myproduct")->with($data);
+        return view("myproduct")->with(['products'=>UserAssinProduct::where("employee_id", Auth::user()->id)->get()->load("product")]);
     }
 
 

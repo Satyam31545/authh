@@ -57,8 +57,8 @@ class AssignController extends Controller
                 $employee->UserAssignProducts()->create(['product_id' => $req['product_id'], 'quantity' => $req['quantity']]);
 
 
-                $pro = Product::find($req['product_id']);
-                $pro->update(['quantity'=>$pro->quantity - $req['quantity']]);
+                $product = Product::find($req['product_id']);
+                $product->update(['quantity'=>$product->quantity - $req['quantity']]);
 
 //    log start
                 Log::create([
@@ -82,20 +82,20 @@ class AssignController extends Controller
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = UserAssinProduct::find($req['add_id']);
+            $user_assin_product = UserAssinProduct::find($req['add_id']);
 
 //  //    log start
             Log::create([
                 'changer_id' => Auth::user()->id,
-                'change_holder_id' => $u_p->employee_id,
+                'change_holder_id' => $user_assin_product->employee_id,
                 'operation' => 'increase',
                 'quantity' => $req["quantity"],
-                'product_id' => $u_p->product_id,
+                'product_id' => $user_assin_product->product_id,
             ]);
 //  // log end
 
-$u_p->product()->update(["quantity"=>$u_p->product->quantity-$req["quantity"]]);
-$u_p->update(["quantity"=>$u_p->quantity+$req["quantity"]]);
+$user_assin_product->product()->update(["quantity"=>$user_assin_product->product->quantity-$req["quantity"]]);
+$user_assin_product->update(["quantity"=>$user_assin_product->quantity+$req["quantity"]]);
 
         });
 
@@ -108,19 +108,19 @@ $u_p->update(["quantity"=>$u_p->quantity+$req["quantity"]]);
     {
 
         DB::transaction(function () use ($req) {
-            $u_p = UserAssinProduct::find($req['add_id']);
+            $user_assin_product = UserAssinProduct::find($req['add_id']);
  
 //  //    log start
             Log::create([
                 'changer_id' => Auth::user()->id,
-                'change_holder_id' => $u_p->employee_id,
+                'change_holder_id' => $user_assin_product->employee_id,
                 'operation' => 'return',
                 'quantity' => $req["quantity"],
-                'product_id' => $u_p->product_id,
+                'product_id' => $user_assin_product->product_id,
             ]);
 //  // log end
-            $u_p->product()->update(["quantity"=>$u_p->product->quantity+$req["quantity"]]);
-            $u_p->update(["quantity"=>$u_p->quantity-$req["quantity"]]);
+            $user_assin_product->product()->update(["quantity"=>$user_assin_product->product->quantity+$req["quantity"]]);
+            $user_assin_product->update(["quantity"=>$user_assin_product->quantity-$req["quantity"]]);
 
         });
 

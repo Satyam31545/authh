@@ -40,7 +40,7 @@ class SendMail implements ShouldQueue
         $quantity=$data->sum('quantity');   
         $time= time();
         Excel::store(new UserAssinProductExport,"employeesProduct".$time.'.xlsx');
-                       $data=['time'=>$time,'employee'=>$employee,'product'=>$product,'quantity'=>$quantity,'path'=>"public/logo.png"];
+                       $data=['time'=>$time,'employee'=>$employee,'product'=>$product,'quantity'=>$quantity];
                 Mail::send('excel.mail', $data, function ($message)use($time) {
                     $message->to('satyamssingh9455@gmail.com', 'satyam mail');
                     $message->subject('ogo');

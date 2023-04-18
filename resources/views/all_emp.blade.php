@@ -37,7 +37,7 @@
         <div id="persional">
             <div id="allhead">Persional</div>
 
-            @foreach ($my_employee as $item)
+            @foreach ($employees as $item)
                 @can('product-assign')
                     <a href="{{route('employee.show',['employee'=>$item->id]) }}">
                     @endcan

@@ -30,7 +30,7 @@ class EmployeeController extends Controller
     public function index()
     {
 
-        return view('all_emp')->with(['my_employee' => Employee::all()]);
+        return view('all_emp')->with(['employees' => Employee::all()]);
     }
 
     /**
@@ -114,14 +114,14 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $req, Employee $employee)
     {
-        $val = $req->validated();
+        $validated = $req->validated();
         try {
-            DB::transaction(function () use ($val, $employee) {
+            DB::transaction(function () use ($validated, $employee) {
 
-                $employee->update($val);
+                $employee->update($validated);
                 DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
                 $user = User::find($employee->user_id);
-                $user->assignRole([$val['role']]);
+                $user->assignRole([$validated['role']]);
             });
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -155,12 +155,12 @@ class EmployeeController extends Controller
 
     public function update_s(request $req)
     {
-        $val = Validator::make($req->all(), [
+        $validated = Validator::make($req->all(), [
             'dob' => 'required',
             'address' => 'required',
         ])->validate();
         try {
-            Auth::user()->employee()->update($val);
+            Auth::user()->employee()->update($validated);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
