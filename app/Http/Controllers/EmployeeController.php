@@ -30,7 +30,7 @@ class EmployeeController extends Controller
     public function index()
     {
 
-        return view('all_emp')->with(['employees' => Employee::all()]);
+        return view('all_emp')->with(['employees' => Employee::simplePaginate(15)]);
     }
 
     /**

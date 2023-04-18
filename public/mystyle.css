@@ -314,3 +314,7 @@ color:#9fda52;
   background-color: #04AA6D;
   color: white;
 }
+/* for pagination */
+#paginate {
+  text-align: center;
+}

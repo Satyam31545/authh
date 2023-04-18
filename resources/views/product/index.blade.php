@@ -30,14 +30,16 @@
             background-color: #04AA6D;
             color: white;
         }
+
+
     </style>
 @endpush
 @section('main-section')
     @can('product-create')
         <a href="product/create"><button>create</button></a>
     @endcan
-
-    <table id="customers">
+<div id="tablediv">
+      <table id="customers">
         <tr>
             <th>S.No</th>
             <th>product</th>
@@ -57,7 +59,7 @@
                 <td>{{ $product->quantity }}</td>
                 <td>
                     @can('product-delete')
-                        <form action="{{route('product.destroy',['product'=>$product->id])}}" method="POST">
+                        <form action="{{ route('product.destroy', ['product' => $product->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button onclick="return confirm('are you sure want to delete product ?')">delete</button>
@@ -65,7 +67,7 @@
                     @endcan
 
                     @can('product-edit')
-                        <a href="{{route('product.edit',['product'=>$product->id])}}"><button>edit</button></a>
+                        <a href="{{ route('product.edit', ['product' => $product->id]) }}"><button>edit</button></a>
                     @endcan
 
                 </td>
@@ -73,7 +75,15 @@
         @endforeach
 
 
+    <div id="paginate">
+        <a href="{{ $products->previousPageUrl() }}"><button><< previous</button></a>
+       <b> {{ $products->currentPage() }}</b>
+        <a href="{{ $products->nextPageUrl() }}"><button>next >></button></a>
+        
+        </div>
 
 
     </table>
+</div>
+  
 @endsection

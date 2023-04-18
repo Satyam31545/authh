@@ -30,6 +30,12 @@
         a {
             text-decoration: none;
         }
+        hr{
+            height: 2px;
+            width: 90%;
+            background-color: red;
+            border: 0px;
+        }
     </style>
 @endpush
 @section('main-section')
@@ -37,17 +43,23 @@
         <div id="persional">
             <div id="allhead">Persional</div>
 
+            <div id="paginate">
+                <a href="{{ $employees->previousPageUrl() }}"><button><< previous</button></a>
+               <b> {{ $employees->currentPage() }}</b>
+                <a href="{{ $employees->nextPageUrl() }}"><button>next >></button></a>
+                
+                </div>
             @foreach ($employees as $item)
-                @can('product-assign')
-                    <a href="{{route('employee.show',['employee'=>$item->id]) }}">
+                @can('user-list')
+                    <p> <a href="{{route('employee.show',['employee'=>$item->id]) }}">
                     @endcan
-                    <p>name - {{ $item->name }}</p>
-                    @can('product-assign')
-                    </a>
+                   {{ $item->name }}
+                    @can('user-list')
+                    </a></p>
                 @endcan
                 <p>desigination - {{ $item->desigination }}</p>
                 <div id="btn">
-                    @can('user-list')
+                    @can('product-assign')
                         <a href="{{route('assign',['employee'=>$item->id])}}"><button>Assign Product</button></a>
                     @endcan
                     @can('user-edit')

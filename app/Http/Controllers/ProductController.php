@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return  view("Product.index")->with(['products'=>Product::all()]);  
+        return  view("Product.index")->with(['products'=>Product::simplePaginate(15)]);  
     }
 
     /**
