@@ -9,7 +9,6 @@
 
         }
 
-
         #login {
             height: auto;
             width: 400px;
@@ -61,6 +60,13 @@
                         </div>
                         <div class="form-group">
 
+                            <input type="text" name="employee_id" id="employee_id" aria-describedby="helpId"
+                                placeholder="    Employee Id" value="{{ $id_code }}">
+                            <span id="eemployee_id"></span>
+
+                        </div>
+                        <div class="form-group">
+
                             <select name="role" id="role">
                                 <option value="2">Staff</option>
                                 <option value="1">Admin</option>
@@ -75,8 +81,8 @@
                         </div>
                         <div class="form-group">
 
-                            <input type="text" name="desigination" id="desigination"
-                                aria-describedby="helpId" placeholder="    Desigination">
+                            <input type="text" name="desigination" id="desigination" aria-describedby="helpId"
+                                placeholder="    Desigination">
                             <span id="edesigination"></span>
 
                         </div>
@@ -199,13 +205,21 @@
     <script src="http://127.0.0.1:8000/jquary.js"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
     <script>
-        var family =1;
-        var education =1;
+        var family = 1;
+        var education = 1;
+
         function addq(value) {
 
             opnum = $(value).attr('id');
 
-            append2 = '<div id="rep"><div class="form-group"><input type="text" name="family['+family+'][name]" id="name" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="family['+family+'][age]" id="age" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="family['+family+'][relation]" id="relation"><option value="mother">relation</option><option value="mother">mother</option><option value="father">father</option><option value="sister">sister</option><option value="brother">brother</option><option value="whif">whif/husbend</option><option value="son">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="family['+family+'][employed]" id="employed"><option value="0">employed</option><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
+            append2 = '<div id="rep"><div class="form-group"><input type="text" name="family[' + family +
+                '][name]" id="name" aria-describedby="helpId" placeholder="    Member name"></div><div class="form-group"><input type="number" name="family[' +
+                family +
+                '][age]" id="age" aria-describedby="helpId" placeholder="    Member age"></div><div class="form-group"><select name="family[' +
+                family +
+                '][relation]" id="relation"><option value="mother">relation</option><option value="mother">mother</option><option value="father">father</option><option value="sister">sister</option><option value="brother">brother</option><option value="whif">whif/husbend</option><option value="son">son</option><option value="6">doughter</option></select></div><div class="form-group"><select name="family[' +
+                family +
+                '][employed]" id="employed"><option value="0">employed</option><option value="0">yes</option><option value="1">no</option></select></div><hr></div> ';
 
             $("#" + opnum).before(append2);
             rqpnum = $("." + opnum).attr('value');
@@ -218,7 +232,14 @@
 
             opnum = $(value).attr('id');
 
-            append2 = '<div id="rep"><div class="form-group"><select name="education['+education+'][edu_level]" id="edu_level"><option value="0">education level</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="education['+education+'][course_n]" id="course_n" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="education['+education+'][place]" id="place" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="education['+education+'][percent]" id="percent"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
+            append2 = '<div id="rep"><div class="form-group"><select name="education[' + education +
+                '][edu_level]" id="edu_level"><option value="0">education level</option><option value="0">HS</option><option value="1">SHS</option><option value="2">UG</option><option value="3">PG</option></select></div><div class="form-group"><input type="text" name="education[' +
+                education +
+                '][course_n]" id="course_n" aria-describedby="helpId" placeholder="    Course(for ug & pg)"></div><div class="form-group"><input type="text" name="education[' +
+                education +
+                '][place]" id="place" aria-describedby="helpId" placeholder="    Board or University"></div><div class="form-group"><input type="number" name="education[' +
+                education +
+                '][percent]" id="percent"aria-describedby="helpId" placeholder="    Percentage"></div><hr></div>';
 
             $("#" + opnum).before(append2);
             rqpnum = $("." + opnum).attr('value');
@@ -232,6 +253,7 @@
             $("#eemail").text('');
             $("#ename").text('');
             $("#epassword").text('');
+            $("#eemployee_id").text('');
             $("#edesigination").text('');
             $("#esalary").text('');
             $("#edob").text('');
@@ -256,7 +278,9 @@
                     if (goo.password) {
                         document.getElementById("epassword").innerHTML = goo.password[0];
                     }
-
+                    if (goo.employee_id) {
+                        document.getElementById("eemployee_id").innerHTML = goo.employee_id[0];
+                    }
                     if (goo.salary) {
                         document.getElementById("esalary").innerHTML = goo.salary[0];
                     }
@@ -275,8 +299,7 @@
                     if (result == "") {
                         window.location = '/employee';
                     } else {
-                        // $("#error").text(result);
-                        console.log(result);
+                        $("#error").text(result);
 
                     }
 

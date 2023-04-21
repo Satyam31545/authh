@@ -30,60 +30,60 @@
             background-color: #04AA6D;
             color: white;
         }
-
-
     </style>
 @endpush
 @section('main-section')
     @can('product-create')
         <a href="product/create"><button>create</button></a>
     @endcan
-<div id="tablediv">
-      <table id="customers">
-        <tr>
-            <th>S.No</th>
-            <th>product</th>
-            <th>price</th>
-            <th>description</th>
-            <th>tax</th>
-            <th>quantity</th>
-            <th>Authority</th>
-        </tr>
-        @foreach ($products as $product)
+    <div id="tablediv">
+        <table id="customers">
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->prize }}</td>
-                <td>{{ $product->description }}</td>
-                <td>{{ $product->tax }}</td>
-                <td>{{ $product->quantity }}</td>
-                <td>
-                    @can('product-delete')
-                        <form action="{{ route('product.destroy', ['product' => $product->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('are you sure want to delete product ?')">delete</button>
-                        </form>
-                    @endcan
-
-                    @can('product-edit')
-                        <a href="{{ route('product.edit', ['product' => $product->id]) }}"><button>edit</button></a>
-                    @endcan
-
-                </td>
+                <th>S.No</th>
+                <th>product id</th>
+                <th>product</th>
+                <th>price</th>
+                <th>description</th>
+                <th>tax</th>
+                <th>quantity</th>
+                <th>Authority</th>
             </tr>
-        @endforeach
+            @foreach ($products as $product)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $product->product_id }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->prize }}</td>
+                    <td>{{ $product->description }}</td>
+                    <td>{{ $product->tax }}</td>
+                    <td>{{ $product->quantity }}</td>
+                    <td>
+                        @can('product-delete')
+                            <form action="{{ route('product.destroy', ['product' => $product->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button onclick="return confirm('are you sure want to delete product ?')">delete</button>
+                            </form>
+                        @endcan
+
+                        @can('product-edit')
+                            <a href="{{ route('product.edit', ['product' => $product->id]) }}"><button>edit</button></a>
+                        @endcan
+
+                    </td>
+                </tr>
+            @endforeach
 
 
-    <div id="paginate">
-        <a href="{{ $products->previousPageUrl() }}"><button><< previous</button></a>
-       <b> {{ $products->currentPage() }}</b>
-        <a href="{{ $products->nextPageUrl() }}"><button>next >></button></a>
-        
-        </div>
+            <div id="paginate">
+                <a href="{{ $products->previousPageUrl() }}"><button>
+                        << previous</button></a>
+                <b> {{ $products->currentPage() }}</b>
+                <a href="{{ $products->nextPageUrl() }}"><button>next >></button></a>
+
+            </div>
 
 
-    </table>
-</div>
-  
+        </table>
+    </div>
 @endsection

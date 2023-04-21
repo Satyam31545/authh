@@ -34,6 +34,7 @@
         <div id="persional">
             <div id="allhead">Persional</div>
             <p>id - {{ $user->employee->id }}</p>
+            <p>employee id - {{ $user->employee->employee_id }}</p>
             <p>name - {{ $user->employee->name }}</p>
             <p>role - {{ $user->getRoleNames()[0] }}</p>
             <p>salary - {{ $user->employee->salary }}</p>

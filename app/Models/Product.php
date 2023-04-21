@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory,softDeletes;
     protected $fillable = [
-        'name', 'prize','quantity','description','tax'
+        'name', 'prize','quantity','description','tax','product_id'
    ];
     public function UserAssignProducts()
     {

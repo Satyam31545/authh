@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Education;
 use App\Models\Employee;
+use App\Models\IdCode;
 use App\Models\User;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +42,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $id_code = IdCode::where("table_name", "employees")->first();
+        return view('create')->with(['id_code' => $id_code->code_char . $id_code->code_num]);
     }
 
     /**
@@ -57,10 +60,17 @@ class EmployeeController extends Controller
 // user
                 $req['password'] = Hash::make($req['password']);
                 $user = User::create($req);
-                // Employee
                 $req['user_id'] = $user->id;
-                $employee = $user->employee()->create($req);
+                // Employee
+                // id code
+                if (Employee::where('employee_id', $req['employee_id'])->first('id')) {
+                    throw new Exception("Employee id already exist", 1);
+                }
+                Id_code('employees', $req['employee_id']);
 
+                // id code
+
+                $employee = $user->employee()->create($req);
                 $user->assignRole([$req['role']]);
                 //    family
                 if (isset($req['family'])) {

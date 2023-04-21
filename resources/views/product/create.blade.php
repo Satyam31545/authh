@@ -47,6 +47,12 @@
                         </div>
                         <div class="form-group">
 
+                            <input type="text" name="product_id" id="product_id" aria-describedby="helpId"
+                                placeholder="     Product Id" value="{{ $id_code }}">
+                            <span id="eproduct_id"></span>
+                        </div>
+                        <div class="form-group">
+
                             <input type="text" name="description" id="name" aria-describedby="helpId"
                                 placeholder="     Description">
                             <span id="edescription"></span>
@@ -76,7 +82,9 @@
                             <input type="submit" name="submit" id="send" value="REGISTER">
                         </div>
                     </form>
+                    <div id="error"></div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -86,6 +94,7 @@
             e.preventDefault();
             $("#eprize").text('');
             $("#ename").text('');
+            $("#eproduct_id").text('');
             $("#equantity").text('');
             $("#edescription").text('');
             $("#etax").text('');
@@ -105,6 +114,9 @@
                     if (goo.name) {
                         document.getElementById("ename").innerHTML = goo.name[0];
                     }
+                    if (goo.product_id) {
+                        document.getElementById("eproduct_id").innerHTML = goo.product_id[0];
+                    }
                     if (goo.quantity) {
                         document.getElementById("equantity").innerHTML = goo.quantity[0];
                     }
@@ -113,16 +125,16 @@
                     }
                     if (goo.description) {
                         document.getElementById("edescription").innerHTML = goo.description[0];
-                    }          
-                      if (goo.tax) {
+                    }
+                    if (goo.tax) {
                         document.getElementById("etax").innerHTML = goo.tax[0];
                     }
                 },
                 success: function(result) {
                     if (result == "") {
-                         window.location = '/product';
+                        window.location = '/product';
                     } else {
-                        console.log(result);
+                        $("#error").text(result);
                     }
 
                 }

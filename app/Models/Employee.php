@@ -10,7 +10,7 @@ class Employee extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id','name', 'salary','desigination', 'dob','address'
+        'user_id','name', 'salary','desigination', 'dob','address','employee_id'
    ];
     public function families(){
         return $this->hasMany(Family::class);

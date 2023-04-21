@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AssignController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AssignController;
+use App\Http\Controllers\IdcodeController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Roles;
 use Illuminate\Support\Facades\Route;
 
@@ -43,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fpdf', [ExportController::class, 'fpdf'])->name('pdf');
     Route::get('/myproduct', [HomeController::class, 'myproduct'])->name('user.product');
 // increase assined product
-// reject
+    // reject
     Route::get('/mylogs', [LogController::class, 'mylogs'])->name('logs');
 // return assined product
     Route::get('/excel', [ExportController::class, 'excel_export'])->name('excel');
@@ -54,6 +55,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/increase_assined', [AssignController::class, 'increase_assined']);
     Route::get('/deassign_product/{id}', [AssignController::class, 'destroy'])->name('deassign');
     Route::get('/assign_product/{employee}', [AssignController::class, 'create'])->name('assign');
-    Route::post('/assign_product/{employee}', [AssignController::class, 'store']); 
-    
+    Route::post('/assign_product/{employee}', [AssignController::class, 'store']);
+
+    Route::get('/id_code', [IdcodeController::class, 'index'])->name('id_code.index');;
+    Route::post('/id_code/{idcode}', [IdcodeController::class, 'update'])->name('id_code.update');
+
 });

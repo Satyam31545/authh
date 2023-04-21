@@ -51,10 +51,12 @@
             border: 1px solid #888;
             width: 40%;
         }
-        .modal-content>p{
+
+        .modal-content>p {
             font-size: 18px;
             color: rgb(71, 88, 241)
         }
+
         /* The Close Button */
         .close {
             color: #aaa;
@@ -69,23 +71,25 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .loader {
-            
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid blue;
-  border-bottom: 16px solid blue;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-  left: 40%;
-            top: 40%;
-  position: fixed;
 
-}
-.loaderbox{
-    display:none;
-  position: fixed;
+        .loader {
+
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid blue;
+            border-bottom: 16px solid blue;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            left: 40%;
+            top: 40%;
+            position: fixed;
+
+        }
+
+        .loaderbox {
+            display: none;
+            position: fixed;
             z-index: 1;
             left: 0%;
             top: 0%;
@@ -93,11 +97,17 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.6);
-}
-@keyframes spin {
-  50% { transform: rotate(50deg); }
-  100% { transform: rotate(360deg); }
-}
+        }
+
+        @keyframes spin {
+            50% {
+                transform: rotate(50deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -121,6 +131,7 @@
         @endcan
         @can('user-create')
             <a href="{{ route('employee.create') }}">create staff</a>
+            <a href="{{ route('id_code.index') }}">Id Code</a>
         @endcan
         @can('user-list')
             <a href="{{ route('employee.index') }}">view staff</a>
@@ -153,12 +164,12 @@
 
         <!-- Modal content -->
         <div class="modal-content">
-           
-                <div class="close">&times;</div>
-                <p>How you want to get the Employee's assigned product details ?</p>
-                <a href="{{route('assign.download')}}"><button id="Download">Download</button></a>
-                <a href="{{route('assign.excel')}}"><button id="Email">Email</button></a>
-            
+
+            <div class="close">&times;</div>
+            <p>How you want to get the Employee's assigned product details ?</p>
+            <a href="{{ route('assign.download') }}"><button id="Download">Download</button></a>
+            <a href="{{ route('assign.excel') }}"><button id="Email">Email</button></a>
+
 
         </div>
 
@@ -168,7 +179,9 @@
     {{--  --}}
 
 
-    <div class="loaderbox"><div class="loader"></div></div>
+    <div class="loaderbox">
+        <div class="loader"></div>
+    </div>
     <script src="http://127.0.0.1:8000/jquary.js"></script>
 
     <script>
@@ -203,7 +216,7 @@
 
 
         // When the user clicks on <span> (x), close the modal
-            $('.close')[0].onclick = function() {
+        $('.close')[0].onclick = function() {
             $("#myModal").css("display", "none");
         }
 
@@ -213,18 +226,16 @@
                 $("#myModal").css("display", "none");
             }
         }
-        
-$('#Email')[0].onclick = function() {
+
+        $('#Email')[0].onclick = function() {
             $(".loaderbox").css("display", "block");
-}
-$('#Download')[0].onclick = function() {
-    $(".loaderbox").css("display", "block");
+        }
+        $('#Download')[0].onclick = function() {
+            $(".loaderbox").css("display", "block");
 
-   setTimeout(function () {
-    $(".loaderbox").css("display", "none");
-   }, 8500);
-            
-}
+            setTimeout(function() {
+                $(".loaderbox").css("display", "none");
+            }, 8500);
 
-
+        }
     </script>
