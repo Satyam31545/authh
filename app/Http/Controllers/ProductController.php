@@ -50,9 +50,6 @@ class ProductController extends Controller
 
         try {
             $req = $req->validated();
-            if (Product::where('product_id', $req['product_id'])->first('id')) {
-                throw new Exception("Product id already exist", 1);
-            }
             Id_code('products', $req['product_id']);
             Product::create($req);
 

@@ -63,9 +63,6 @@ class EmployeeController extends Controller
                 $req['user_id'] = $user->id;
                 // Employee
                 // id code
-                if (Employee::where('employee_id', $req['employee_id'])->first('id')) {
-                    throw new Exception("Employee id already exist", 1);
-                }
                 Id_code('employees', $req['employee_id']);
 
                 // id code
