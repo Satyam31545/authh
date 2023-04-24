@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'product_id' => 'required|unique:App\Models\Product,product_id',
+            'product_id' => [Rule::requiredIf($this->isMethod('post')),'unique:App\Models\Product,product_id'],
             'prize' => 'required',
             'quantity' => 'required',
             'description' => 'required',

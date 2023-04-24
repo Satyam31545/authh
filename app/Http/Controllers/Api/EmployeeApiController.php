@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeRequest;
-use App\Models\Education;
-use App\Models\Employee;
-use App\Models\User;
 use DB;
+use App\Models\User;
+use App\Models\Employee;
+use App\Models\Education;
 use Illuminate\Http\Request;
+use App\Services\EmployeeService;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeApiController extends Controller
 {
+    public  $employeeService;
+    public function __construct()
+    {
+        $this->employeeService=new EmployeeService;
+    }
     /**
      * Bearer 3|wmdIeZLruG8DPqqeDvtHkVVboep0X5HPa1K8okbm
      *
@@ -34,31 +40,7 @@ class EmployeeApiController extends Controller
         $req = $request->validated();
 
         try {
-            DB::transaction(function () use ($req) {
-                // user
-                $req['password'] = Hash::make($req['password']);
-                $user = User::create($req);
-                // Employee
-                $req['user_id'] = $user->id;
-                $employee = Employee::create($req);
-
-                $user->assignRole([$req['role']]);
-
-                //    family
-                if (isset($req['family'])) {
-                    foreach ($req['family'] as $family) {
-                        $employee->families()->create($family);
-                    }
-                }
-                // education
-                if (isset($req['education'])) {
-                    foreach ($req['education'] as $education) {
-                        $employee->education()->create($education);
-                    }
-                }
-
-            });
-
+            $this->employeeService->store($req);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
 
@@ -88,15 +70,9 @@ class EmployeeApiController extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
 
-        $val = $request->validated();
+        $request = $request->validated();
         try {
-            DB::transaction(function () use ($val, $employee) {
-
-                $employee->update($val);
-                DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-                $user = User::find($employee->user_id);
-                $user->assignRole([$val['role']]);
-            });
+            $this->employeeService->update($request,$employee);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
 
@@ -114,13 +90,8 @@ class EmployeeApiController extends Controller
     public function destroy(Employee $employee)
     {
 
-        DB::transaction(function () use ($employee) {
-            $employee->families()->delete();
-            $employee->education()->delete();
-            DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-            $employee->user->delete();
-            $employee->delete();
-        });
+        $this->employeeService->destroy($employee);
+
         return response()->json(['message' => "employee deleted successfully"], 200);
 
     }

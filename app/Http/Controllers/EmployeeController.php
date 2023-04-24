@@ -2,37 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployeeRequest;
-use App\Models\Education;
-use App\Models\Employee;
-use App\Models\IdCode;
-use App\Models\User;
 use DB;
 use Exception;
+use Validator;
+use App\Models\User;
+use App\Models\IdCode;
+use App\Models\Employee;
+use App\Models\Education;
 use Illuminate\Http\Request;
+use App\Services\EmployeeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Validator;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
-
+    public  $employeeService;
     public function __construct()
     {
         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
         $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->employeeService=new EmployeeService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-
-        return view('all_emp')->with(['employees' => Employee::simplePaginate(15)]);
+        return view('all_emp')->with(['employees' => $this->employeeService->index()]);
     }
 
     /**
@@ -56,38 +58,10 @@ class EmployeeController extends Controller
     {
         $req = $req->validated();
         try {
-            DB::transaction(function () use ($req) {
-// user
-                $req['password'] = Hash::make($req['password']);
-                $user = User::create($req);
-                $req['user_id'] = $user->id;
-                // Employee
-                // id code
-                Id_code('employees', $req['employee_id']);
-
-                // id code
-
-                $employee = $user->employee()->create($req);
-                $user->assignRole([$req['role']]);
-                //    family
-                if (isset($req['family'])) {
-                    foreach ($req['family'] as $family) {
-                        $employee->families()->create($family);
-                    }
-                }
-
-                // education
-                if (isset($req['education'])) {
-                    foreach ($req['education'] as $education) {
-                        $employee->education()->create($education);
-                    }
-                }
-            });
-
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
+        $this->employeeService->store($req);
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
     }
 
     /**
@@ -98,7 +72,8 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return view('view')->with(['user' => $employee->user]);
+        return  $this->employeeService->show($employee);
+       
     }
 
     /**
@@ -121,19 +96,12 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $req, Employee $employee)
     {
-        $validated = $req->validated();
+        $req = $req->validated();
         try {
-            DB::transaction(function () use ($validated, $employee) {
-
-                $employee->update($validated);
-                DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-                $user = User::find($employee->user_id);
-                $user->assignRole([$validated['role']]);
-            });
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
+          $this->employeeService->update($req,$employee);
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
     }
 
     /**
@@ -144,15 +112,8 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        DB::transaction(function () use ($employee) {
-            $employee->families()->delete();
-            $employee->education()->delete();
-            DB::table('model_has_roles')->where('model_id', $employee->user_id)->delete();
-            $employee->user->delete();
-            $employee->delete();
-        });
+        return  $this->employeeService->destroy($employee);
 
-        return redirect()->back();
     }
 
     public function edit_s()

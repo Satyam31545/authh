@@ -41,44 +41,44 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="myid" id="myid" value="">
                         @php
-                            $url =route('user.update');
+                            $url = route('user.update');
                         @endphp
                         @can('user-edit')
-                        @php
-                        $url =route('employee.update',['employee'=>$employee->id]);
-                    @endphp
-                        <div class="form-group">
+                            @php
+                                $url = route('employee.update', ['employee' => $employee->id]);
+                            @endphp
+                            <div class="form-group">
 
-                            <input type="text" name="name" id="name" aria-describedby="helpId"
-                                placeholder="     Name" value="{{ $employee->name }}">
-                            <span id="ename"></span>
-                        </div>
-                       
-                        <div class="form-group">
+                                <input type="text" name="name" id="name" aria-describedby="helpId"
+                                    placeholder="     Name" value="{{ $employee->name }}">
+                                <span id="ename"></span>
+                            </div>
 
-                            <select name="role" id="role" value="{{ $employee->user->getRoleNames()[0] }}">
-                                <option value="2" @if ($employee->user->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
-                                </option>
-                                <option value="1" @if ($employee->user->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
-                                </option>
-                            </select>
-                        </div>
-                    
-                        <div class="form-group">
+                            <div class="form-group">
 
-                            <input type="number" name="salary" id="salary" aria-describedby="helpId"
-                                placeholder="    Salary" value="{{ $employee->salary }}">
-                            <span id="esalary"></span>
+                                <select name="role" id="role" value="{{ $employee->user->getRoleNames()[0] }}">
+                                    <option value="2" @if ($employee->user->getRoleNames()[0] == 'Staff') {{ 'selected' }} @endif>Staff
+                                    </option>
+                                    <option value="1" @if ($employee->user->getRoleNames()[0] == 'Admin') {{ 'selected' }} @endif>Admin
+                                    </option>
+                                </select>
+                            </div>
 
-                        </div>
-                        <div class="form-group">
+                            <div class="form-group">
 
-                            <input type="text" name="desigination" id="desigination" aria-describedby="helpId"
-                                placeholder="    Desigination" value="{{ $employee->desigination }}">
-                            <span id="edesigination"></span>
+                                <input type="number" name="salary" id="salary" aria-describedby="helpId"
+                                    placeholder="    Salary" value="{{ $employee->salary }}">
+                                <span id="esalary"></span>
 
-                        </div>
-                        @endcan 
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text" name="desigination" id="desigination" aria-describedby="helpId"
+                                    placeholder="    Desigination" value="{{ $employee->desigination }}">
+                                <span id="edesigination"></span>
+
+                            </div>
+                        @endcan
                         <div class="form-group">
 
                             <input type="text" name="dob" id="dob" onfocus="(this.type='date')"
@@ -115,7 +115,7 @@
                 headers: {
                     'X-CSRF-Token': $('input[name="_token"]').val()
                 },
-                url: "{{$url}}",
+                url: "{{ $url }}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
                 error: function(request, status, error) {
