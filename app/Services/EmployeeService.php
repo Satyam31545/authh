@@ -72,6 +72,5 @@ class EmployeeService
             $employee->delete();
         });
 
-        return redirect()->back();
     }
 }
