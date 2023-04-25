@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Models\IdCode;
-use App\Models\Product;
 use DB;
 use Exception;
+use App\Models\IdCode;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
-
+    public  $productService;
     public function __construct()
     {
         $this->middleware('permission:product-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:product-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:product-delete', ['only' => ['destroy', 'product_restore', "product_deleted_permanent"]]);
+        $this->productService=new ProductService;
+
     }
     /**
      * Display a listing of the resource.
@@ -25,7 +28,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view("Product.index")->with(['products' => Product::simplePaginate(15)]);
+        return view("Product.index")->with(['products' =>  Product::simplePaginate(15)]);
     }
 
     /**
@@ -47,24 +50,15 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $req)
     {
-
+        $req=$req->validated();
         try {
-            $req = $req->validated();
-            Id_code('products', $req['product_id']);
-            Product::create($req);
-
+            $this->productService->store($req);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     /**
      * Show the form for editing the specified resource.
      *
@@ -85,9 +79,9 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $req, Product $product)
     {
+
         try {
-            $pro = $product;
-            $pro->update($req->validated());
+            $this->productService->update($req->validated(),$product);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -101,11 +95,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        DB::transaction(function () use ($product) {
-            $product->delete();
-            $product->UserAssignProducts()->delete();
-
-        });
+        $this->productService->destroy($product);
         return redirect()->back();
     }
     public function products_delete()

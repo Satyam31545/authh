@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 
 class ProductApiController extends Controller
 {
+
+    public  $productService;
+    public function __construct()
+    {
+        $this->productService=new ProductService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +34,7 @@ class ProductApiController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $product = Product::create($request->validated());
+        $this->productService->store($request->validated());
         return response()->json(['message' => "Product created successfuly"], 201);
     }
 
@@ -51,7 +58,7 @@ class ProductApiController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $this->productService->update($request->validated(),$product);
         return response()->json(['message' => "product updated successfully"], 202);
     }
 
@@ -63,7 +70,7 @@ class ProductApiController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
+        $this->productService->destroy($product);
         return response()->json(['message' => "Product deleted successfully"], 200);
     }
 

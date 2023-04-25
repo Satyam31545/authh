@@ -34,7 +34,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        return view('all_emp')->with(['employees' => $this->employeeService->index()]);
+        return view('all_emp')->with(['employees' => Employee::simplePaginate(15)]);
     }
 
     /**
@@ -56,9 +56,8 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $req)
     {
-        $req = $req->validated();
         try {
-        $this->employeeService->store($req);
+        $this->employeeService->store($req->validated());
     } catch (\Exception $e) {
         return $e->getMessage();
     }
@@ -72,8 +71,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return  $this->employeeService->show($employee);
-       
+        return view('view')->with(['user' => $employee->user]);       
     }
 
     /**
@@ -112,8 +110,8 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        return  $this->employeeService->destroy($employee);
-
+       $this->employeeService->destroy($employee);
+        return redirect()->back();
     }
 
     public function edit_s()

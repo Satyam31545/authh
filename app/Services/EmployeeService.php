@@ -9,11 +9,7 @@ use App\Http\Requests\EmployeeRequest;
   
 class EmployeeService
 {
-    public function index()
-    {
-        return  Employee::simplePaginate(15);
-    }
-    public function store($req)
+    public function store(array $req)
     {
 
             DB::transaction(function () use ($req) {
@@ -44,12 +40,8 @@ class EmployeeService
                 }
             });
 
+    }
 
-    }
-    public function show(Employee $employee)
-    {
-        return view('view')->with(['user' => $employee->user]);
-    }
     public function update(array $req, Employee $employee)
     {
 
@@ -60,7 +52,6 @@ class EmployeeService
                 $user = User::find($employee->user_id);
                 $user->assignRole([$req['role']]);
             });
-
     }
     public function destroy(Employee $employee)
     {
