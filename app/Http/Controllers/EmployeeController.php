@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Exception;
-use Validator;
-use App\Models\User;
-use App\Models\IdCode;
-use App\Models\Employee;
-use App\Models\Education;
-use Illuminate\Http\Request;
-use App\Services\EmployeeService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EmployeeRequest;
+use App\Models\Employee;
+use App\Models\IdCode;
+use App\Models\User;
+use App\Services\EmployeeService;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Validator;
 
 class EmployeeController extends Controller
 {
-    public  $employeeService;
+    public $employeeService;
     public function __construct()
     {
         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index']]);
         $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-        $this->employeeService=new EmployeeService;
+        $this->employeeService = new EmployeeService;
     }
     /**
      * Display a listing of the resource.
@@ -32,7 +31,7 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index(): View
     {
         return view('all_emp')->with(['employees' => Employee::simplePaginate(15)]);
     }
@@ -42,10 +41,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
-        $id_code = IdCode::where("table_name", "employees")->first();
-        return view('create')->with(['id_code' => $id_code->code_char . $id_code->code_num]);
+        $idCode = IdCode::where("table_name", "employees")->first();
+        return view('create')->with(['id_code' => $idCode->code_char . $idCode->code_num]);
     }
 
     /**
@@ -54,13 +53,17 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EmployeeRequest $req)
+    public function store(EmployeeRequest $req): JsonResponse
     {
         try {
-        $this->employeeService->store($req->validated());
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
+            $this->employeeService->store($req->validated());
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);}
+        return response()->json([
+            'status' => 'success',
+        ], 201);
     }
 
     /**
@@ -69,9 +72,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show(Employee $employee): View
     {
-        return view('view')->with(['user' => $employee->user]);       
+        return view('view')->with(['user' => $employee->user]);
     }
 
     /**
@@ -80,7 +83,7 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): View
     {
         return view('update')->with(['employee' => $employee]);
     }
@@ -92,14 +95,18 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(EmployeeRequest $req, Employee $employee)
+    public function update(EmployeeRequest $req, Employee $employee): JsonResponse
     {
         $req = $req->validated();
         try {
-          $this->employeeService->update($req,$employee);
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
+            $this->employeeService->update($req, $employee);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);}
+        return response()->json([
+            'status' => 'success',
+        ], 201);
     }
 
     /**
@@ -110,11 +117,19 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-       $this->employeeService->destroy($employee);
-        return redirect()->back();
+        try {
+            $this->employeeService->destroy($employee);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);}
+
+        return redirect()->back()->with(json_encode([
+            'status' => 'success',
+        ]));
     }
 
-    public function edit_s()
+    public function edit_s(): View
     {
         return view('update')->with(['employee' => Auth::user()->employee]);
     }
@@ -128,9 +143,11 @@ class EmployeeController extends Controller
         try {
             Auth::user()->employee()->update($validated);
         } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-        return redirect()->back();
-
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);}
+        return redirect()->back()->with(json_encode([
+            'status' => 'success',
+        ]));
     }
 }

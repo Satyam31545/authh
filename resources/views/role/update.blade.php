@@ -82,15 +82,11 @@
                 url: "{{ url('Role_update') }}/{{ $id }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
+                error: function(response, status, error) {
+                                            $("#error").text(result);
+                },
                 success: function(result) {
-                    if (result == "") {
                         window.location = '/AllRole';
-                    } else {
-                        // console.log(result);
-                        $("#error").text(result);
-
-                    }
-
                 }
             });
         });

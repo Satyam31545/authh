@@ -4,10 +4,10 @@ use App\Http\Controllers\AssignController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IdcodeController;
+use App\Http\Controllers\IdCodeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Roles;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,13 +34,13 @@ Route::middleware(['auth'])->group(function () {
 // for admin
     Route::resource('employee', EmployeeController::class);
 
-    Route::get('/Role_update/{id}', [Roles::class, 'create'])->name('role.edit');
-    Route::post('/Role_update/{id}', [Roles::class, 'store']);
-    Route::get('/AllRole', [Roles::class, 'index'])->name('role.show');
+    Route::get('/Role_update/{id}', [RoleController::class, 'create'])->name('role.edit');
+    Route::post('/Role_update/{id}', [RoleController::class, 'store']);
+    Route::get('/AllRole', [RoleController::class, 'index'])->name('role.show');
     Route::resource('product', ProductController::class);
-    Route::get('/product_deleted', [ProductController::class, 'products_delete'])->name('products_delete');
-    Route::delete('/product_deleted_permanent/{product}', [ProductController::class, 'product_deleted_permanent'])->name('product_deleted_permanent');
-    Route::get('/product_restore/{product}', [ProductController::class, 'product_restore'])->name('product_restore');
+    Route::get('/product_deleted', [ProductController::class, 'deletedProducts'])->name('products_delete');
+    Route::delete('/product_deleted_permanent/{product}', [ProductController::class, 'forceDelete'])->name('product_deleted_permanent');
+    Route::get('/product_restore/{product}', [ProductController::class, 'restoreDeletedProduct'])->name('product_restore');
     Route::get('/fpdf', [ExportController::class, 'fpdf'])->name('pdf');
     Route::get('/myproduct', [HomeController::class, 'myproduct'])->name('user.product');
 // increase assined product
@@ -51,13 +51,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employee_product_export', [ExportController::class, 'employee_product_export'])->name('assign.excel');
     Route::get('/employee_product_download', [ExportController::class, 'employee_product_download'])->name('assign.download');
 
-    Route::post('/return_assined', [AssignController::class, 'return_assined']);
-    Route::post('/increase_assined', [AssignController::class, 'increase_assined']);
-    Route::get('/deassign_product/{id}', [AssignController::class, 'destroy'])->name('deassign');
+    Route::post('/return_assined', [AssignController::class, 'returnAssignedProduct']);
+    Route::post('/increase_assined', [AssignController::class, 'increaseAssignedProduct']);
+    Route::get('/deassign_product/{userAssignProduct}', [AssignController::class, 'deassignProduct'])->name('deassign');
     Route::get('/assign_product/{employee}', [AssignController::class, 'create'])->name('assign');
-    Route::post('/assign_product/{employee}', [AssignController::class, 'store']);
+    Route::post('/assign_product/{employee}', [AssignController::class, 'assignProduct']);
 
-    Route::get('/id_code', [IdcodeController::class, 'index'])->name('id_code.index');;
-    Route::post('/id_code/{idcode}', [IdcodeController::class, 'update'])->name('id_code.update');
+    Route::get('/id_code', [IdCodeController::class, 'index'])->name('id_code.index');;
+    Route::post('/id_code/{idCode}', [IdCodeController::class, 'update'])->name('id_code.update');
 
 });

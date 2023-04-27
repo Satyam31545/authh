@@ -5,22 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\IdCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
-class IdcodeController extends Controller
+class IdCodeController extends Controller
 {
 
-    public function index()
+    public function index(): View
     {
         return view('id_code.id_code')->with(['id_codes' => IdCode::all()]);
     }
 
-    public function update(request $req, IdCode $idcode)
+    public function update(request $req, IdCode $idCode)
     {
-        DB::transaction(function () use ($req, $idcode) {
-            $idcode->update(["code_char" => $req['id_code']]);
-        });
+        try {
+            DB::transaction(function () use ($req, $idCode) {
+                $idCode->update(["code_char" => $req['id_code']]);
+            });
 
-        return redirect()->back();
-
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+        return redirect()->back()->with(json_encode([
+            'status' => 'success',
+        ]));
     }
 }

@@ -37,7 +37,7 @@
                     <td>{{ $id_code->table_name }}</td>
                     <td>{{ $id_code->code_char }}</td>
                     <td>
-                        <form id="form" action="{{ route('id_code.update', ['idcode' => $id_code->id]) }}" method="post">
+                        <form id="form" action="{{ route('id_code.update', ['idCode' => $id_code->id]) }}" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             @method('post')
                             <input type="hidden" name="id_code_id" value="{{ $id_code->id }}">

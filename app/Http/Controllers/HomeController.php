@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\Log;
-use App\Models\Product;
 use App\Models\User;
+use Illuminate\View\View;
 use App\Models\UserAssinProduct;
-use DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
 
 class HomeController extends Controller
 {
@@ -20,29 +15,18 @@ class HomeController extends Controller
      * @return void
      */
 
-
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index():View
     {
-        return view('view')->with(['user'=>Auth::user()]);
+        return view('view')->with(['user' => Auth::user()]);
     }
-
-
-
-
-
-    public function myproduct()
+    public function myproduct():View
     {
-        return view("myproduct")->with(['products'=>UserAssinProduct::where("employee_id", Auth::user()->id)->get()->load("product")]);
+        return view("myproduct")->with(['products' => UserAssinProduct::where("employee_id", Auth::user()->id)->get()->load("product")]);
     }
-
-
-
-
-
 
 }

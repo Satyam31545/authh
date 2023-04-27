@@ -31,7 +31,7 @@
             width: 100px;
         }
 
-        #assigned {
+        #assignedProducts {
             display: block;
         }
 
@@ -54,8 +54,8 @@
             <div id="form_container">
                 <div id="forms">
 
-                    <div id="assigned">
-                        @foreach ($assigned as $item)
+                    <div id="assignedProducts">
+                        @foreach ($assignedProducts as $item)
                             <p> {{ $item->product->name }} @can('product-remove')
                                     <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove ({{$item->quantity}})</button>
                                     </a>
@@ -85,7 +85,7 @@
                             <select name="product_id" id="product_id">
                                 <option value="" class="0">product</option>
 
-                                @forelse ($toassign as $item)
+                                @forelse ($productsToAssign as $item)
                                     <option value="{{ $item->id }}" class="{{ $item->quantity }}">{{ $item->name }}
                                     </option>
                                     @empty
@@ -120,14 +120,7 @@
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                    if (result == "") {
                         window.location = "{{ url('/assign_product') }}/{{ $id }}";
-                    } else {
-                        // console.log(result);
-                        $("#error").text(result);
-
-                    }
-
                 }
             });
         });
@@ -137,9 +130,9 @@
         element.addEventListener('change', function() {
 
 
-            var ma = eval($(":selected")[0].className)
-            document.getElementById('quantitym').innerHTML = '<input type="number" placeholder="max(' + ma +
-                ')"  max="' + ma + '" id="quantity" name="quantity">';
+            var maximumProductQuantity = eval($(":selected")[0].className)
+            document.getElementById('quantitym').innerHTML = '<input type="number" placeholder="max(' + maximumProductQuantity +
+                ')"  max="' + maximumProductQuantity + '" id="quantity" name="quantity">';
 
 
         });

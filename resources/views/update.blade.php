@@ -118,42 +118,43 @@
                 url: "{{ $url }}",
                 type: "PUT",
                 data: jQuery('#form').serialize(),
-                error: function(request, status, error) {
-                    var go = request.responseText;
-                    var goo = JSON.parse(go);
-                    goo = goo.errors;
-                    if (goo.name) {
-                        document.getElementById("ename").innerHTML = goo.name[0];
-                    }
-                    if (goo.email) {
-                        document.getElementById("eemail").innerHTML = goo.email[0];
-                    }
-                    if (goo.password) {
-                        document.getElementById("epassword").innerHTML = goo.password[0];
-                    }
+                error: function(response, status, error) {
 
-                    if (goo.salary) {
-                        document.getElementById("esalary").innerHTML = goo.salary[0];
-                    }
-                    if (goo.desigination) {
-                        document.getElementById("edesigination").innerHTML = goo.desigination[0];
-                    }
-                    if (goo.dob) {
-                        document.getElementById("edob").innerHTML = goo.dob[0];
-                    }
-                    if (goo.address) {
-                        document.getElementById("eaddress").innerHTML = goo.address[0];
+                    if (response.status == 422) {
+                        var validationError = JSON.parse(response.responseText).errors;
+                        if (validationError.name) {
+                            document.getElementById("ename").innerHTML = validationError.name[0];
+                        }
+                        if (validationError.email) {
+                            document.getElementById("eemail").innerHTML = validationError.email[0];
+                        }
+                        if (validationError.password) {
+                            document.getElementById("epassword").innerHTML = validationError.password[
+                            0];
+                        }
+
+                        if (validationError.salary) {
+                            document.getElementById("esalary").innerHTML = validationError.salary[0];
+                        }
+                        if (validationError.desigination) {
+                            document.getElementById("edesigination").innerHTML = validationError
+                                .desigination[0];
+                        }
+                        if (validationError.dob) {
+                            document.getElementById("edob").innerHTML = validationError.dob[0];
+                        }
+                        if (validationError.address) {
+                            document.getElementById("eaddress").innerHTML = validationError.address[0];
+                        }
+
+
+                    } else if (response.status == 400) {
+                        $("#error").text(JSON.parse(response.responseText).error);
                     }
 
                 },
                 success: function(result) {
-                    if (result == "") {
                         window.location = '/employee/{{ $employee->id }}';
-                    } else {
-                        $("#error").text(result);
-
-                    }
-
                 }
             });
         });

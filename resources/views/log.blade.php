@@ -108,7 +108,10 @@
                     <td><a
                             href="{{ route('employee.show', ['employee' => $log->change_holder->id]) }}">{{ $log->change_holder->name }}</a>
                     </td>
-                    <td>{{ $log->product->name }}</td>
+                    <td>
+{{!$log->product ? "Product deleted" : $log->product->name}}
+                    
+                     </td>
                     <td>{{ $log->quantity }}</td>
                     <td>{{ $log->operation }}</td>
                     <td>{{ $log->created_at }}</td>

@@ -105,38 +105,35 @@
                 url: "{{ url('/product') }}",
                 type: "POST",
                 data: jQuery('#form').serialize(),
-                error: function(request, status, error) {
-                    var go = request.responseText;
-                    var goo = JSON.parse(go);
-                    goo = goo.errors;
+                error: function(response, status, error) {
 
+if (response.status==422) {
+                        var validationError = JSON.parse(response.responseText).errors;
+                    if (validationError.name) {
+                        document.getElementById("ename").innerHTML = validationError.name[0];
+                    }
+                    if (validationError.product_id) {
+                        document.getElementById("eproduct_id").innerHTML = validationError.product_id[0];
+                    }
+                    if (validationError.quantity) {
+                        document.getElementById("equantity").innerHTML = validationError.quantity[0];
+                    }
+                    if (validationError.prize) {
+                        document.getElementById("eprize").innerHTML = validationError.prize[0];
+                    }
+                    if (validationError.description) {
+                        document.getElementById("edescription").innerHTML = validationError.description[0];
+                    }
+                    if (validationError.tax) {
+                        document.getElementById("etax").innerHTML = validationError.tax[0];
+                    }
+}else if (response.status==400) {
+    $("#error").text(JSON.parse(response.responseText).error);
+}
 
-                    if (goo.name) {
-                        document.getElementById("ename").innerHTML = goo.name[0];
-                    }
-                    if (goo.product_id) {
-                        document.getElementById("eproduct_id").innerHTML = goo.product_id[0];
-                    }
-                    if (goo.quantity) {
-                        document.getElementById("equantity").innerHTML = goo.quantity[0];
-                    }
-                    if (goo.prize) {
-                        document.getElementById("eprize").innerHTML = goo.prize[0];
-                    }
-                    if (goo.description) {
-                        document.getElementById("edescription").innerHTML = goo.description[0];
-                    }
-                    if (goo.tax) {
-                        document.getElementById("etax").innerHTML = goo.tax[0];
-                    }
                 },
-                success: function(result) {
-                    if (result == "") {
+                success: function() {
                         window.location = '/product';
-                    } else {
-                        $("#error").text(result);
-                    }
-
                 }
             });
         });

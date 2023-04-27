@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Log;
 use App\Models\Product;
-use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LogController extends Controller
 {
     //  log
-    public function mylogs(request $request)
+    public function mylogs(request $request): View
     {
         $products = Product::get();
         $employees = Employee::get();
@@ -18,9 +19,9 @@ class LogController extends Controller
         $logs = Log::
             when($request->changer, function ($query) use ($request) {
 
-                return $query->where('changer_id', $request->changer);
+            return $query->where('changer_id', $request->changer);
 
-            })->when($request->change_holder, function ($query) use ($request) {
+        })->when($request->change_holder, function ($query) use ($request) {
 
             return $query->where('change_holder_id', $request->change_holder);
 
