@@ -7,7 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IdCodeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductRequestController;
 use App\Http\Controllers\RoleController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,5 +61,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/id_code', [IdCodeController::class, 'index'])->name('id_code.index');;
     Route::post('/id_code/{idCode}', [IdCodeController::class, 'update'])->name('id_code.update');
+
+    Route::resource('productRequest', ProductRequestController::class);
+    Route::get('/productRequest/inactive/{productRequest}', [ProductRequestController::class, 'inactivate'])->name('productRequest.inactivate');
 
 });

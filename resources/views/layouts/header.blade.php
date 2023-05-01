@@ -125,6 +125,7 @@
     <div id="mySidenav" class="sidenav">
         <a href="{{ route('home') }}">Home</a>
         <a href="{{ route('user.edit') }}">Update</a>
+        <a href="{{ route('productRequest.create') }}">create request</a>
         @can('role-edit')
             <a href="{{ route('role.show') }}">All Role</a>
             <a href="{{ route('logs') }}">Log </a>
@@ -139,8 +140,7 @@
         @can('product-list')
             <a href="{{ route('product.index') }}">view product</a>
             <a href="{{ route('products_delete') }}">deleted product</a>
-
-            {{-- <a href="{{route('assign.excel')}}">assign product excel</a> --}}
+            <a href="{{ route('productRequest.index') }}">see requests</a>
             <a id="myBtn">assign product excel</a>
         @endcan
         <a href="{{ route('user.product') }}">my product </a>
@@ -208,12 +208,12 @@
             $("#mySidenav").css("width", "0px");
 
         }
-
-        // When the user clicks on the button, open the modal
-        $('#myBtn')[0].onclick = function() {
-            $("#myModal").css("display", "block");
-        }
-
+        @can('product-list')
+            // When the user clicks on the button, open the modal
+            $('#myBtn')[0].onclick = function() {
+                $("#myModal").css("display", "block");
+            }
+        @endcan
 
         // When the user clicks on <span> (x), close the modal
         $('.close')[0].onclick = function() {

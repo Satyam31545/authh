@@ -12,7 +12,7 @@
 
 
         #login {
-            height: 550px;
+            height: auto;
             width: 400px;
             box-shadow: 0.5px 0.5px 3px 3px #888888;
             background-color: #ffffff;
@@ -57,7 +57,8 @@
                     <div id="assignedProducts">
                         @foreach ($assignedProducts as $item)
                             <p> {{ $item->product->name }} @can('product-remove')
-                                    <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove ({{$item->quantity}})</button>
+                                    <a href="{{ url('deassign_product') }}/{{ $item->id }}"><button>remove
+                                            ({{ $item->quantity }})</button>
                                     </a>
                                 @endcan
                             </p>
@@ -88,7 +89,7 @@
                                 @forelse ($productsToAssign as $item)
                                     <option value="{{ $item->id }}" class="{{ $item->quantity }}">{{ $item->name }}
                                     </option>
-                                    @empty
+                                @empty
                                     <option value="" class="0">no product found</option>
                                 @endforelse
 
@@ -108,7 +109,6 @@
         </div>
     </div>
     <script src="http://127.0.0.1:8000/jquary.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  --}}
     <script>
         jQuery('#form').submit(function(e) {
             e.preventDefault();
@@ -120,7 +120,7 @@
                 type: "POST",
                 data: jQuery('#form').serialize(),
                 success: function(result) {
-                        window.location = "{{ url('/assign_product') }}/{{ $id }}";
+                    window.location = "{{ url('/assign_product') }}/{{ $id }}";
                 }
             });
         });
@@ -131,7 +131,8 @@
 
 
             var maximumProductQuantity = eval($(":selected")[0].className)
-            document.getElementById('quantitym').innerHTML = '<input type="number" placeholder="max(' + maximumProductQuantity +
+            document.getElementById('quantitym').innerHTML = '<input type="number" placeholder="max(' +
+                maximumProductQuantity +
                 ')"  max="' + maximumProductQuantity + '" id="quantity" name="quantity">';
 
 
